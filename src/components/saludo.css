@@ -1,0 +1,9 @@
+body {
+    background-color: gray;
+}
+
+.container-text {
+    color: aliceblue;
+    width: min-content;
+    margin: 300px auto;
+}
