@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&family=Satisfy&display=swap');
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.mainform {
+    display: flex;
+    width: 30%;
+    padding-bottom: 30px;
+    flex-direction: column;
+    gap: 14px;
+    height: min-content;
+    border: 1px solid #dadada;
+    align-items: center;
+}
+
+.container-forms {
+    min-height: 700px;
+    max-height: min-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-main {
+    font-size: 60px;
+    margin: 5px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Satisfy', cursive;
+    font-weight: 900;
+}
+
+.input-field {
+    width: 60%;
+    font-size: 16px;
+    padding-left: 20px;
+    border-radius: 8px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid rgb(165, 165, 165);
+    height: 40px;
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+label {
+    color: #8f8f8f;
+    font-size: 13px;
+    padding-left: 10px;
+}
+
+.container-input-date {
+    display: flex;
+    width: 65%;
+    flex-wrap: wrap;
+}
+
+.container-input-date input {
+    width: 100%;
+}
+
+.input-field:hover {
+    border-bottom: 1px solid #969696;
+}
+
+.input-field:focus {
+    outline: none;
+    border-bottom: 1px solid #4d4d4d;
+}
+
+.box-info {
+    width: 1;
+    color: #666666;
+}
+
+.button {
+    background-color: #1399f3;
+    color: rgb(255, 255, 255);
+    border: 2px solid #ededed;
+    padding: 10px 0px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 0 auto;
+    width: 67%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.button:hover {
+    background-color: #4298f5;
+}
+
+.input-field::placeholder {
+    color: #a3a3a3;
+}
+
+.text-frase {
+    text-align: center;
+    font-size: 14px;
+    margin: 0;
+    color: #757575;
+}
+
+
+.title-form-type {
+    margin: 0;
+    text-align: center;
+    font-weight: 900;
+    font-size: 13px;
+}
+
+.container-text {
+    width: 60%;
+}
