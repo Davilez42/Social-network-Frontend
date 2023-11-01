@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
-
+import useUser from "../../../hooks/useUser";
+import { UserContext } from "../../../context/userContextRegister";
 function Login() {
   const [correoElectronico, setCorreoElectronico] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [mensaje, setMensaje] = useState("");
-
+  const { setErrors } = useContext(UserContext);
+  const { userLogin } = useUser();
   const handleRegistro = () => {
-    const data = {
-      correoElectronico,
-      contrasena,
-    };
+    if (correoElectronico.trim() === "") {
+      setErrors(["Porfavor digita un correo electronico "]);
+      return;
+    }
+    if (contrasena.trim() === "") {
+      setErrors(["Porfavor digita un contraseña "]);
+      return;
+    }
+    userLogin(setErrors, correoElectronico, contrasena);
   };
 
   return (

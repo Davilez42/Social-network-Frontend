@@ -36,7 +36,7 @@ function Register({ handlerErrors }) {
     }
     if (correoElectronico.trim() === "") {
       console.log("entra");
-      setErrors(["Profavor ingrese una fecha de nacimiento"]);
+      setErrors(["Profavor ingrese un correo electronico"]);
       return;
     }
     if (contrasena.trim() === "") {

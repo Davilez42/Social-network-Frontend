@@ -8,12 +8,15 @@ import Login from "./components/auth/login/Login";
 import Forms from "./components/auth/Forms";
 import ConfirmEmail from "./components/auth/confirmEmail/ConfirmEmail";
 import EditFormProfile from "./components/user/EditFormProfile/EditFormProfile";
+import ProtectedRoute from "./components/utils/ProtectedRoute";
+import RedirectRouteIndex from "./components/utils/RedirectRouteIndex";
+
 
 const routes = createBrowserRouter([
 
   {
-    path: "/",
-    element: <Index />,
+    path: "",
+    element: <RedirectRouteIndex />,
     children: [
       {
         path: '/',
@@ -38,13 +41,18 @@ const routes = createBrowserRouter([
     ],
   },
   {
-    path: '/profile',
-    element: <Profile />,
+    element: <ProtectedRoute />,
     children: [
       {
-        path: 'edit/:id_user',
-        props: true,
-        element: <EditFormProfile />
+        path: '/profile',
+        element: <Profile />,
+        children: [
+          {
+            path: 'edit/:id_user',
+            props: true,
+            element: <EditFormProfile />
+          }
+        ]
       }
     ]
   }

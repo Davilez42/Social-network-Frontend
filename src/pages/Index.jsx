@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import "./index.css";
 export default function Index() {
   const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     const handler = () => {
       navigate("/login");
     };
-    handler();
+    if (location.pathname === "/") {
+      handler();
+    }
   }, []);
   return (
     <div>

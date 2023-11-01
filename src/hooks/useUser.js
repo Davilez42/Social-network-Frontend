@@ -38,7 +38,7 @@ export default function useUser() {
                 const resp = await resource(`/api/v1/user/signup/confirmEmail/${id_user}`, { codigo_ingresado: code_verify })
                 const data = await resp.json()
                 if (resp.ok) {
-                    useavigate(`/profile/edit/${id_user}`)
+                    //useavigate(`/profile/edit/${id_user}`)
                 } else {
                     handlerError([data.message])
                 }
@@ -67,6 +67,21 @@ export default function useUser() {
             } catch (error) {
                 handlerError([error.message])
             }
+        },
+        userLogin: async (handlerError, email, password) => {
+            try {
+                const resp = await resource(`/api/v1/user/sign`, { email, password })
+                const data = await resp.json()
+                if (resp.ok) {
+                    // useavigate(`/profile/edit/${data.data.id_user}`)
+                } else {
+                    handlerError([data.message])
+                }
+            } catch (error) {
+
+            }
+
+
         }
     }
 
