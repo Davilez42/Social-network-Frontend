@@ -16,12 +16,12 @@ function Register({ handlerErrors }) {
   const handleRegistro = () => {
     if (fullname.trim() === "") {
       console.log("entra");
-      setErrors(["Profavor ingrese un nombre"]);
+      setErrors(["Porfavor ingrese un nombre"]);
       return;
     }
     if (telefono.trim() === "") {
       console.log("entra");
-      setErrors(["Profavor ingrese un numero de celular"]);
+      setErrors(["Porfavor ingrese un numero de celular"]);
       return;
     }
     if (nombreUsuario.trim() === "") {
@@ -31,17 +31,17 @@ function Register({ handlerErrors }) {
     }
     if (fechaNacimiento.trim() === "") {
       console.log("entra");
-      setErrors(["Profavor ingrese una fecha de nacimiento"]);
+      setErrors(["Porfavor ingrese una fecha de nacimiento"]);
       return;
     }
     if (correoElectronico.trim() === "") {
       console.log("entra");
-      setErrors(["Profavor ingrese un correo electronico"]);
+      setErrors(["Porfavor ingrese un correo electronico"]);
       return;
     }
     if (contrasena.trim() === "") {
       console.log("entra");
-      setErrors(["Profavor ingrese una contraseña"]);
+      setErrors(["Porfavor ingrese una contraseña"]);
       return;
     }
     registerUser(
