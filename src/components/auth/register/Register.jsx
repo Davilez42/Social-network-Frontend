@@ -1,28 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
-
-function Register() {
+import useUser from "../../../hooks/useUser";
+import { UserContext } from "../../../context/userContextRegister";
+function Register({ handlerErrors }) {
+  const { errors, setErrors } = useContext(UserContext);
   const [nombreUsuario, setUsername] = useState("");
   const [correoElectronico, setCorreoElectronico] = useState("");
   const [contrasena, setContrasena] = useState("");
-  const [nombrePrincipal, setNombrePrincipal] = useState("");
-  const [Apellido, setApellido] = useState("");
-  const [Telefono, SetTelefono] = useState("");
+  const [fullname, setFullname] = useState("");
+  const { registerUser } = useUser();
+
+  const [telefono, SetTelefono] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
-  const [Direccion, setDireccion] = useState("");
-  const [mensaje, setMensaje] = useState("");
 
   const handleRegistro = () => {
-    const data = {
+    if (fullname.trim() === "") {
+      console.log("entra");
+      setErrors(["Profavor ingrese un nombre"]);
+      return;
+    }
+    if (telefono.trim() === "") {
+      console.log("entra");
+      setErrors(["Profavor ingrese un numero de celular"]);
+      return;
+    }
+    if (nombreUsuario.trim() === "") {
+      console.log("entra");
+      setErrors(["Debes ingrese un nombre de usuario"]);
+      return;
+    }
+    if (fechaNacimiento.trim() === "") {
+      console.log("entra");
+      setErrors(["Profavor ingrese una fecha de nacimiento"]);
+      return;
+    }
+    if (correoElectronico.trim() === "") {
+      console.log("entra");
+      setErrors(["Profavor ingrese una fecha de nacimiento"]);
+      return;
+    }
+    if (contrasena.trim() === "") {
+      console.log("entra");
+      setErrors(["Profavor ingrese una contraseña"]);
+      return;
+    }
+    registerUser(
+      setErrors,
       nombreUsuario,
-      correoElectronico,
       contrasena,
-      nombrePrincipal,
-      Apellido,
-      Telefono,
+      fullname,
       fechaNacimiento,
-      Direccion,
-    };
+      correoElectronico,
+      telefono
+    );
   };
 
   return (
@@ -42,15 +72,15 @@ function Register() {
         type="text"
         className="input-field"
         placeholder="Nombre completo *"
-        value={nombrePrincipal}
-        onChange={(e) => setNombrePrincipal(e.target.value)}
+        value={fullname}
+        onChange={(e) => setFullname(e.target.value)}
       />
 
       <input
         type="text"
         className="input-field"
         placeholder="Telefono *"
-        value={Telefono}
+        value={telefono}
         onChange={(e) => SetTelefono(e.target.value)}
       />
       <div className="container-input-date">
