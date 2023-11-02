@@ -9,6 +9,10 @@
     align-items: center;
 }
 
+.disabled {
+    background-color: #757575;
+}
+
 .container-forms {
     margin-top: 20px;
     min-height: 700px;
@@ -106,8 +110,16 @@ label {
 
 .box-info {
     width: 1;
-    color: #666666;
+    font-size: 13px;
+    color: #7c7c7c;
 }
+
+.here {
+    text-decoration: none;
+    color: #4298f5;
+}
+
+
 
 .button {
     background-color: #1399f3;

@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import React from "react";
-import Index from "./pages/Index";
 import Profile from "./pages/Profile";
 import { CookiesProvider } from "react-cookie";
 import Register from "./components/auth/register/Register";
@@ -10,6 +9,8 @@ import ConfirmEmail from "./components/auth/confirmEmail/ConfirmEmail";
 import EditFormProfile from "./components/user/EditFormProfile/EditFormProfile";
 import ProtectedRoute from "./components/utils/ProtectedRoute";
 import RedirectRouteIndex from "./components/utils/RedirectRouteIndex";
+import RestorePassword from "./components/auth/restorePassword/RestorePassword";
+import CreateNewPasswordReset from "./components/auth/createNewPasswordReset/CreateNewPasswordReset";
 
 
 const routes = createBrowserRouter([
@@ -35,6 +36,13 @@ const routes = createBrowserRouter([
             path: '/confirmEmail/:id_user/:name',
             props: true,
             element: <ConfirmEmail />,
+          }, {
+            path: '/passwordRestore',
+            element: <RestorePassword />
+          },
+          {
+            path: '/createNewPassword',
+            element: <CreateNewPasswordReset />
           }
         ]
       }

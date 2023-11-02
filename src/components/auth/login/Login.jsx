@@ -40,6 +40,12 @@ function Login() {
         value={contrasena}
         onChange={(e) => setContrasena(e.target.value)}
       />
+      <div className="box-info">
+        Olvidaste tu contraseña ?{" "}
+        <NavLink className="here" to="/passwordRestore">
+          recuperar
+        </NavLink>{" "}
+      </div>
       <button className="button" onClick={handleRegistro}>
         Inicia sesion
       </button>
