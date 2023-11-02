@@ -11,7 +11,9 @@ import ProtectedRoute from "./components/utils/ProtectedRoute";
 import RedirectRouteIndex from "./components/utils/RedirectRouteIndex";
 import RestorePassword from "./components/auth/restorePassword/RestorePassword";
 import CreateNewPasswordReset from "./components/auth/createNewPasswordReset/CreateNewPasswordReset";
-
+import Home from "./pages/Home";
+import FeedMain from "./components/feed/viewMain/FeedMain";
+import ViewProfile from "./components/user/ViewProfile/ViewProfile";
 
 const routes = createBrowserRouter([
 
@@ -52,18 +54,34 @@ const routes = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       {
-        path: '/profile',
-        element: <Profile />,
+        path: '/home',
+        element: <Home />,
         children: [
           {
-            path: 'edit/:id_user',
-            props: true,
-            element: <EditFormProfile />
+            path: 'feed',
+            element: <FeedMain />
+          },
+          {
+            path: 'profile',
+            element: <Profile />,
+            children: [
+              {
+                path: 'edit/:id_user',
+                props: true,
+                element: <EditFormProfile />
+              },
+              {
+                path: 'view',
+                element: <ViewProfile />
+              }
+            ]
           }
         ]
       }
     ]
   }
+
+
 
 ])
 function App() {

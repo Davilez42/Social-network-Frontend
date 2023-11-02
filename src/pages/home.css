@@ -1,0 +1,6 @@
+.container-main {
+    display: flex;
+    background-color: rgb(174, 239, 239);
+    gap: 20px;
+    justify-content: center;
+}
