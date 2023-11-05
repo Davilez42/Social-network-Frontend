@@ -5,10 +5,11 @@ import { jwtDecode } from "jwt-decode";
 
 export default function RedirectRouteIndex() {
   const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
-
-  if (!cookies.tkn) {
+  const tkn = window.sessionStorage.getItem("tkn");
+  console.log(tkn);
+  if (!cookies.tkn && !tkn) {
     return <Index />;
   }
-  const data = jwtDecode(cookies.tkn);
-  return <Navigate to={`/profile/edit/${data.id_user}`} replace />;
+  const data = jwtDecode(cookies.tkn || tkn);
+  return <Navigate to={`/home/feed`} />;
 }

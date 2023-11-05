@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { NavLink } from "react-router-dom";
 function CreateNewPasswordReset() {
   const [correoElectronico, setCorreoElectronico] = useState("");
 
@@ -37,6 +37,12 @@ function CreateNewPasswordReset() {
       <button className="button" onClick={handlePassword}>
         Cambiar
       </button>
+      <div className="box-info">
+        volver a{" "}
+        <NavLink className="here" to="/login">
+          inicio
+        </NavLink>{" "}
+      </div>
     </>
   );
 }

@@ -1,6 +1,6 @@
 .container-profile {
     display: flex;
-    height: 700px;
+    height: min-content;
     width: 100%;
     flex-direction: column;
     align-items: center;

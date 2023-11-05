@@ -14,8 +14,14 @@ export default function Index() {
   }, []);
   return (
     <div>
-      <header></header>
       <div>{<Outlet />}</div>
+
+      <footer id="info-footer">
+        © 2023 SnapWire . Todos los derechos reservados. Asegúrate de respetar
+        las normas comunitarias. Para más detalles, consulta nuestros términos
+        de servicio y política de privacidad. ¡Disfruta de tu experiencia en
+        nuestra comunidad! © 2023 SnapWire.
+      </footer>
     </div>
   );
 }

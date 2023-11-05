@@ -5,3 +5,11 @@ body {
     font-family: 'IBM Plex Sans', sans-serif;
 
 }
+
+#info-footer {
+    width: 50%;
+    margin: 0 auto;
+    font-size: 13px;
+    text-align: center;
+    color: rgb(173, 173, 173);
+}

@@ -5,7 +5,7 @@ import { CookiesProvider } from "react-cookie";
 import Register from "./components/auth/register/Register";
 import Login from "./components/auth/login/Login";
 import Forms from "./components/auth/Forms";
-import ConfirmEmail from "./components/auth/confirmEmail/ConfirmEmail";
+import ConfirmVerifiedCode from "./components/auth/confirmverifiedcode/ConfirmVerifiedCode";
 import EditFormProfile from "./components/user/EditFormProfile/EditFormProfile";
 import ProtectedRoute from "./components/utils/ProtectedRoute";
 import RedirectRouteIndex from "./components/utils/RedirectRouteIndex";
@@ -14,7 +14,7 @@ import CreateNewPasswordReset from "./components/auth/createNewPasswordReset/Cre
 import Home from "./pages/Home";
 import FeedMain from "./components/feed/viewMain/FeedMain";
 import ViewProfile from "./components/user/ViewProfile/ViewProfile";
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 const routes = createBrowserRouter([
 
   {
@@ -37,7 +37,7 @@ const routes = createBrowserRouter([
           {
             path: '/confirmEmail/:id_user/:name',
             props: true,
-            element: <ConfirmEmail />,
+            element: <ConfirmVerifiedCode />,
           }, {
             path: '/passwordRestore',
             element: <RestorePassword />
@@ -66,7 +66,7 @@ const routes = createBrowserRouter([
             element: <Profile />,
             children: [
               {
-                path: 'edit/:id_user',
+                path: 'edit',
                 props: true,
                 element: <EditFormProfile />
               },
@@ -88,7 +88,9 @@ function App() {
   return <>
     <React.StrictMode>
       <CookiesProvider defaultSetOptions={{ path: "/" }}>
-        <RouterProvider router={routes} />
+        <GoogleOAuthProvider clientId="850844004503-ij5nnakoum3lr6tnetu1up7ost42pqi6.apps.googleusercontent.com">
+          <RouterProvider router={routes} />
+        </GoogleOAuthProvider>
       </CookiesProvider>
     </React.StrictMode>
   </>

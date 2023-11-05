@@ -1,6 +1,40 @@
 .container-main {
     display: flex;
-    background-color: rgb(174, 239, 239);
     gap: 20px;
+    flex-wrap: wrap;
     justify-content: center;
+}
+
+.container-error {
+    position: fixed;
+    min-width: min-content;
+    max-width: 800px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    transition: .2s all;
+    top: 75%;
+    left: 60%;
+    right: 20px;
+    margin: 5% auto;
+}
+
+.box-error {
+    gap: 50px;
+    width: 100%;
+    top: 20px;
+    height: 30px;
+    margin-top: 20px;
+    padding: 10px 0px;
+    border-radius: 4px;
+    transition: .6s all;
+    margin-bottom: 15px;
+    color: rgb(255, 255, 255);
+    background-color: #3d91ff;
+}
+
+.box-error div {
+    text-align: center;
+    float: left;
+    margin-left: 50px;
 }
