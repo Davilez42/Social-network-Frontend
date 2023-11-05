@@ -16,6 +16,7 @@ export default function ConfirmVerifiedCode() {
       return;
     }
     confirmVerifyCode(setMessage, id_user, code);
+    setCode("");
   };
 
   const handlerSendEmail = () => {

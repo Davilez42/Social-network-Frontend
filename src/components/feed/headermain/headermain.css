@@ -1,8 +1,49 @@
 .header-main {
-    background-color: rgb(219, 246, 246);
+    margin: 0;
+    display: flex;
+    width: 100%;
     margin-bottom: 15px;
+    border-bottom: 1px solid rgb(227, 227, 227);
+    flex-wrap: wrap;
+    align-items: center;
 }
 
-.header-main h1 {
-    margin: 0;
+.title_logo_navbar {
+    font-size: 40px;
+    width: 33%;
+}
+
+#input_search {
+    border: 1px solid rgb(190, 190, 190);
+    height: 30px;
+    border-radius: 100px;
+}
+
+.search-bar {
+    width: 33%;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.navbar-box {
+    width: 33%;
+    justify-content: end;
+}
+
+.nav-list {
+    padding: 0;
+    display: flex;
+    width: 100%;
+    gap: 16px;
+    justify-content: end;
+}
+
+.item-navbar-list {
+    color: rgb(106, 106, 106);
+    text-decoration: none;
+}
+
+.item-navbar-list:hover {
+    color: rgb(37, 37, 37);
 }

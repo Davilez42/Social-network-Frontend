@@ -3,7 +3,8 @@
 
 body {
     font-family: 'IBM Plex Sans', sans-serif;
-
+    padding: 0;
+    margin: 0;
 }
 
 #info-footer {

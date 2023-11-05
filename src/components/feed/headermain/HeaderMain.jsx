@@ -1,50 +1,36 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import "./headermain.css";
-
+import { NavLink } from "react-router-dom";
 export default function HeaderMain() {
   const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    // búsqueda o redirección a la página de resultados de búsqueda
-    console.log("Realizar búsqueda con:", searchQuery);
-  };
 
   return (
     <>
       <header className="header-main">
-        <h1>Snapwire</h1>
+        <h1 className="title-main title_logo_navbar">Snapwire</h1>
         <div className="search-bar">
-          <form onSubmit={handleSearch} className="search-form">
-            <div className="search-input-container">
-              <input
-                type="text"
-                placeholder="Buscar..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-input"
-              />
-            </div>
-            <div className="search-icon">
-              <FaSearch />
-            </div>
-          </form>
+          <input
+            type="text"
+            id="input_search"
+            placeholder="Buscar..."
+            value={searchQuery}
+            d
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="input-field"
+          />
+          <div className="search-icon">
+            <FaSearch />
+          </div>
         </div>
-        <nav>
+        <nav className="navbar-box">
           <ul className="nav-list">
-            <li>
-              <a href="\home\feed">Inicio</a>
-            </li>
-            <li>
-              <a href="\ayuda">Ayuda</a>
-            </li>
-            <li>
-              <a href="\contactos">Contactos</a>
-            </li>
-            <li>
-              <a href="\acerca-de">Acerca de</a>
-            </li>
+            <NavLink to="/home/feed" className="item-navbar-list">
+              Inicio
+            </NavLink>
+            <NavLink className="item-navbar-list">Ayuda</NavLink>
+            <NavLink className="item-navbar-list">Contactos</NavLink>
+            <NavLink className="item-navbar-list">Acerca de nosotros</NavLink>
           </ul>
         </nav>
       </header>
