@@ -11,7 +11,7 @@ export default function useUser() {
         usenavigate('/login')
     }
 
-    const resource = async (route, body, method = 'POST', tkn, formDate) => {
+    const resource = async (route, body, method = 'POST', tkn, formData) => {
         const url = 'https://nt4mmhp7-8000.use2.devtunnels.ms'
         const contenttype = body ? { "Content-type": "application/json" } : null
         const resp = await fetch(url + route, {
@@ -22,11 +22,9 @@ export default function useUser() {
                 ...contenttype,
                 "auth": `Bearer token:${tkn} `
             },
-            body: body ? JSON.stringify(body) : formDate
+            body: body ? JSON.stringify(body) : formData
         })
-        if (resp.status === 403 || resp.status === 404) {
-            logout()
-        }
+        if ([404, 401, 403].includes(resp.status)) logout()
         return resp
     }
 
@@ -81,7 +79,6 @@ export default function useUser() {
                     setUserBio(data.user_bio)
                 } else {
                     handlerError([data.message])
-                    logout()
                 }
             } catch (error) {
                 handlerError([error.message])
@@ -165,10 +162,10 @@ export default function useUser() {
         updateAvatarUser: async (handlerError, file) => {
             try {
                 const tkn = window.sessionStorage.getItem("tkn");
-                const formDate = new FormData()
-                formDate.append('avatar_file', file)
+                const formData = new FormData()
+                formData.append('avatar_file', file)
 
-                const resp = await resource(`/api/v1/user/avatar_update`, undefined, 'PATCH', tkn, formDate)
+                const resp = await resource(`/api/v1/user/avatar_update`, undefined, 'PATCH', tkn, formData)
                 const data = await resp.json()
                 if (!resp.ok) {
                     handlerError([data.message])
