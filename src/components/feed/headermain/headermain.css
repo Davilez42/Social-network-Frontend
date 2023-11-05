@@ -1,3 +1,84 @@
 .header-main {
-    background-color: rgb(219, 246, 246);
-}
+    font-size: 20px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Satisfy', cursive;
+    font-weight: 900;
+    background-color: rgb(165, 214, 247);
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+  }
+  
+  .nav-list {
+    list-style: none;
+    text-align: end;
+  }
+  
+  .nav-list ul {
+    list-style: none;
+    display: flex;
+  }
+  
+  .nav-list li {
+    display: inline-block;
+    margin-right: 60px;
+  }
+  
+  .nav-list a {
+    text-decoration: none;
+    color: rgb(17, 6, 6);
+    font-size: 20px;
+  }
+  
+  .nav-list a:hover {
+    text-decoration: underline;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+  }
+    .search-input {
+    flex: 1;
+    border: 2px solid #ccc;
+    border-radius: 30px; 
+    padding: 10px 30px; 
+    width: 300px;
+    font-size: 17px;
+    outline: none;
+  }
+  
+  .search-input::placeholder {
+    color: #999;
+  }
+  
+  .search-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+  
+  .search-input {
+    border: 2px solid #ccc;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .search-icon {
+    cursor: pointer;
+    margin-right: 30px;
+  }
+ 
+  .search-icon svg {
+    font-size: 25px;
+    margin-right: 20px;
+    margin-top: 10px;
+  }
+  
