@@ -1,3 +1,65 @@
 .container-navbar-side {
-    background-color: blueviolet;
+  background-color: rgb(109, 207, 224);
+  font-size: 20px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'Satisfy', cursive;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.container-navbar-side h1 {
+  margin: 15px;
+}
+
+.container-navbar-side nav {
+  width: 100%;
+}
+
+.container-navbar-side ul {
+  list-style: none;
+  padding: 10px;
+}
+
+.container-navbar-side li {
+  margin: 10px 30px;
+}
+
+.container-navbar-side a {
+  text-decoration: none;
+  color: rgb(15, 9, 9);
+}
+
+.container-navbar-side a:hover {
+  text-decoration: underline;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #f5f9fb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 45px;
+}
+
+.avatar-content {
+  color: white;
+  /* Color del contenido del avatar */
+  font-size: 24px;
+  /* Tamaño del contenido del avatar */
+}
+
+.nombre-persona {
+  text-align: center;
+
+}
+
+.seccion-perfil {
+  display: flex;
+
+
 }
