@@ -3,20 +3,27 @@ import "./confirmverifiedcode.css";
 import { useState, useEffect } from "react";
 
 import useUser from "../../../hooks/useUser";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function ConfirmVerifiedCode() {
   const { id_user, name } = useParams();
-  const [code, setCode] = useState("");
+  const [code1, setCode1] = useState("");
+  const [code2, setCode2] = useState("");
+  const [code3, setCode3] = useState("");
+  const [code4, setCode4] = useState("");
   const [message, setMessage] = useState("");
-  const { confirmVerifyCode, sendEmailVerified } = useUser();
+  const usenavigate = useNavigate();
+  const { confirmVerifyCode, sendEmailVerified } = useUser(usenavigate);
   const handlerConfirmCode = () => {
-    if (!code) {
-      setMessage("Porfavor ingresa un codio");
+    if ((code1 + code2 + code3 + code4).length !== 4) {
+      setMessage("Porfavor ingresa un codio correcto");
       return;
     }
-    confirmVerifyCode(setMessage, id_user, code);
-    setCode("");
+    confirmVerifyCode(setMessage, id_user, code1 + code2 + code3 + code4);
+    setCode1("");
+    setCode2("");
+    setCode3("");
+    setCode4("");
   };
 
   const handlerSendEmail = () => {
@@ -24,7 +31,7 @@ export default function ConfirmVerifiedCode() {
   };
 
   useEffect(() => {
-    if (code) {
+    if ((code1 + code2 + code3 + code4).length === 4) {
       document.getElementById("input_confirm_code").style =
         "background-color:#1399f3;";
     } else {
@@ -45,7 +52,7 @@ export default function ConfirmVerifiedCode() {
           type="text"
           className="input-field input_digit"
           onChange={(event) => {
-            setCode(code + event.target.value);
+            setCode1(event.target.value);
             //event.target.setAttribute("disabled", "");
             document.getElementById("input_2").focus();
           }}
@@ -55,7 +62,7 @@ export default function ConfirmVerifiedCode() {
           type="text"
           className="input-field input_digit"
           onChange={(event) => {
-            setCode(code + event.target.value);
+            setCode2(event.target.value);
             //event.target.setAttribute("disabled", "");
             document.getElementById("input_3").focus();
           }}
@@ -65,7 +72,7 @@ export default function ConfirmVerifiedCode() {
           id="input_3"
           className="input-field input_digit"
           onChange={(event) => {
-            setCode(code + event.target.value);
+            setCode3(event.target.value);
             //event.target.setAttribute("disabled", "");
             document.getElementById("input_4").focus();
           }}
@@ -75,7 +82,7 @@ export default function ConfirmVerifiedCode() {
           id="input_4"
           className="input-field input_digit"
           onChange={(event) => {
-            setCode(code + event.target.value);
+            setCode4(event.target.value);
             //event.target.setAttribute("disabled", "");
           }}
         />

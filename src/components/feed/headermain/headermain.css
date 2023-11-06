@@ -10,6 +10,11 @@
 
 .title_logo_navbar {
     font-size: 40px;
+    cursor: pointer;
+    padding-left: 20px;
+}
+
+.container_logo_navbar {
     width: 33%;
 }
 
@@ -46,4 +51,14 @@
 
 .item-navbar-list:hover {
     color: rgb(37, 37, 37);
+}
+
+
+@media (max-width: 1000px) {
+
+    .navbar-box,
+    .search-bar {
+        display: none;
+    }
+
 }

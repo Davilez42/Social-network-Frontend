@@ -8,7 +8,11 @@ export default function HeaderMain() {
   return (
     <>
       <header className="header-main">
-        <h1 className="title-main title_logo_navbar">Snapwire</h1>
+        <div className="container_logo_navbar">
+          <NavLink to="/home/feed" className="item">
+            <p className="title-main title_logo_navbar">Snapwire</p>
+          </NavLink>
+        </div>
         <div className="search-bar">
           <input
             type="text"

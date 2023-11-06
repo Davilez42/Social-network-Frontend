@@ -8,33 +8,59 @@
 .container-error {
     position: fixed;
     min-width: min-content;
-    max-width: 800px;
     height: 50px;
     display: flex;
     align-items: center;
     transition: .2s all;
     top: 75%;
-    left: 60%;
-    right: 20px;
+
+    right: 40px;
     margin: 5% auto;
 }
 
 .box-error {
     gap: 50px;
-    width: 100%;
     top: 20px;
-    height: 30px;
+    width: 100%;
+    overflow: hidden;
+    height: 50px;
+    padding-left: 20px;
     margin-top: 20px;
-    padding: 10px 0px;
+    animation-name: deployed_box;
+    animation-duration: .4s;
+
+    display: flex;
+    align-items: center;
     border-radius: 4px;
-    transition: .6s all;
+
     margin-bottom: 15px;
+    background: #1f5aef;
     color: rgb(255, 255, 255);
-    background-color: #3d91ff;
 }
 
-.box-error div {
-    text-align: center;
-    float: left;
-    margin-left: 50px;
+
+
+
+@keyframes deployed_box {
+    0% {
+        color: #00000000;
+
+        width: 0;
+        overflow: hidden;
+    }
+
+    50% {
+        color: #00000000;
+    }
+
+    90% {
+        color: #00000000;
+    }
+
+    100% {
+
+        width: 100%;
+    }
 }
+
+@media (max-width: 1000px) {}

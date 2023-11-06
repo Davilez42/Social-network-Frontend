@@ -3,40 +3,39 @@ import { useEffect } from "react";
 import "./editformprofile.css";
 import { useState } from "react";
 import { useContext } from "react";
-import { UserContext } from "../../../context/userContextRegister";
+import { UserContext } from "../../../context/userContext";
 import useUser from "../../../hooks/useUser";
+import { useNavigate } from "react-router-dom";
+import { PiArrowLeftBold } from "react-icons/pi";
 
 export default function EditFormProfile() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone_number, setPhoneNumber] = useState("");
-  const [fullname, setFullname] = useState("");
-  const [date_born, setDate_born] = useState("");
-  const [url_avatar, setUrlavatar] = useState("");
-  const [avatar, setAvatar] = useState({});
-  const { info, setInfo } = useContext(UserContext);
-  const [user_bio, setUserBio] = useState("");
+  const {
+    setInfo,
+    setUsername,
+    setDate_born,
+    setFullname,
+    setPhoneNumber,
+    setEmail,
+    setUserBio,
+    username,
+    user_bio,
+    url_avatar,
+    date_born,
+    fullname,
+    email,
+    phone_number,
+  } = useContext(UserContext);
+
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [stateUpdateInfo, setStateUpdateInfo] = useState("gray");
   const [stateUpdatePassword, setStateUpdatePassword] = useState("gray");
   const [objectParams, setParams] = useState({});
+  const [avatar, setAvatar] = useState({});
+  const usenavigate = useNavigate();
 
-  const { getInfoUser, updateInfoUser, updatePassword, updateAvatarUser } =
-    useUser();
-
-  useEffect(() => {
-    getInfoUser(
-      setInfo,
-      setUsername,
-      setDate_born,
-      setFullname,
-      setPhoneNumber,
-      setUrlavatar,
-      setEmail,
-      setUserBio
-    );
-  }, []);
+  const { updateInfoUser, updatePassword, updateAvatarUser } =
+    useUser(usenavigate);
 
   const handlerSendData = () => {
     setParams({});
@@ -59,12 +58,18 @@ export default function EditFormProfile() {
   return (
     <>
       <div className="form-edit-profile">
-        <h1>Editar perfil</h1>
+        <div className="header_edit_form">
+          <NavLink className="back" to="/home/profile/view" replace>
+            <PiArrowLeftBold size={30} />
+          </NavLink>
+
+          <h1>Editar perfil</h1>
+        </div>
         <div className="container-avatar">
           <div className="container-image">
             <img
               id="avatar_user"
-              className="img-avatar"
+              className="img-avatar loading"
               loading="lazy"
               src={url_avatar}
               alt=""

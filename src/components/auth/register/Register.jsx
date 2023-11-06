@@ -1,14 +1,15 @@
-import React, { useState, useContext, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import useUser from "../../../hooks/useUser";
-import { GoogleLogin } from "@react-oauth/google";
-function Register({ handlerErrors }) {
+
+export default function Register() {
   const [message, setMessage] = useState("");
   const [nombreUsuario, setUsername] = useState("");
   const [correoElectronico, setCorreoElectronico] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [fullname, setFullname] = useState("");
-  const { registerUser } = useUser();
+  const usenavigate = useNavigate();
+  const { registerUser } = useUser(usenavigate);
   const [telefono, SetTelefono] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
 
@@ -133,5 +134,3 @@ function Register({ handlerErrors }) {
     </>
   );
 }
-
-export default Register;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Navigate, Outlet } from "react-router-dom";
-
+import { UserContextProvider } from "../../context/userContext.js";
 export default function ProtectedRoute() {
   const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
 
@@ -9,8 +9,14 @@ export default function ProtectedRoute() {
   console.log("TOKEN EN SESSION", tkn);
   console.log("cookies", cookies.tkn);
   if (!cookies.tkn && !tkn) {
-    console.log("entra");
     return <Navigate to="/" replace />;
   }
-  return <Outlet />;
+  return (
+    <>
+      {" "}
+      <UserContextProvider>
+        <Outlet />;
+      </UserContextProvider>
+    </>
+  );
 }

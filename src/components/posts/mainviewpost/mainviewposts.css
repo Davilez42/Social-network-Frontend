@@ -1,0 +1,72 @@
+.container-posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar_post_owner {
+    margin: 0;
+    width: 60px;
+    height: 60px;
+}
+
+.description_post {
+    padding-left: 20px;
+    width: 100%;
+}
+
+.card_post {
+    width: 95%;
+    padding-top: 20px;
+    border: 1px solid rgb(208, 208, 208);
+    border-radius: 5px;
+
+}
+
+.info_owner {
+    gap: 20px;
+
+    padding-left: 20px;
+    display: flex;
+    align-items: center
+}
+
+.container_image_post {
+    display: flex;
+    justify-content: center;
+    min-height: max-content;
+    border-bottom: 1px solid rgb(225, 225, 225);
+    padding-bottom: 20px;
+    max-height: 500px;
+}
+
+.image_post {
+    object-fit: cover;
+    width: 60%;
+    border-radius: 5px;
+}
+
+.list_options_post {
+    float: right;
+}
+
+.option {
+    height: 60px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.info_post_options {
+    padding-left: 30px;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+@media (max-width: 1000px) {
+    .card_post {
+        width: 100%;
+    }
+}

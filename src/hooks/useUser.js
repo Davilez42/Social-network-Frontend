@@ -1,8 +1,7 @@
 
-import { useNavigate } from "react-router-dom"
+
 import { useCookies } from "react-cookie"
-export default function useUser() {
-    const usenavigate = useNavigate()
+export default function useUser(usenavigate) {
     const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
 
     const logout = () => {
@@ -24,7 +23,7 @@ export default function useUser() {
             },
             body: body ? JSON.stringify(body) : formData
         })
-        if ([404, 401, 403].includes(resp.status)) logout()
+        if ([404, 401, 403].includes(resp.status)) { logout() }
         return resp
     }
 
@@ -65,6 +64,7 @@ export default function useUser() {
         getInfoUser: async (handlerError, setUsername, setDate_born, setFullname, setPhoneNumber, setUrlavatar, setEmail, setUserBio) => {
             try {
                 const tkn = window.sessionStorage.getItem("tkn");
+                console.log('PETICION GETINFO', tkn);
                 const resp = await resource(`/api/v1/user/getInfo`, undefined, 'POST', tkn)
                 const data = await resp.json()
                 if (resp.ok) {
@@ -73,7 +73,7 @@ export default function useUser() {
                     setPhoneNumber(data.phone_number)
                     setDate_born(data.date_born)
                     setUsername(data.username)
-                    setDate_born(data.data_born)
+                    setDate_born(data.date_born.split('T')[0])
                     setUrlavatar(data.url_avatar)
                     setEmail(data.email)
                     setUserBio(data.user_bio)

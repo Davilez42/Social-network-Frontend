@@ -1,65 +1,90 @@
 .container-navbar-side {
-  background-color: rgb(109, 207, 224);
-  font-size: 20px;
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-family: 'Satisfy', cursive;
-  font-weight: 900;
+  width: 25%;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 5px;
+  padding-bottom: 30px;
+  font-family: 'Lato', sans-serif;
 }
 
-.container-navbar-side h1 {
-  margin: 15px;
-}
+.container_side_avatar {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
-.container-navbar-side nav {
-  width: 100%;
-}
-
-.container-navbar-side ul {
-  list-style: none;
-  padding: 10px;
-}
-
-.container-navbar-side li {
-  margin: 10px 30px;
-}
-
-.container-navbar-side a {
-  text-decoration: none;
-  color: rgb(15, 9, 9);
-}
-
-.container-navbar-side a:hover {
-  text-decoration: underline;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  cursor: pointer;
   border-radius: 50%;
-  background-color: #f5f9fb;
+  border: 6px solid rgb(224, 224, 224);
   display: flex;
   align-items: center;
+  margin-top: 40px;
   justify-content: center;
-  margin-left: 45px;
 }
 
-.avatar-content {
-  color: white;
-  /* Color del contenido del avatar */
-  font-size: 24px;
-  /* Tamaño del contenido del avatar */
+.title_name {
+  font-weight: 900;
+  font-size: 22px;
+  margin: 0;
+  text-transform: lowercase;
+  color: #515151;
 }
 
-.nombre-persona {
+.title_username {
+  margin: 0;
+  color: #949494;
+}
+
+.container_alias {
   text-align: center;
-
+  margin: 30px 0;
 }
 
-.seccion-perfil {
+.info_perfil {
   display: flex;
+  justify-content: center;
+  gap: 20px;
+  color: rgb(182, 182, 182);
+  text-align: center;
+}
+
+.item,
+.item_list_main {
+  margin: 0;
+  color: #424242;
+  font-size: medium;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.list-items-main {
+  margin-top: 30px;
+  display: flex;
+  padding-left: 22%;
+  color: #424242;
+  flex-direction: column;
+}
+
+.icon {
+  color: #424242;
+}
+
+.item_list_main {
+  display: flex;
+  gap: 13px;
+  color: #7f7f7f;
+  align-items: center;
+}
 
 
+@media (max-width: 800px) {
+  .container-navbar-side {
+    display: none;
+  }
 }

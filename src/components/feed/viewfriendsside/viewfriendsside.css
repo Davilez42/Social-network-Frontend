@@ -1,0 +1,42 @@
+.container-view-friends {
+    width: 13%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    gap: 4px;
+    height: 600px;
+    border: 1px solid rgb(225, 225, 225);
+    justify-content: center;
+
+}
+
+.avatar_friend {
+    width: 70px;
+    margin: 0;
+    height: 70px;
+}
+
+.card_friend {
+    display: flex;
+    width: 100px;
+
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+@media (max-width: 1250px) {
+    .container-view-friends {
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        height: 100px;
+    }
+
+    .card_friend p {
+        display: none;
+    }
+}

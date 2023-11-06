@@ -1,13 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import useUser from "../../../hooks/useUser";
 import { GoogleLogin } from "@react-oauth/google";
-
+import { useNavigate } from "react-router-dom";
 function Login() {
   const [correoElectronico, setCorreoElectronico] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [message, setMessage] = useState("");
-  const { userLogin, userLoginWithGoogle } = useUser();
+  const usenavigate = useNavigate();
+  const { userLogin, userLoginWithGoogle } = useUser(usenavigate);
 
   const handlerLogin = () => {
     if (correoElectronico.trim() !== "" && contrasena.trim() !== "") {

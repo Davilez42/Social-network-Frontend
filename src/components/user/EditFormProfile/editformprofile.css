@@ -17,6 +17,18 @@
     height: 25px;
 }
 
+.header_edit_form {
+    width: 100%;
+    text-align: center;
+}
+
+.back {
+    color: black;
+    left: 450px;
+    top: 100px;
+    position: absolute;
+}
+
 .form-edit-profile input {
     border: 1px solid rgb(206, 206, 206);
 }
@@ -46,6 +58,7 @@
     width: 80px;
     height: 80px;
     object-fit: cover;
+    border: 6px solid rgb(224, 224, 224);
     border-radius: 100px;
     background-color: rgb(122, 122, 122);
 }

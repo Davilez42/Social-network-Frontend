@@ -1,0 +1,74 @@
+[
+    {
+        "id_user": "1",
+        "url_image": "https://images.unsplash.com/photo-1694428348190-4b84337af29c?auto=format&fit=crop&q=80&w=1527&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "likes": "10",
+        "id_post": "1",
+        "url_avatar_autor": "https://images.unsplash.com/photo-1652519728126-18439b8560da?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D",
+        "username_owner": "John Doe"
+    },
+    {
+        "id_user": "2",
+        "url_image": "https://images.unsplash.com/photo-1694428348190-4b84337af29c?auto=format&fit=crop&q=80&w=1527&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "text": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem.",
+        "likes": "15",
+        "id_post": "2",
+        "url_avatar_autor": "https://images.unsplash.com/photo-1652519728126-18439b8560da?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D",
+        "username_owner": "Jane Smith"
+    },
+    {
+        "id_user": "3",
+        "url_image": "https://images.unsplash.com/photo-1694428348190-4b84337af29c?auto=format&fit=crop&q=80&w=1527&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "text": "At vero eos et accusamus et iusto odio dignissimos ducimus.",
+        "likes": "20",
+        "id_post": "3",
+        "url_avatar_autor": "https://images.unsplash.com/photo-1652519728126-18439b8560da?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D",
+        "username_owner": "David Johnson"
+    },
+    {
+        "id_user": "4",
+        "url_image": "https://images.unsplash.com/photo-1694428348190-4b84337af29c?auto=format&fit=crop&q=80&w=1527&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "text": "Eaque ipsa quae ab illo inventore veritatis et quasi architecto.",
+        "likes": "8",
+        "id_post": "4",
+        "url_avatar_autor": "https://images.unsplash.com/photo-1652519728126-18439b8560da?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D",
+        "username_owner": "Emily Wilson"
+    },
+    {
+        "id_user": "5",
+        "url_image": "https://images.unsplash.com/photo-1694428348190-4b84337af29c?auto=format&fit=crop&q=80&w=1527&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "text": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut.",
+        "likes": "12",
+        "id_post": "5",
+        "url_avatar_autor": "https://images.unsplash.com/photo-1652519728126-18439b8560da?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D",
+        "username_owner": "Michael Brown"
+    },
+    {
+        "id_user": "6",
+        "url_image": "https://images.unsplash.com/photo-1694428348190-4b84337af29c?auto=format&fit=crop&q=80&w=1527&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "text": "Sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "likes": "18",
+        "id_post": "6",
+        "url_avatar_autor": "https://images.unsplash.com/photo-1652519728126-18439b8560da?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D",
+        "username_owner": "Olivia Davis"
+    },
+    {
+        "id_user": "7",
+        "url_image": "https://images.unsplash.com/photo-1694428348190-4b84337af29c?auto=format&fit=crop&q=80&w=1527&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "text": "Ut enim ad minima veniam, quis nostrum exercitationem ullam.",
+        "likes": "5",
+        "id_post": "7",
+        "url_avatar_autor": "https://images.unsplash.com/photo-1652519728126-18439b8560da?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D",
+        "username_owner": "Sophia Wilson"
+    },
+    {
+        "id_user": "8",
+        "url_image": "https://images.unsplash.com/photo-1694428348190-4b84337af29c?auto=format&fit=crop&q=80&w=1527&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "text": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse.",
+        "likes": "9",
+        "id_post": "8",
+        "url_avatar_autor": "https://images.unsplash.com/photo-1652519728126-18439b8560da?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D",
+        "username_owner": "Liam Johnson"
+    }
+]
