@@ -1,11 +1,5 @@
 import React, { useContext } from "react";
-import {
-  FaUser,
-  FaUsers,
-  FaEnvelope,
-  FaHandshake,
-  FaCog,
-} from "react-icons/fa";
+import { FaUser, FaEnvelope, FaHandshake, FaCog } from "react-icons/fa";
 import "./navbarside.css";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../../../context/userContext";

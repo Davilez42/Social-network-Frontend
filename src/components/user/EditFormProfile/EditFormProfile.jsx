@@ -1,5 +1,4 @@
-import { NavLink, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import "./editformprofile.css";
 import { useState } from "react";
 import { useContext } from "react";

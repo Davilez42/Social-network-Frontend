@@ -3,7 +3,7 @@
     display: flex;
     width: 100%;
     margin-bottom: 15px;
-    border-bottom: 1px solid rgb(227, 227, 227);
+    border-bottom: 1px solid rgb(252, 252, 252);
     flex-wrap: wrap;
     align-items: center;
 }
@@ -59,6 +59,10 @@
     .navbar-box,
     .search-bar {
         display: none;
+
     }
 
+    .header-main {
+        margin-bottom: 0;
+    }
 }

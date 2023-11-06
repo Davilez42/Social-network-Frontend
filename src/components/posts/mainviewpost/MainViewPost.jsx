@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-
-import posts_db from "../posts_db.json";
 import { AiTwotoneHeart } from "react-icons/ai";
 import "./mainviewposts.css";
 import {
@@ -8,14 +6,24 @@ import {
   BiCommentDetail,
   BiDotsHorizontalRounded,
 } from "react-icons/bi";
-export default function MainViewPost() {
-  const [posts, setPosts] = useState(posts_db);
+import ViewComments from "../viewcomments/ViewComments.jsx";
+
+export default function MainViewPost({ posts }) {
+  const [stateComments, setStateComments] = useState(false);
+  const [postSelect, setPostSelect] = useState();
 
   const handlerLike = (id_post) => {
+    console.log(stateComments);
     console.log("LIKE POST ", id_post);
   };
+
   return (
     <>
+      {stateComments ? (
+        <ViewComments id_post={postSelect} handlerClose={setStateComments} />
+      ) : (
+        <></>
+      )}
       <div className="container-posts">
         {posts.map((post, ind) => (
           <div className="card_post">
@@ -57,7 +65,14 @@ export default function MainViewPost() {
                 <p>{post.likes}</p>
               </div>
               <div>
-                <BiCommentDetail className="option" size={30} />
+                <BiCommentDetail
+                  className="option"
+                  onClick={() => {
+                    setPostSelect(post.id_post);
+                    setStateComments(true);
+                  }}
+                  size={30}
+                />
               </div>
             </div>
           </div>

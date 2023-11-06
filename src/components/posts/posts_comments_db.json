@@ -1,0 +1,128 @@
+[
+    {
+        "id_comment": "1",
+        "id_author": "1",
+        "text": "This is a test comment.",
+        "date_creation": "2022-01-01",
+        "id_post": "1",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "John Doe"
+    },
+    {
+        "id_comment": "2",
+        "id_author": "2",
+        "text": "Another comment.",
+        "date_creation": "2022-01-02",
+        "id_post": "1",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Jane Smith"
+    },
+    {
+        "id_comment": "3",
+        "id_author": "3",
+        "text": "A random comment.",
+        "date_creation": "2022-01-03",
+        "id_post": "2",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Robert Johnson"
+    },
+    {
+        "id_comment": "4",
+        "id_author": "4",
+        "text": "Yet another comment.",
+        "date_creation": "2022-01-04",
+        "id_post": "2",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Emily Davis"
+    },
+    {
+        "id_comment": "5",
+        "id_author": "5",
+        "text": "A small comment.",
+        "date_creation": "2022-01-05",
+        "id_post": "3",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Michael Wilson"
+    },
+    {
+        "id_comment": "6",
+        "id_author": "6",
+        "text": "A large comment.",
+        "date_creation": "2022-01-06",
+        "id_post": "3",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Olivia Taylor"
+    },
+    {
+        "id_comment": "7",
+        "id_author": "7",
+        "text": "Some random comment.",
+        "date_creation": "2022-01-07",
+        "id_post": "4",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "William Anderson"
+    },
+    {
+        "id_comment": "8",
+        "id_author": "8",
+        "text": "Just a comment.",
+        "date_creation": "2022-01-08",
+        "id_post": "4",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Sophia Martinez"
+    },
+    {
+        "id_comment": "9",
+        "id_author": "9",
+        "text": "Another random comment.",
+        "date_creation": "2022-01-09",
+        "id_post": "5",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "James Thompson"
+    },
+    {
+        "id_comment": "10",
+        "id_author": "10",
+        "text": "A test comment.",
+        "date_creation": "2022-01-10",
+        "id_post": "5",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Lily Hernandez"
+    },
+    {
+        "id_comment": "11",
+        "id_author": "11",
+        "text": "Comment for testing.",
+        "date_creation": "2022-01-11",
+        "id_post": "6",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Benjamin Adams"
+    },
+    {
+        "id_comment": "12",
+        "id_author": "12",
+        "text": "Another test comment.",
+        "date_creation": "2022-01-12",
+        "id_post": "6",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Chloe Wilson"
+    },
+    {
+        "id_comment": "13",
+        "id_author": "13",
+        "text": "Random comment for testing.",
+        "date_creation": "2022-01-13",
+        "id_post": "7",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Daniel Brown"
+    },
+    {
+        "id_comment": "14",
+        "id_author": "14",
+        "text": "Test comment.",
+        "date_creation": "2022-01-14",
+        "id_post": "7",
+        "url_avatar_author": "https://www.mundopsicologos.com/site/article/60606/50895/las-10-cualidades-de-una-persona-mas-valoradas-0_ai1.jpg",
+        "username": "Mia Davis"
+    }
+]

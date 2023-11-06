@@ -1,6 +1,7 @@
 .container-navbar-side {
   width: 25%;
   display: flex;
+  max-height: 70vh;
   flex-direction: column;
   border: 1px solid rgb(225, 225, 225);
   border-radius: 5px;
