@@ -32,7 +32,7 @@ export default function ViewComments({ id_post, handlerClose }) {
       <div className="container_view_comments">
         <div className="header_comments">
           <PiArrowLeftBold
-            className="back"
+            className="back_feed_main"
             onClick={() => {
               handlerClose(false);
             }}
@@ -42,9 +42,9 @@ export default function ViewComments({ id_post, handlerClose }) {
         </div>
 
         <div className="container_comments">
-          {comments.length != 0 ? (
+          {comments.length !== 0 ? (
             comments.map((comment, ind) => (
-              <div className="card_comment">
+              <div key={ind} className="card_comment">
                 <div className="container_avatar_owner">
                   <img
                     src={comment.url_avatar_author}

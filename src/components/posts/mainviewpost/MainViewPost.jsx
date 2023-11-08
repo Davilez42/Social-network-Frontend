@@ -20,13 +20,17 @@ export default function MainViewPost({ posts }) {
   return (
     <>
       {stateComments ? (
-        <ViewComments id_post={postSelect} handlerClose={setStateComments} />
+        <ViewComments
+          key={501}
+          id_post={postSelect}
+          handlerClose={setStateComments}
+        />
       ) : (
         <></>
       )}
       <div className="container-posts">
         {posts.map((post, ind) => (
-          <div className="card_post">
+          <div key={ind} className="card_post">
             <div className="info_owner">
               <img
                 loading="lazy"
@@ -52,12 +56,14 @@ export default function MainViewPost({ posts }) {
               <div className="option">
                 {false ? (
                   <AiTwotoneHeart
+                    key={503}
                     onClick={() => handlerLike(post.id_post)}
                     size={30}
                     color="red"
                   />
                 ) : (
                   <BiHeart
+                    key={504}
                     onClick={() => handlerLike(post.id_post)}
                     size={30}
                   />

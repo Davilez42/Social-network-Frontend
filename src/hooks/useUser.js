@@ -177,6 +177,34 @@ export default function useUser(usenavigate) {
             } catch (error) {
 
             }
+        },
+        restorePassword: async (handlerError, accesToken, password) => {
+            try {
+                console.log(accesToken, password);
+                const resp = await resource(`/api/v1/user/restore_password`, { password }, 'POST', accesToken)
+                const data = await resp.json()
+                if (!resp.ok) {
+                    handlerError([data.message])
+                    return
+                }
+                usenavigate('/login')
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        sendEmailPaswordRecovery: async (handlerError, email) => {
+            try {
+                const resp = await resource(`/api/v1/user/sendEmail_recoveryPassword`, { email }, 'POST')
+                const data = await resp.json()
+                if (!resp.ok) {
+                    handlerError([data.message])
+                    return
+                }
+            } catch (error) {
+                console.log(error);
+            }
+
         }
     }
 

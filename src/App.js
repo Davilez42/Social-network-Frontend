@@ -43,7 +43,7 @@ const routes = createBrowserRouter([
             element: <RestorePassword />
           },
           {
-            path: '/createNewPassword',
+            path: '/createNewPassword/:accesToken',
             element: <CreateNewPasswordReset />
           }
         ]
@@ -86,13 +86,11 @@ const routes = createBrowserRouter([
 ])
 function App() {
   return <>
-    <React.StrictMode>
-      <CookiesProvider defaultSetOptions={{ path: "/" }}>
-        <GoogleOAuthProvider clientId="850844004503-ij5nnakoum3lr6tnetu1up7ost42pqi6.apps.googleusercontent.com">
-          <RouterProvider router={routes} />
-        </GoogleOAuthProvider>
-      </CookiesProvider>
-    </React.StrictMode>
+    <CookiesProvider defaultSetOptions={{ path: "/" }}>
+      <GoogleOAuthProvider clientId="850844004503-ij5nnakoum3lr6tnetu1up7ost42pqi6.apps.googleusercontent.com">
+        <RouterProvider router={routes} />
+      </GoogleOAuthProvider>
+    </CookiesProvider>
   </>
 }
 

@@ -2,7 +2,9 @@
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
+    height: 87vh;
     justify-content: center;
+    overflow-y: auto;
 }
 
 .container-error {

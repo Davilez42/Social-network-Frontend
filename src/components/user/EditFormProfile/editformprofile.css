@@ -24,9 +24,8 @@
 
 .back {
     color: black;
-    left: 450px;
-    top: 100px;
-    position: absolute;
+    position: relative;
+    float: left;
 }
 
 .form-edit-profile input {

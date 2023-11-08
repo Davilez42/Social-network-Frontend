@@ -43,10 +43,6 @@ export default function NavBarSide() {
           <FaEnvelope className="icon" size={18} /> <p>Mensajes</p>
         </NavLink>
 
-        <NavLink className="item_list_main" href="/grupos">
-          <FaHandshake className="icon" size={18} /> <p>Grupos</p>
-        </NavLink>
-
         <NavLink className="item_list_main" href="/configuracion">
           <FaCog className="icon" size={18} /> <p>Configuracion</p>
         </NavLink>

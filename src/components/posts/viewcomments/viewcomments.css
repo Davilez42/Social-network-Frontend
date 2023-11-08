@@ -18,12 +18,16 @@
 }
 
 .header_comments {
-    display: flex;
-    width: 100%;
+    width: 90%;
     color: rgb(104, 104, 104);
-    align-items: center;
+    text-align: center;
+    margin-top: 10px;
     height: 6%;
-    justify-content: center;
+}
+
+.back_feed_main {
+    color: black;
+    float: left;
 }
 
 .back {

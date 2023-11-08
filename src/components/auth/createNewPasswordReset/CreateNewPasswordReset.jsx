@@ -1,12 +1,24 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
+import useUser from "../../../hooks/useUser";
 function CreateNewPasswordReset() {
-  const [correoElectronico, setCorreoElectronico] = useState("");
+  const { accesToken } = useParams();
+  const navigate = useNavigate();
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const { restorePassword } = useUser(navigate);
 
   const handlePassword = () => {
-    const data = {
-      correoElectronico,
-    };
+    if (
+      newPassword.trim() !== "" &&
+      confirmPassword.trim() !== "" &&
+      confirmPassword === newPassword
+    ) {
+      restorePassword(setMessage, accesToken, newPassword);
+    } else {
+      setMessage("Las contraseña no son iguales");
+    }
   };
 
   return (
@@ -23,17 +35,17 @@ function CreateNewPasswordReset() {
         type="password"
         className="input-field"
         placeholder="Nueva contraseña"
-        value={correoElectronico}
-        onChange={(e) => setCorreoElectronico(e.target.value)}
+        value={newPassword}
+        onChange={(e) => setNewPassword(e.target.value)}
       />
       <input
         type="password"
         className="input-field"
         placeholder="Confirmar contraseña"
-        value={correoElectronico}
-        onChange={(e) => setCorreoElectronico(e.target.value)}
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
       />
-
+      <div className="info-text">{message}</div>
       <button className="button" onClick={handlePassword}>
         Cambiar
       </button>

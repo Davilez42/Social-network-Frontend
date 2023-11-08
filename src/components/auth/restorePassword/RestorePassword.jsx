@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import useUser from "../../../hooks/useUser";
 function RestorePassword() {
   const [correoElectronico, setCorreoElectronico] = useState("");
+  const { sendEmailPaswordRecovery } = useUser();
+  const [message, setMessage] = useState("");
   const [seconds, setSeconds] = useState(30);
   let cont = 30;
 
@@ -23,8 +26,13 @@ function RestorePassword() {
   };
 
   const handlePassword = () => {
-    if (seconds === 30) {
-      setjsnterval();
+    if (correoElectronico.trim() !== "") {
+      if (seconds === 30) {
+        sendEmailPaswordRecovery(setMessage, correoElectronico);
+        setjsnterval();
+      }
+    } else {
+      setMessage(["Por favor ingrese un correo electronico"]);
     }
   };
   useEffect(() => {}, []);
@@ -50,6 +58,7 @@ function RestorePassword() {
       <div className="box-info">
         no te ha llegado un correo ? lo puedes reenviar en: <b>{seconds}</b>
       </div>
+      <div className="info-text">{message}</div>
       <button
         id="button-send-email"
         className="button"

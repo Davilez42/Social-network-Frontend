@@ -66,8 +66,11 @@ export function UserContextProvider(props) {
     const [numberPosts, setNumberPosts] = useState(0)
     const [friends, setFriends] = useState(friends_test)
 
+
+
     useEffect(() => {
         console.log('entra al context', window.sessionStorage.getItem('tkn'));
+
         getInfoUser(
             setInfo,
             setUsername,

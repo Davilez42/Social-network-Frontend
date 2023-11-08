@@ -8,8 +8,11 @@ export default function ProtectedRoute() {
   const tkn = window.sessionStorage.getItem("tkn");
   console.log("TOKEN EN SESSION", tkn);
   console.log("cookies", cookies.tkn);
-  if (!cookies.tkn && !tkn) {
-    return <Navigate to="/" replace />;
+
+  useEffect(() => {}, []);
+  //!cookies.tkn && !tkn
+  if (false) {
+    return <Navigate to="/login" replace />;
   }
   return (
     <>

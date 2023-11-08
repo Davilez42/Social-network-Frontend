@@ -233,10 +233,6 @@ export default function EditFormProfile() {
             >
               Actualizar
             </button>
-
-            <p id="button_delete_account" onClick={() => {}}>
-              Eliminar Cuenta
-            </p>
           </div>
         </div>
       </div>
