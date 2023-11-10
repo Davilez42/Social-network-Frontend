@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    width: 100%;
 }
 
 .avatar_post_owner {
@@ -16,6 +17,10 @@
     width: 100%;
 }
 
+.list_options_post {
+    cursor: pointer;
+}
+
 .card_post {
     width: 95%;
     padding-top: 20px;
@@ -25,25 +30,41 @@
 
 .info_owner {
     gap: 20px;
-
     padding-left: 20px;
     display: flex;
     align-items: center
 }
 
-.container_image_post {
+.container_media_post {
     display: flex;
-    justify-content: center;
     min-height: max-content;
+    justify-content: center;
     border-bottom: 1px solid rgb(225, 225, 225);
     padding-bottom: 20px;
     max-height: 500px;
 }
 
-.image_post {
-    object-fit: cover;
-    width: 60%;
-    border-radius: 5px;
+.preview_media {
+    width: 600px;
+    display: flex;
+    gap: 10px;
+    overflow-y: hidden;
+    overflow-x: auto;
+
+    padding: 5px;
+}
+
+.image_media,
+.video_media {
+    min-width: 350px;
+    max-width: 520px;
+    min-height: 400px;
+    max-height: 500px;
+    border-radius: 10px;
+}
+
+.image_media {
+    border: 1px solid rgb(215, 215, 215);
 }
 
 .list_options_post {

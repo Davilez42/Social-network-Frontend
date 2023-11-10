@@ -31,8 +31,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(75, 123, 255);
+    background-color: rgb(75, 171, 255);
     cursor: pointer;
+}
+
+.button_edit_profile:hover {
+    background-color: rgb(30, 150, 255);
 }
 
 .container_data_user {
@@ -57,4 +61,56 @@
 .title_fullname {
     font-size: 35px;
     font-weight: 900;
+}
+
+
+@media (max-width: 950px) {
+    .container_view_profile {
+        width: 70%;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+    .container_view_profile {
+        width: 100%;
+    }
+
+    .view_perfil {
+        margin-top: 19px;
+        flex-wrap: wrap;
+        justify-content: none;
+        gap: 30px;
+    }
+
+    .container_avatar {
+        width: 40%;
+
+    }
+
+    .avatar_profile {
+        width: 90px;
+        height: 90px;
+    }
+
+
+}
+
+@media (max-width: 450px) {
+
+
+    .view_perfil {
+        margin-top: 19px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        justify-content: none;
+        gap: 20px;
+    }
+
+    .button_edit_profile {
+        width: 80px;
+    }
+
+
 }

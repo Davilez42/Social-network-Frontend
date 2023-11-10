@@ -2,39 +2,48 @@ import "./viewprofile.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import MainViewPost from "../../posts/mainviewpost/MainViewPost";
 import usePost from "../../../hooks/usePost";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../../context/userContext";
+
 export default function ViewProfile() {
-  const { getPosts } = usePost();
-  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
-  //  <NavLink to="/home/profile/edit">Editar perfil</NavLink>
+  const { getPosts } = usePost(navigate);
+  const [posts, setPosts] = useState([]);
+
+  const {
+    setInfo,
+    id_user,
+    fullname,
+    username,
+    user_bio,
+    url_avatar,
+    numberFriends,
+    numberPosts,
+  } = useContext(UserContext);
 
   useEffect(() => {
-    getPosts(setPosts);
-  });
+    if (!id_user) return;
+    getPosts(setInfo, setPosts, id_user);
+  }, [id_user]);
 
   return (
     <>
       <div className="container_view_profile">
         <div className="container_data_user">
           <div className="container_avatar">
-            <img
-              className="avatar avatar_profile"
-              src="https://media.istockphoto.com/id/1360028830/es/foto/mujer-joven-sonriendo-y-haciendo-gestos-para-copiar-el-espacio.jpg?s=612x612&w=0&k=20&c=6dOb0XPJ7pOnhki5XzV6D_m0PXOrDK0hfp0XSvXVfgo="
-              alt=""
-            />
+            <img className="avatar avatar_profile" src={url_avatar} alt="" />
           </div>
           <div className="container_info">
-            <div className="title_fullname">Jose David Suarez Cardona</div>
-            <div className="title_username">@DavidSuarez</div>
+            <div className="title_fullname">{fullname}</div>
+            <div className="title_username">@{username}</div>
 
             <div className="info_perfil view_perfil">
               <div>
-                <p className="item">{23}</p>
+                <p className="item">{numberPosts}</p>
                 Publicaciones
               </div>
               <div>
-                <p className="item">{343}</p>
+                <p className="item">{numberFriends}</p>
                 Amigos
               </div>
 
@@ -47,13 +56,11 @@ export default function ViewProfile() {
               </NavLink>
             </div>
 
-            <div>
-              Soy una señora que tiene ni puta idea del por que estoy aqui
-            </div>
+            <div>{user_bio}</div>
           </div>
         </div>
         <div className="container_self_posts">
-          <MainViewPost posts={posts} />
+          <MainViewPost posts={posts} info_author={false} />
         </div>
       </div>
     </>

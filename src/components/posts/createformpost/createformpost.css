@@ -19,6 +19,10 @@
 
 }
 
+.butto_send_post {
+    cursor: pointer;
+}
+
 .container_data {
     width: 80%;
     display: flex;
@@ -29,7 +33,8 @@
 }
 
 .input_image_post {
-    width: 140px;
+    width: 130px;
+    padding: 0px;
 }
 
 

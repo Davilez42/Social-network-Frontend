@@ -1,27 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./createformpost.css";
 import { BiNavigation } from "react-icons/bi";
 import usePost from "../../../hooks/usePost";
-export default function CreateFormPosts() {
-  const { sendPost } = usePost();
-  const [images, setImage] = useState([]);
-  const [text, setText] = useState("");
-  const [stateContainerPost, setStateContainerPost] = useState("none");
+import { useContext } from "react";
+import { UserContext } from "../../../context/userContext";
+import { useNavigate } from "react-router-dom";
 
-  const handlerSendPost = () => {
-    sendPost({
-      id_user: "1",
-      url_image:
-        "https://images.unsplash.com/photo-1694428348190-4b84337af29c?auto=format&fit=crop&q=80&w=1527&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      text,
-      likes: 1923,
-      id_post: 1,
-      url_avatar_autor:
-        "https://images.unsplash.com/photo-1652519728126-18439b8560da?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D",
-      username_owner: "davielzzzz",
-    });
+export default function CreateFormPosts() {
+  const usenavigate = useNavigate();
+  const { sendPost } = usePost(usenavigate);
+  const [urlPreviewMedia, setUrlPreviewMedia] = useState([]);
+  const [text, setText] = useState("");
+  const [stateContainerPost, setStateContainerPost] = useState("none"); //variable bandera para desplegar vista de preview
+  const { setInfo, setReload } = useContext(UserContext);
+  const [mediaFiles, setMediaFiles] = useState([]);
+
+  const clearForm = () => {
+    setMediaFiles([]);
+    setUrlPreviewMedia([]);
+    setText("");
+    setReload(true);
+    setStateContainerPost("none");
   };
 
+  const handlerSendPost = () => {
+    if (text.trim() !== "" || mediaFiles.length !== 0) {
+      sendPost(setInfo, text, mediaFiles, clearForm);
+    } else {
+      setInfo(["Debes de ingresar un texto o subir un archivo"]);
+    }
+  };
+
+  useEffect(() => {}, [text]);
   return (
     <>
       <div className="container-form-create-post">
@@ -31,11 +41,16 @@ export default function CreateFormPosts() {
             type="text"
             className="input-field input_text_post"
             placeholder="Publica algo aqui...."
+            value={text}
             onChange={(event) => {
               setText(event.target.value);
             }}
           />
-          <BiNavigation size={30} onClick={handlerSendPost} />
+          <BiNavigation
+            className="butto_send_post"
+            size={30}
+            onClick={handlerSendPost}
+          />
         </div>
         <div className="container_inputs_file_post ">
           <label
@@ -50,17 +65,53 @@ export default function CreateFormPosts() {
             className="input-field input-file"
             onChange={(event) => {
               const file = event.target.files[0];
+              //VERIFICO EL TYPO DE ARCHIVO
+              const type = file.type.split("/");
+              if (type[0] !== "image" && type[0] !== "video") {
+                setInfo([
+                  "Solo debes de subir archivos formato imagen o video",
+                ]);
+                return;
+              }
+              setUrlPreviewMedia([
+                ...urlPreviewMedia,
+                {
+                  url_preview: URL.createObjectURL(file),
+                  type: type[0],
+                },
+              ]);
               setStateContainerPost("");
-              setImage([...images, URL.createObjectURL(file)]);
+              setMediaFiles([...mediaFiles, file]);
             }}
           />
           <div
             className="container_images_posts"
             style={{ display: stateContainerPost }}
           >
-            {images.map((image, ind) => (
-              <img key={ind} className="image_post_upload" src={image} alt="" />
-            ))}
+            {urlPreviewMedia.map((media, ind) => {
+              if (media.type === "video") {
+                return (
+                  <video
+                    loading="lazy"
+                    key={ind}
+                    src={media.url_preview}
+                    controls
+                    className="image_post_upload"
+                  />
+                );
+              }
+              if (media.type === "image") {
+                return (
+                  <img
+                    key={ind}
+                    loading="lazy"
+                    src={media.url_preview}
+                    className="image_post_upload"
+                    alt=""
+                  />
+                );
+              }
+            })}
           </div>
         </div>
       </div>

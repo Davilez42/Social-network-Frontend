@@ -10,8 +10,8 @@ export default function ProtectedRoute() {
   console.log("cookies", cookies.tkn);
 
   useEffect(() => {}, []);
-  //!cookies.tkn && !tkn
-  if (false) {
+
+  if (!cookies.tkn && !tkn) {
     return <Navigate to="/login" replace />;
   }
   return (

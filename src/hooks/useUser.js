@@ -1,32 +1,12 @@
-
-
-import { useCookies } from "react-cookie"
+import { useCookies } from "react-cookie";
+import resource from "../services/source";
 export default function useUser(usenavigate) {
     const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
-
     const logout = () => {
         removeCookie('tkn')
         window.sessionStorage.removeItem('tkn')
         usenavigate('/login')
     }
-
-    const resource = async (route, body, method = 'POST', tkn, formData) => {
-        const url = 'https://nt4mmhp7-8000.use2.devtunnels.ms'
-        const contenttype = body ? { "Content-type": "application/json" } : null
-        const resp = await fetch(url + route, {
-            method,
-            mode: 'cors',
-            credentials: 'include',
-            headers: {
-                ...contenttype,
-                "auth": `Bearer token:${tkn} `
-            },
-            body: body ? JSON.stringify(body) : formData
-        })
-        if ([404, 401, 403].includes(resp.status)) { logout() }
-        return resp
-    }
-
     return {
         registerUser: async (handlerError, username, password, fullname, date_born, email, phone_number) => {
             try {
@@ -43,6 +23,7 @@ export default function useUser(usenavigate) {
 
             } catch (error) {
                 handlerError([error.message])
+
             }
         },
         confirmVerifyCode: async (handlerError, id_user, code_verify) => {
@@ -61,7 +42,7 @@ export default function useUser(usenavigate) {
             }
         }
         ,
-        getInfoUser: async (handlerError, setUsername, setDate_born, setFullname, setPhoneNumber, setUrlavatar, setEmail, setUserBio) => {
+        getInfoUser: async (handlerError, setUsername, setDate_born, setFullname, setPhoneNumber, setUrlavatar, setEmail, setUserBio, setIdUser) => {
             try {
                 const tkn = window.sessionStorage.getItem("tkn");
                 console.log('PETICION GETINFO', tkn);
@@ -77,11 +58,13 @@ export default function useUser(usenavigate) {
                     setUrlavatar(data.url_avatar)
                     setEmail(data.email)
                     setUserBio(data.user_bio)
+                    setIdUser(data.id_user)
                 } else {
                     handlerError([data.message])
                 }
             } catch (error) {
                 handlerError([error.message])
+                logout()
             }
         },
         userLogin: async (handlerError, email, password) => {
@@ -144,20 +127,26 @@ export default function useUser(usenavigate) {
                 handlerError(['Se han actualizado tus dato '])
                 usenavigate(`/home/profile/edit`)
             } catch (error) {
-                handlerError([error.message])
+                console.log(error.message);
+                logout()
             }
         },
         updatePassword: async (handlerError, old_password, new_password) => {
-            console.log(old_password, new_password);
-            const tkn = window.sessionStorage.getItem("tkn");
-            const resp = await resource(`/api/v1/user/password_update`, { old_password, new_password }, 'POST', tkn)
-            const data = await resp.json()
-            if (!resp.ok) {
-                handlerError([data.message])
-                return
+            try {
+                console.log(old_password, new_password);
+                const tkn = window.sessionStorage.getItem("tkn");
+                const resp = await resource(`/api/v1/user/password_update`, { old_password, new_password }, 'POST', tkn)
+                const data = await resp.json()
+                if (!resp.ok) {
+                    handlerError([data.message])
+                    return
+                }
+                handlerError(['Se ha actualizado tu contraseña'])
+                usenavigate(`/home/profile/edit`)
+            } catch (error) {
+                console.log(error.message);
+                logout()
             }
-            handlerError(['Se ha actualizado tu contraseña'])
-            usenavigate(`/home/profile/edit`)
         },
         updateAvatarUser: async (handlerError, file) => {
             try {
@@ -175,7 +164,8 @@ export default function useUser(usenavigate) {
                 usenavigate(`/home/profile/edit`)
 
             } catch (error) {
-
+                console.log(error.message);
+                logout()
             }
         },
         restorePassword: async (handlerError, accesToken, password) => {
@@ -189,7 +179,8 @@ export default function useUser(usenavigate) {
                 }
                 usenavigate('/login')
             } catch (error) {
-                console.log(error);
+                console.log(error.message);
+                logout()
             }
         },
 
@@ -202,7 +193,8 @@ export default function useUser(usenavigate) {
                     return
                 }
             } catch (error) {
-                console.log(error);
+                console.log(error.message);
+                logout()
             }
 
         }

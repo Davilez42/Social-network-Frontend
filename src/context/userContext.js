@@ -54,7 +54,7 @@ export function UserContextProvider(props) {
     const navigate = useNavigate()
     const { getInfoUser } = useUser(navigate)
 
-    const [info, setInfo] = useState(['ESTO ES UN MENSAJE DE PRUEBA']);
+    const [info, setInfo] = useState([]);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [phone_number, setPhoneNumber] = useState("");
@@ -62,15 +62,19 @@ export function UserContextProvider(props) {
     const [date_born, setDate_born] = useState("");
     const [url_avatar, setUrlavatar] = useState("");
     const [user_bio, setUserBio] = useState("");
+    const [id_user, setId_user] = useState(0);
+
     const [numberFriends, setNumberFriends] = useState(0)
     const [numberPosts, setNumberPosts] = useState(0)
     const [friends, setFriends] = useState(friends_test)
 
 
+    const [reload, setReload] = useState(true)
+
+
 
     useEffect(() => {
-        console.log('entra al context', window.sessionStorage.getItem('tkn'));
-
+        // console.log('entra al context', window.sessionStorage.getItem('tkn'));
         getInfoUser(
             setInfo,
             setUsername,
@@ -79,8 +83,10 @@ export function UserContextProvider(props) {
             setPhoneNumber,
             setUrlavatar,
             setEmail,
-            setUserBio
+            setUserBio,
+            setId_user
         );
+
     }, []);
 
     return (
@@ -88,6 +94,7 @@ export function UserContextProvider(props) {
             <UserContext.Provider value={{
                 info,
                 username,
+                id_user,
                 user_bio,
                 url_avatar,
                 date_born,
@@ -97,6 +104,7 @@ export function UserContextProvider(props) {
                 numberFriends,
                 numberPosts,
                 friends,
+                reload,
                 setInfo,
                 setDate_born,
                 setEmail,
@@ -105,7 +113,7 @@ export function UserContextProvider(props) {
                 setUrlavatar,
                 setUsername,
                 setUserBio,
-
+                setReload
             }}>
                 {props.children}
             </UserContext.Provider >

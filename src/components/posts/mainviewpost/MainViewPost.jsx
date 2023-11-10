@@ -8,7 +8,7 @@ import {
 } from "react-icons/bi";
 import ViewComments from "../viewcomments/ViewComments.jsx";
 
-export default function MainViewPost({ posts }) {
+export default function MainViewPost({ posts, info_author = true }) {
   const [stateComments, setStateComments] = useState(false);
   const [postSelect, setPostSelect] = useState();
 
@@ -32,13 +32,19 @@ export default function MainViewPost({ posts }) {
         {posts.map((post, ind) => (
           <div key={ind} className="card_post">
             <div className="info_owner">
-              <img
-                loading="lazy"
-                className="avatar avatar_post_owner"
-                src={post.url_avatar_autor}
-                alt=""
-              />
-              <p>{post.username_owner}</p>
+              {info_author ? (
+                <>
+                  <img
+                    loading="lazy"
+                    className="avatar avatar_post_owner"
+                    src={post.url_avatar_author}
+                    alt=""
+                  />
+                  <p>{post.username_author}</p>
+                </>
+              ) : (
+                <></>
+              )}
               <BiDotsHorizontalRounded
                 className="list_options_post"
                 size={30}
@@ -49,8 +55,42 @@ export default function MainViewPost({ posts }) {
               <p>{post.text}</p>
             </div>
 
-            <div className="container_image_post">
-              <img className="image_post" src={post.url_image} alt="" />
+            <div className="container_media_post">
+              <div
+                className="preview_media"
+                style={
+                  post.media_links.length === 1
+                    ? { justifyContent: "center" }
+                    : {}
+                }
+              >
+                {post.media_links.map((media, ind) => {
+                  if (!media) return;
+                  const format = media.split(".").pop().toLowerCase();
+                  if (format === "mp4") {
+                    return (
+                      <video
+                        loading="lazy"
+                        key={ind}
+                        src={media}
+                        controls
+                        className="video_media"
+                      />
+                    );
+                  }
+                  if (["jpeg", "jpg"].includes(format)) {
+                    return (
+                      <img
+                        key={ind}
+                        loading="lazy"
+                        src={media}
+                        className="image_media"
+                        alt=""
+                      />
+                    );
+                  }
+                })}
+              </div>
             </div>
             <div className="info_post_options">
               <div className="option">
@@ -68,7 +108,7 @@ export default function MainViewPost({ posts }) {
                     size={30}
                   />
                 )}
-                <p>{post.likes}</p>
+                <p>{parseInt(Math.random() * 1000)}</p>
               </div>
               <div>
                 <BiCommentDetail
