@@ -15,9 +15,10 @@ export default function CreateFormPosts() {
   const [stateContainerPost, setStateContainerPost] = useState("none"); //variable bandera para desplegar vista de preview
   const { setInfo, reload, setReload, url_avatar } = useContext(UserContext);
   const [mediaFiles, setMediaFiles] = useState([]);
-
+  const [canSend, setCanSend] = useState(true);
   const clearForm = () => {
     setMediaFiles([]);
+    setCanSend(true);
     setUrlPreviewMedia([]);
     setText("");
     setReload(!reload);
@@ -25,7 +26,8 @@ export default function CreateFormPosts() {
   };
 
   const handlerSendPost = () => {
-    if (text.trim() !== "" || mediaFiles.length !== 0) {
+    if ((text.trim() !== "" || mediaFiles.length !== 0) && canSend) {
+      setCanSend(false);
       sendPost(setInfo, text, mediaFiles, clearForm);
     } else {
       setInfo(["Debes de ingresar un texto o subir un archivo"]);

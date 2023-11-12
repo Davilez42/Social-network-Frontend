@@ -1,7 +1,7 @@
 .container-view-friends {
     background-color: rgb(255, 255, 255);
     width: 10%;
-
+    height: 80vh;
     border: 1px solid rgb(238, 238, 238);
     border-radius: 5px;
 }
@@ -59,7 +59,7 @@
         flex-wrap: nowrap;
         overflow-x: scroll;
         overflow-y: hidden;
-        height: 80%;
+
     }
 
     .title_navbar_side {

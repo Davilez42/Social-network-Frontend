@@ -1,5 +1,8 @@
 import { useCookies } from "react-cookie";
 import resource from "../services/source";
+import PermissionInvalid from "../exceptions/PermissionInvalid";
+import AuthenticationRequired from "../exceptions/authenticationRequired";
+
 export default function useUser(usenavigate) {
     const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
     const logout = () => {
@@ -21,8 +24,8 @@ export default function useUser(usenavigate) {
                 }
                 usenavigate(`/confirmEmail/${data.id_user}/${fullname.split(' ')[0]}`)
 
-            } catch (error) {
-                handlerError([error.message])
+            } catch (e) {
+                handlerError([e.message])
 
             }
         },
@@ -37,12 +40,12 @@ export default function useUser(usenavigate) {
                 }
                 window.sessionStorage.setItem('tkn', data.tkn)
                 usenavigate(`/home/feed`)
-            } catch (error) {
-                handlerError([error.message])
+            } catch (e) {
+                handlerError([e.message])
             }
         }
         ,
-        getInfoUser: async (handlerError, setUsername, setDate_born, setFullname, setPhoneNumber, setUrlavatar, setEmail, setUserBio, setIdUser, setConfPrivate, id_user_foreign) => {
+        getInfoUser: async (handlerError, setUsername, setDate_born, setFullname, setPhoneNumber, setUrlavatar, setEmail, setUserBio, setIdUser, setFriends, setConfPrivate, id_user_foreign) => {
             try {
                 const query = id_user_foreign ? `?view_foreign=${id_user_foreign}` : ''
 
@@ -60,14 +63,14 @@ export default function useUser(usenavigate) {
                     setEmail(data.email)
                     setUserBio(data.user_bio)
                     setIdUser(data.id_user)
+                    setFriends(data.friends)
                     setConfPrivate(data.view_private)
                 } else {
                     handlerError([data.message])
                 }
-            } catch (error) {
-                alert(error)
-                handlerError([error.message])
-                logout()
+            } catch (e) {
+                if (e instanceof AuthenticationRequired || e instanceof PermissionInvalid) return logout()
+                handlerError([e.message])
             }
         },
         userLogin: async (handlerError, email, password) => {
@@ -86,8 +89,8 @@ export default function useUser(usenavigate) {
                 window.sessionStorage.setItem(data.tkn ? 'tkn' : null, data.tkn || null)
                 usenavigate(`/home/feed`)
 
-            } catch (error) {
-                handlerError([error.message])
+            } catch (e) {
+                handlerError([e.message])
             }
         }, userLoginWithGoogle: async (handlerError, credentials) => {
             try {
@@ -102,8 +105,8 @@ export default function useUser(usenavigate) {
                 window.sessionStorage.setItem(data.tkn ? 'tkn' : null, data.tkn || null)
                 usenavigate(`/home/feed`)
 
-            } catch (error) {
-                handlerError([error.message])
+            } catch (e) {
+                handlerError([e.message])
             }
         },
         sendEmail: async (handlerError, id_user, email, type) => {
@@ -113,8 +116,8 @@ export default function useUser(usenavigate) {
                 if (!resp.ok) {
                     handlerError([data.message])
                 }
-            } catch (error) {
-                handlerError([error.message])
+            } catch (e) {
+                handlerError([e.message])
             }
         },
 
@@ -131,9 +134,8 @@ export default function useUser(usenavigate) {
 
                 handlerError(['Se han actualizado tus datos'])
 
-            } catch (error) {
-                console.log(error.message);
-                logout()
+            } catch (e) {
+                if (e instanceof PermissionInvalid) return logout()
             }
         },
         updatePassword: async (handlerError, old_password, new_password) => {
@@ -148,9 +150,8 @@ export default function useUser(usenavigate) {
                 }
                 handlerError(['Se ha actualizado tu contraseña'])
                 usenavigate(`/home/profile/edit`)
-            } catch (error) {
-                //console.log(error.message);
-                logout()
+            } catch (e) {
+                if (e instanceof PermissionInvalid) return logout()
             }
         },
         updateAvatarUser: async (handlerError, file) => {
@@ -168,9 +169,8 @@ export default function useUser(usenavigate) {
                 handlerError(['Se ha actualizado tu avatar'])
                 usenavigate(`/home/profile/edit`)
 
-            } catch (error) {
-                console.log(error.message);
-                logout()
+            } catch (e) {
+                if (e instanceof PermissionInvalid) return logout()
             }
         },
         restorePassword: async (handlerError, accesToken, password) => {
@@ -183,9 +183,8 @@ export default function useUser(usenavigate) {
                     return
                 }
                 usenavigate('/login')
-            } catch (error) {
-                console.log(error.message);
-                logout()
+            } catch (e) {
+                if (e instanceof PermissionInvalid) return logout()
             }
         }
 

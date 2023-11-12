@@ -17,9 +17,7 @@ export default function MainViewPost({ posts, info_author = true }) {
     console.log(stateComments);
     console.log("LIKE POST ", id_post);
   };
-  const view_profile = (id_user_view) => {
-    usenavigate(`/home/profile/view/${id_user_view}`);
-  };
+
   return (
     <>
       {stateComments ? (
@@ -37,7 +35,7 @@ export default function MainViewPost({ posts, info_author = true }) {
             <div
               className="info_owner"
               onClick={() => {
-                view_profile(post.id_author);
+                usenavigate(`/home/profile/view/${post.id_author}`);
               }}
             >
               {info_author ? (

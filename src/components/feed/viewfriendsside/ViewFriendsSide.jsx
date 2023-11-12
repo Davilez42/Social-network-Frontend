@@ -1,23 +1,31 @@
 import { useContext } from "react";
 import { UserContext } from "../../../context/userContext";
+import { useNavigate } from "react-router-dom";
 import "./viewfriendsside.css";
 
 export default function ViewFriendsSide() {
   const { friends } = useContext(UserContext);
-
+  const usernavigate = useNavigate();
   return (
     <>
       <div className="container-view-friends">
         <p className=" title_navbar_side ">Amigos</p>
         <div className="container_friends">
           {friends.map((friend, i) => (
-            <div key={i} id_user={friend.id_user} className="card_friend">
+            <div
+              key={i}
+              id_user={friend.user[0]}
+              className="card_friend"
+              onClick={() => {
+                usernavigate(`/home/profile/view/${friend.user[0]}`);
+              }}
+            >
               <img
                 className="avatar avatar_friend"
-                src={friend.url_avatar}
+                src={friend.user[2]}
                 alt=""
               />
-              <p className="name_friend">{friend.fullname}</p>
+              <p className="name_friend">{friend.user[1]}</p>
             </div>
           ))}
         </div>

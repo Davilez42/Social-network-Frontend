@@ -1,9 +1,9 @@
-
-
-
 import comments_db from '../components/posts/posts_comments_db.json'
 import resource from "../services/source";
 import { useCookies } from 'react-cookie';
+import PermissionInvalid from '../exceptions/PermissionInvalid';
+
+
 const usePost = (usenavigate) => {
     const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
     const logout = () => {
@@ -28,9 +28,8 @@ const usePost = (usenavigate) => {
                 //console.log(data.posts);
                 setPosts(data.posts)
 
-            } catch (error) {
-                alert(error)
-                //logout()
+            } catch (e) {
+                if (e instanceof PermissionInvalid) return logout()
             }
         },
         sendPost: async (handlerError, text, files, actionClear) => {
@@ -53,8 +52,16 @@ const usePost = (usenavigate) => {
                 usenavigate('/home/feed')
                 handlerError(['¡Listo! Tu publicación se ha cargado correctamente.'])
 
-            } catch (error) {
-                logout()
+            } catch (e) {
+                if (e instanceof PermissionInvalid) {
+                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
+                        handlerError([e.message])
+                        actionClear()
+                        return
+                    }
+                    logout()
+                }
+
             }
         }
         ,
