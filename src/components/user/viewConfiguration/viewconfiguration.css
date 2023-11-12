@@ -1,0 +1,61 @@
+.container_configs {
+    border: 1px solid rgb(231, 231, 231);
+    background-color: rgb(255, 255, 255);
+    width: 30%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding-bottom: 20px;
+}
+
+.label_config_input {
+    font-size: 17px;
+    margin-left: 20px;
+}
+
+.container_checkbox {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin-top: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 150px;
+}
+
+.container_input_checkbox {
+    width: 70%;
+}
+
+.input_toggle {
+    float: right;
+    cursor: pointer;
+}
+
+
+#visibilite_profile {
+    width: 30px;
+    height: 20px;
+    background-color: antiquewhite;
+}
+
+.container_button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+
+.button_save_config {
+    margin: 20px;
+    width: 140px;
+}
+
+.delete_account_text {
+    font-size: 17px;
+    color: rgb(255, 137, 137);
+}

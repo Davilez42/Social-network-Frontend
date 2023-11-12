@@ -1,12 +1,18 @@
 .container_view_profile {
-    width: 50%;
+    width: 60%;
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column;
+    gap: 25px;
 
-    border-radius: 10px;
+    height: 90vh;
 }
 
-.container_info_user {
-
-    background-color: antiquewhite;
+.info_perfil {
+    display: flex;
+    justify-content: center;
+    color: rgb(182, 182, 182);
+    text-align: center;
 }
 
 .container_avatar {
@@ -19,6 +25,7 @@
 .view_perfil {
     margin-top: 19px;
     justify-content: flex-start;
+
     gap: 40px;
 }
 
@@ -40,10 +47,16 @@
 }
 
 .container_data_user {
+    background-color: rgb(255, 255, 255);
+    width: 70%;
+    border-radius: 10px;
     display: flex;
+    flex-direction: row;
+    align-self: center;
 }
 
 .container_info {
+
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -63,6 +76,37 @@
     font-weight: 900;
 }
 
+.container_self_posts {
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+
+
+.box_info_perfil_private {
+    background-color: rgb(255, 255, 255);
+    width: 67%;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    border: 1px solid rgb(235, 235, 235);
+    height: 80px;
+
+    border-radius: 10px;
+    padding-left: 20px;
+}
+
+.box_info_perfil_not_posts {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    color: rgb(141, 141, 141);
+    width: 70%;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+}
 
 @media (max-width: 950px) {
     .container_view_profile {
@@ -75,10 +119,12 @@
 @media (max-width: 650px) {
     .container_view_profile {
         width: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
 
     .view_perfil {
-        margin-top: 19px;
+        margin-top: 10px;
         flex-wrap: wrap;
         justify-content: none;
         gap: 30px;
@@ -94,23 +140,64 @@
         height: 90px;
     }
 
+    .container_data_user {
+        width: 100%;
+    }
+
 
 }
 
 @media (max-width: 450px) {
 
+    .container_view_profile {
+        margin-top: 0;
+        width: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
 
     .view_perfil {
-        margin-top: 19px;
+        margin-top: 0;
         flex-wrap: wrap;
-        font-size: 13px;
+        font-size: 10px;
         justify-content: none;
-        gap: 20px;
+        gap: 30px;
     }
 
     .button_edit_profile {
-        width: 80px;
+        width: 60px;
     }
 
+    .title_fullname {
+        font-size: 15px;
+        font-weight: 900;
+    }
+
+    .container_self_posts {
+
+        width: 100%;
+    }
+
+    .avatar_profile {
+        width: 60px;
+        height: 60px;
+    }
+
+    .button_edit_profile {
+        width: 70px;
+        height: 30px;
+    }
+
+    .container_avatar {
+        width: 27%;
+        display: flex;
+        justify-content: center;
+        height: 200px;
+    }
+
+    .box_info_perfil_not_posts,
+    .box_info_perfil_private {
+        width: 100%;
+    }
 
 }

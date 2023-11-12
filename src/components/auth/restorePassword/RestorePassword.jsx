@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import useUser from "../../../hooks/useUser";
 function RestorePassword() {
   const [correoElectronico, setCorreoElectronico] = useState("");
-  const { sendEmailPaswordRecovery } = useUser();
+  const { sendEmail } = useUser();
   const [message, setMessage] = useState("");
   const [seconds, setSeconds] = useState(30);
   let cont = 30;
@@ -28,7 +28,7 @@ function RestorePassword() {
   const handlePassword = () => {
     if (correoElectronico.trim() !== "") {
       if (seconds === 30) {
-        sendEmailPaswordRecovery(setMessage, correoElectronico);
+        sendEmail(setMessage, undefined, correoElectronico, "recoveryPassword");
         setjsnterval();
       }
     } else {

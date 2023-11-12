@@ -15,6 +15,7 @@ import Home from "./pages/Home";
 import FeedMain from "./components/feed/viewMain/FeedMain";
 import ViewProfile from "./components/user/ViewProfile/ViewProfile";
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import ViewConfiguration from "./components/user/viewConfiguration/ViewConfiguration";
 const routes = createBrowserRouter([
 
   {
@@ -73,6 +74,15 @@ const routes = createBrowserRouter([
               {
                 path: 'view',
                 element: <ViewProfile />
+              },
+              {
+                path: 'view/:id_user_view',
+                element: <ViewProfile mode_foreign={true} />,
+                props: true
+              },
+              {
+                path: 'config',
+                element: <ViewConfiguration />
               }
             ]
           }

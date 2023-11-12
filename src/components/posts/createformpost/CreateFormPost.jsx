@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./createformpost.css";
 import { BiNavigation } from "react-icons/bi";
+import { FcPicture } from "react-icons/fc";
 import usePost from "../../../hooks/usePost";
 import { useContext } from "react";
 import { UserContext } from "../../../context/userContext";
@@ -12,14 +13,14 @@ export default function CreateFormPosts() {
   const [urlPreviewMedia, setUrlPreviewMedia] = useState([]);
   const [text, setText] = useState("");
   const [stateContainerPost, setStateContainerPost] = useState("none"); //variable bandera para desplegar vista de preview
-  const { setInfo, setReload } = useContext(UserContext);
+  const { setInfo, reload, setReload, url_avatar } = useContext(UserContext);
   const [mediaFiles, setMediaFiles] = useState([]);
 
   const clearForm = () => {
     setMediaFiles([]);
     setUrlPreviewMedia([]);
     setText("");
-    setReload(true);
+    setReload(!reload);
     setStateContainerPost("none");
   };
 
@@ -37,27 +38,62 @@ export default function CreateFormPosts() {
       <div className="container-form-create-post">
         <img src="" alt="" />
         <div className="container_data">
-          <input
-            type="text"
-            className="input-field input_text_post"
-            placeholder="Publica algo aqui...."
-            value={text}
-            onChange={(event) => {
-              setText(event.target.value);
-            }}
-          />
+          <img src={url_avatar} alt="" className="avatar avatar_form_post" />
+
+          <div className="container_inputs_form_posts">
+            <input
+              type="text"
+              className="input-field input_text_post"
+              placeholder="Publica algo aqui...."
+              value={text}
+              onChange={(event) => {
+                setText(event.target.value);
+              }}
+            />
+          </div>
           <BiNavigation
             className="butto_send_post"
             size={30}
             onClick={handlerSendPost}
           />
         </div>
-        <div className="container_inputs_file_post ">
+
+        <div
+          className="container_images_posts"
+          style={{ display: stateContainerPost }}
+        >
+          {urlPreviewMedia.map((media, ind) => {
+            if (media.type === "video") {
+              return (
+                <video
+                  loading="lazy"
+                  key={ind}
+                  src={media.url_preview}
+                  controls
+                  className="image_post_upload"
+                />
+              );
+            }
+            if (media.type === "image") {
+              return (
+                <img
+                  key={ind}
+                  loading="lazy"
+                  src={media.url_preview}
+                  className="image_post_upload"
+                  alt=""
+                />
+              );
+            }
+          })}
+        </div>
+        <div className="options_form_posts">
           <label
-            className="label_input_file  input_image_post"
+            className="label_input_file  input_file_post"
             htmlFor="input_file"
           >
-            Selecciona un foto
+            <FcPicture size={30} />
+            Foto/Video
           </label>
           <input
             id="input_file"
@@ -84,35 +120,6 @@ export default function CreateFormPosts() {
               setMediaFiles([...mediaFiles, file]);
             }}
           />
-          <div
-            className="container_images_posts"
-            style={{ display: stateContainerPost }}
-          >
-            {urlPreviewMedia.map((media, ind) => {
-              if (media.type === "video") {
-                return (
-                  <video
-                    loading="lazy"
-                    key={ind}
-                    src={media.url_preview}
-                    controls
-                    className="image_post_upload"
-                  />
-                );
-              }
-              if (media.type === "image") {
-                return (
-                  <img
-                    key={ind}
-                    loading="lazy"
-                    src={media.url_preview}
-                    className="image_post_upload"
-                    alt=""
-                  />
-                );
-              }
-            })}
-          </div>
         </div>
       </div>
     </>

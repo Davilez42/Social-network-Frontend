@@ -6,9 +6,9 @@ export default function ProtectedRoute() {
   const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
 
   const tkn = window.sessionStorage.getItem("tkn");
-  console.log("TOKEN EN SESSION", tkn);
+  /*  console.log("TOKEN EN SESSION", tkn);
   console.log("cookies", cookies.tkn);
-
+ */
   useEffect(() => {}, []);
 
   if (!cookies.tkn && !tkn) {

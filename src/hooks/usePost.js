@@ -13,10 +13,10 @@ const usePost = (usenavigate) => {
     }
 
     return ({
-        getPosts: async (handlerError, setPosts, id_user) => {
+        getPosts: async (handlerError, setPosts, id_user, self = true) => {
             try {
                 //alert(id_user)
-                const query = id_user ? `?by_user=${id_user}` : ''
+                const query = id_user ? (self ? `?self_user=${id_user}` : `?by_user=${id_user}`) : ''
 
                 const tkn = window.sessionStorage.getItem('tkn')
                 const resp = await resource(`/api/v1/post/getPosts/${query}`, undefined, 'GET', tkn)
@@ -25,7 +25,7 @@ const usePost = (usenavigate) => {
                     return handlerError([data.message])
 
                 }
-                console.log(data.posts);
+                //console.log(data.posts);
                 setPosts(data.posts)
 
             } catch (error) {
@@ -54,7 +54,6 @@ const usePost = (usenavigate) => {
                 handlerError(['¡Listo! Tu publicación se ha cargado correctamente.'])
 
             } catch (error) {
-                console.log(error);
                 logout()
             }
         }

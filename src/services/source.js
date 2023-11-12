@@ -11,7 +11,7 @@ const resource = async (route, body, method = 'POST', tkn, formData) => {
         },
         body: body ? JSON.stringify(body) : formData
     })
-    if ([404, 401, 403].includes(resp.status)) throw new Error((await resp.json()).message)
+    if ([401, 403].includes(resp.status)) throw new Error((await resp.json()).message)
     return resp
 }
 

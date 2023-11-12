@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { AiTwotoneHeart } from "react-icons/ai";
 import "./mainviewposts.css";
 import {
@@ -7,16 +8,18 @@ import {
   BiDotsHorizontalRounded,
 } from "react-icons/bi";
 import ViewComments from "../viewcomments/ViewComments.jsx";
-
+import { useNavigate } from "react-router-dom";
 export default function MainViewPost({ posts, info_author = true }) {
   const [stateComments, setStateComments] = useState(false);
   const [postSelect, setPostSelect] = useState();
-
+  const usenavigate = useNavigate();
   const handlerLike = (id_post) => {
     console.log(stateComments);
     console.log("LIKE POST ", id_post);
   };
-
+  const view_profile = (id_user_view) => {
+    usenavigate(`/home/profile/view/${id_user_view}`);
+  };
   return (
     <>
       {stateComments ? (
@@ -31,7 +34,12 @@ export default function MainViewPost({ posts, info_author = true }) {
       <div className="container-posts">
         {posts.map((post, ind) => (
           <div key={ind} className="card_post">
-            <div className="info_owner">
+            <div
+              className="info_owner"
+              onClick={() => {
+                view_profile(post.id_author);
+              }}
+            >
               {info_author ? (
                 <>
                   <img
@@ -78,7 +86,7 @@ export default function MainViewPost({ posts, info_author = true }) {
                       />
                     );
                   }
-                  if (["jpeg", "jpg"].includes(format)) {
+                  if (["jpeg", "jpg", "png"].includes(format)) {
                     return (
                       <img
                         key={ind}

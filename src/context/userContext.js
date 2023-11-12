@@ -64,9 +64,12 @@ export function UserContextProvider(props) {
     const [user_bio, setUserBio] = useState("");
     const [id_user, setId_user] = useState(0);
 
-    const [numberFriends, setNumberFriends] = useState(0)
-    const [numberPosts, setNumberPosts] = useState(0)
+
     const [friends, setFriends] = useState(friends_test)
+
+    const [confi_view_private, setConfPrivate] = useState(false);
+    const [confi_notif, setConfNotifications] = useState(true);
+    const [confi_requests, setConfRequests] = useState(false);
 
 
     const [reload, setReload] = useState(true)
@@ -84,7 +87,8 @@ export function UserContextProvider(props) {
             setUrlavatar,
             setEmail,
             setUserBio,
-            setId_user
+            setId_user,
+            setConfPrivate
         );
 
     }, []);
@@ -101,9 +105,10 @@ export function UserContextProvider(props) {
                 fullname,
                 email,
                 phone_number,
-                numberFriends,
-                numberPosts,
                 friends,
+                confi_view_private,
+                confi_notif,
+                confi_requests,
                 reload,
                 setInfo,
                 setDate_born,
@@ -113,7 +118,10 @@ export function UserContextProvider(props) {
                 setUrlavatar,
                 setUsername,
                 setUserBio,
-                setReload
+                setReload,
+                setConfPrivate,
+                setConfNotifications,
+                setConfRequests,
             }}>
                 {props.children}
             </UserContext.Provider >

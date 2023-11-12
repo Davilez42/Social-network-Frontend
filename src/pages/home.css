@@ -1,10 +1,13 @@
 .container-main {
+    background-color: #f1f2f6;
     display: flex;
-    gap: 20px;
     flex-wrap: wrap;
     height: 87vh;
+    gap: 30px;
+    flex-direction: row;
+    align-items: center;
     justify-content: center;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .container-error {
@@ -30,17 +33,20 @@
     margin-top: 20px;
     animation-name: deployed_box;
     animation-duration: .4s;
-
     display: flex;
     align-items: center;
     border-radius: 4px;
-
     margin-bottom: 15px;
     background: #1f5aef;
     color: rgb(255, 255, 255);
 }
 
 
+.container-main {
+    /*Estilos estándar experimentales (Principalmente Firefox)*/
+    scrollbar-color: rgba(83, 83, 83, 0.5) rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
+}
 
 
 @keyframes deployed_box {
@@ -65,4 +71,17 @@
     }
 }
 
-@media (max-width: 1000px) {}
+@media (max-width: 1260px) {
+    .container-main {
+        height: 86vh;
+        overflow-y: hidden;
+    }
+}
+
+@media (max-width: 1000px) {
+    .container-main {
+        height: 100vh;
+        align-items: none;
+        overflow-y: hidden;
+    }
+}

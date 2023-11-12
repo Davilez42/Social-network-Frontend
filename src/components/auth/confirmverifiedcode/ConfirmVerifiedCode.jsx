@@ -13,7 +13,7 @@ export default function ConfirmVerifiedCode() {
   const [code4, setCode4] = useState("");
   const [message, setMessage] = useState("");
   const usenavigate = useNavigate();
-  const { confirmVerifyCode, sendEmailVerified } = useUser(usenavigate);
+  const { confirmVerifyCode, sendEmail } = useUser(usenavigate);
   const handlerConfirmCode = () => {
     if ((code1 + code2 + code3 + code4).length !== 4) {
       setMessage("Porfavor ingresa un codio correcto");
@@ -27,7 +27,7 @@ export default function ConfirmVerifiedCode() {
   };
 
   const handlerSendEmail = () => {
-    sendEmailVerified(setMessage, id_user);
+    sendEmail(setMessage, id_user, undefined, "verifyAccount");
   };
 
   useEffect(() => {

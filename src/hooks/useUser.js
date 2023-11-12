@@ -11,7 +11,7 @@ export default function useUser(usenavigate) {
         registerUser: async (handlerError, username, password, fullname, date_born, email, phone_number) => {
             try {
 
-                const resp = await resource('/api/v1/user/signup', {
+                const resp = await resource('/api/v1/auth/signup', {
                     username, password, fullname, date_born, email, phone_number
                 })
                 const data = await resp.json()
@@ -28,7 +28,7 @@ export default function useUser(usenavigate) {
         },
         confirmVerifyCode: async (handlerError, id_user, code_verify) => {
             try {
-                const resp = await resource(`/api/v1/user/signup/confirmEmail/${id_user}`, { codigo_ingresado: code_verify })
+                const resp = await resource(`/api/v1/auth/signup/confirmEmail/${id_user}`, { codigo_ingresado: code_verify })
                 const data = await resp.json()
                 console.log(data);
                 if (!resp.ok) {
@@ -42,42 +42,45 @@ export default function useUser(usenavigate) {
             }
         }
         ,
-        getInfoUser: async (handlerError, setUsername, setDate_born, setFullname, setPhoneNumber, setUrlavatar, setEmail, setUserBio, setIdUser) => {
+        getInfoUser: async (handlerError, setUsername, setDate_born, setFullname, setPhoneNumber, setUrlavatar, setEmail, setUserBio, setIdUser, setConfPrivate, id_user_foreign) => {
             try {
+                const query = id_user_foreign ? `?view_foreign=${id_user_foreign}` : ''
+
                 const tkn = window.sessionStorage.getItem("tkn");
-                console.log('PETICION GETINFO', tkn);
-                const resp = await resource(`/api/v1/user/getInfo`, undefined, 'POST', tkn)
+                //console.log('PETICION GETINFO', tkn);
+                const resp = await resource(`/api/v1/user/getInfo/${query}`, undefined, 'POST', tkn)
                 const data = await resp.json()
                 if (resp.ok) {
-                    console.log(data);
                     setFullname(data.fullname)
                     setPhoneNumber(data.phone_number)
                     setDate_born(data.date_born)
                     setUsername(data.username)
-                    setDate_born(data.date_born.split('T')[0])
+                    setDate_born(data.date_born?.split('T')[0])
                     setUrlavatar(data.url_avatar)
                     setEmail(data.email)
                     setUserBio(data.user_bio)
                     setIdUser(data.id_user)
+                    setConfPrivate(data.view_private)
                 } else {
                     handlerError([data.message])
                 }
             } catch (error) {
+                alert(error)
                 handlerError([error.message])
                 logout()
             }
         },
         userLogin: async (handlerError, email, password) => {
             try {
-                const resp = await resource(`/api/v1/user/sign`, { email, password })
+                const resp = await resource(`/api/v1/auth/sign`, { email, password })
                 const data = await resp.json()
                 if (!resp.ok) {
                     console.log(data);
-                    if (data?.status === 'PENDING_TO_VERIFIED') {
-                        usenavigate(`/confirmEmail/${data.data.id_user}/${data.data.fullname.split(' ')[0]}`)
-                        return
-                    }
                     handlerError([data.message])
+                    return
+                }
+                if (data?.status === 'PENDING_TO_VERIFIED') {
+                    usenavigate(`/confirmEmail/${data.data.id_user}/${data.data.fullname.split(' ')[0]}`)
                     return
                 }
                 window.sessionStorage.setItem(data.tkn ? 'tkn' : null, data.tkn || null)
@@ -88,14 +91,14 @@ export default function useUser(usenavigate) {
             }
         }, userLoginWithGoogle: async (handlerError, credentials) => {
             try {
-                const resp = await resource(`/api/v1/user/sign_google_platform`, { credentials })
+                const resp = await resource(`/api/v1/auth/sign_google_platform`, { credentials })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    console.log(data);
+                    // console.log(data);
                     handlerError([data.message])
                     return
                 }
-                console.log(data);
+                //console.log(data);
                 window.sessionStorage.setItem(data.tkn ? 'tkn' : null, data.tkn || null)
                 usenavigate(`/home/feed`)
 
@@ -103,9 +106,9 @@ export default function useUser(usenavigate) {
                 handlerError([error.message])
             }
         },
-        sendEmailVerified: async (handlerError, id_user) => {
+        sendEmail: async (handlerError, id_user, email, type) => {
             try {
-                const resp = await resource(`/api/v1/user/sendEmail_verified`, { id_user })
+                const resp = await resource(`/api/v1/auth/sendEmail/?type=${type}`, { id_user, email })
                 const data = await resp.json()
                 if (!resp.ok) {
                     handlerError([data.message])
@@ -114,18 +117,20 @@ export default function useUser(usenavigate) {
                 handlerError([error.message])
             }
         },
-        updateInfoUser: async (handlerError, data_to_update) => {
+
+        updateInfoUser: async (handlerError, data_to_update, type) => {
             try {
+                const query = type ? `?data=${type}` : ''
                 const tkn = window.sessionStorage.getItem("tkn");
-                const resp = await resource(`/api/v1/user/data_update`, data_to_update, 'PATCH', tkn)
+                const resp = await resource(`/api/v1/user/data_update/${query}`, data_to_update, 'PATCH', tkn)
                 const data = await resp.json()
                 if (!resp.ok) {
                     handlerError([data.message])
                     return
                 }
 
-                handlerError(['Se han actualizado tus dato '])
-                usenavigate(`/home/profile/edit`)
+                handlerError(['Se han actualizado tus datos'])
+
             } catch (error) {
                 console.log(error.message);
                 logout()
@@ -144,7 +149,7 @@ export default function useUser(usenavigate) {
                 handlerError(['Se ha actualizado tu contraseña'])
                 usenavigate(`/home/profile/edit`)
             } catch (error) {
-                console.log(error.message);
+                //console.log(error.message);
                 logout()
             }
         },
@@ -182,22 +187,8 @@ export default function useUser(usenavigate) {
                 console.log(error.message);
                 logout()
             }
-        },
-
-        sendEmailPaswordRecovery: async (handlerError, email) => {
-            try {
-                const resp = await resource(`/api/v1/user/sendEmail_recoveryPassword`, { email }, 'POST')
-                const data = await resp.json()
-                if (!resp.ok) {
-                    handlerError([data.message])
-                    return
-                }
-            } catch (error) {
-                console.log(error.message);
-                logout()
-            }
-
         }
+
     }
 
 }

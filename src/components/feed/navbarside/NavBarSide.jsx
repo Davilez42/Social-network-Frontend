@@ -27,17 +27,6 @@ export default function NavBarSide() {
         </div>
       </div>
 
-      <div className="info_perfil">
-        <div>
-          <p className="item">{numberPosts}</p>
-          Publicaciones
-        </div>
-        <div>
-          <p className="item">{numberFriends}</p>
-          Amigos
-        </div>
-      </div>
-
       <nav className="list-items-main">
         <NavLink
           to="/home/profile/view"
@@ -51,21 +40,20 @@ export default function NavBarSide() {
           <FaEnvelope className="icon" size={18} /> <p>Mensajes</p>
         </NavLink>
 
-        <NavLink className="item_list_main" href="/configuracion">
+        <NavLink className="item_list_main" to="/home/profile/config">
           <FaCog className="icon" size={18} /> <p>Configuracion</p>
         </NavLink>
 
-        <NavLink className="item_list_main" to="/login">
+        <NavLink
+          className="item_list_main"
+          to="/login"
+          onClick={() => {
+            window.sessionStorage.removeItem("tkn");
+            removeCookie("tkn");
+          }}
+        >
           <FaSignOutAlt className="icon" size={18} />{" "}
-          <p
-            onClick={() => {
-              window.sessionStorage.removeItem("tkn");
-              removeCookie("tkn");
-            }}
-            className="text_logout"
-          >
-            Cerrar sesion
-          </p>
+          <p className="text_logout">Cerrar sesion</p>
         </NavLink>
       </nav>
     </div>
