@@ -27,6 +27,8 @@ export default function ViewProfile({ mode_foreign = false }) {
   const [view_private, setView_Private] = useState(false);
   const [activate_view_friends, setActivate_view_friend] = useState(false);
   //Contexto del usuario
+  const [refresh, setRefresh] = useState(false);
+
   const {
     friends,
     setInfo,
@@ -63,11 +65,26 @@ export default function ViewProfile({ mode_foreign = false }) {
     setFriends_view(friends);
     setUser_Bio_view(user_bio);
     getPosts(setInfo, setPosts_view, id_user);
-  }, [id_user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id_user, refresh]);
+
+  const handlerActionSelectFriend = (id_user) => {
+    navigate(`/home/profile/view/${id_user}`);
+    setActivate_view_friend(false);
+    setRefresh(!refresh);
+  };
 
   return (
     <>
-      {activate_view_friends ? <ViewFriendList /> : <></>}
+      {activate_view_friends ? (
+        <ViewFriendList
+          friends={friends_view}
+          actionCloseAction={setActivate_view_friend}
+          actionSelectFriend={handlerActionSelectFriend}
+        />
+      ) : (
+        <></>
+      )}
       <div className="container_view_profile">
         <div className="container_data_user">
           <div className="container_avatar">

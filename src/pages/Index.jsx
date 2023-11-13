@@ -11,6 +11,7 @@ export default function Index() {
     if (location.pathname === "/") {
       handler();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div>

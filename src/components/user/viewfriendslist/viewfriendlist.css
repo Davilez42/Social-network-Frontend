@@ -1,67 +1,51 @@
 .container_friend_list_profile {
-    background-color: rgb(255, 255, 255);
-    position: absolute;
-    border: 1px solid rgb(223, 223, 223);
-    border-radius: 10px;
-    width: 25%;
-    height: min-content;
-    left: 55%;
-    top: 29%;
-    text-align: center;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  border: 1px solid rgb(241, 241, 241);
+  border-radius: 6px;
+  width: 25%;
+  left: 55%;
+  top: 23%;
+  height: 470px;
+  cursor: pointer;
+
+  text-align: center;
+}
+
+.title_container {
+  color: rgb(156, 156, 156);
 }
 
 .friend-list {
-    list-style: none;
-    padding: 0px;
-    margin: 0px;
-    
-  }
-  
-  .friend-list div {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    cursor: pointer;
-  }
-  
-  .friend-list div:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .friend-details {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .details-overlay {
-    background-color: rgba(255, 255, 255, 0.9);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  overflow-y: auto;
+  height: 410px;
+  background-color: #ffffff;
+}
 
-  .botton-back{
-   border-radius: 10px;
+.friend-list div:hover {
+  background-color: #ffffff;
+}
 
-  }
 
-  .box{
-   top: 20%; /* Ajustamos la posición al 50% del contenedor principal */
-   left: 20%; /* Ajustamos la posición al 50% del contenedor principal */
-   transform: translate(20%, 20%); /* Corregimos para centrar verticalmente */
-   width: 30px;
-   height: 30px;
-   background-image: url(./3135768.png);
-   background-size: cover;
-   border-radius: 100px
-    }
-  
+
+.card_friend_friend_list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  width: 90%;
+  text-decoration: none;
+  padding: 6px;
+  color: black;
+  border-bottom: 1px solid rgb(238, 238, 238);
+}
+
+.avatar_friend_list {
+  width: 50px;
+  height: 50px;
+  border-radius: 100px
+}
