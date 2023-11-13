@@ -7,7 +7,7 @@ export default function RedirectRouteIndex() {
   const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
   const tkn = window.sessionStorage.getItem("tkn");
   //!cookies.tkn && !tkn
-  if (false) {
+  if (!cookies.tkn && !tkn) {
     return <Index />;
   }
   return <Navigate to={`/home/feed`} />;

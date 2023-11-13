@@ -92,24 +92,42 @@ export default function ViewProfile({ mode_foreign = false }) {
                 Amigos
               </div>
 
-              {id_user === parseInt(id_user_view) || !id_user_view ? (
-                <NavLink
-                  to="/home/profile/edit"
-                  className="button_edit_profile"
-                  onClick={() => {}}
-                >
-                  Editar Perfil
-                </NavLink>
-              ) : (
-                <NavLink
-                  className="button_edit_profile"
-                  onClick={() => {
-                    alert("Funcion en proceso");
-                  }}
-                >
-                  Añadir amigo
-                </NavLink>
-              )}
+              {(() => {
+                const id_user_v = parseInt(id_user_view);
+                if (id_user === id_user_v || !id_user_view) {
+                  return (
+                    <NavLink
+                      to="/home/profile/edit"
+                      className="button_edit_profile"
+                    >
+                      Editar Perfil
+                    </NavLink>
+                  );
+                } else {
+                  if (friends.some((f) => f.user[0] === id_user_v)) {
+                    return (
+                      <div
+                        onClick={() => {
+                          alert("Esta funcion se encuentra en desarollo");
+                        }}
+                        className="button_edit_profile"
+                      >
+                        Eliminar amigo
+                      </div>
+                    );
+                  }
+                  return (
+                    <div
+                      onClick={() => {
+                        alert("Esta funcion se encuentra en desarollo");
+                      }}
+                      className="button_edit_profile"
+                    >
+                      Añadir amigo
+                    </div>
+                  );
+                }
+              })()}
             </div>
 
             <div>{user_bio_view}</div>

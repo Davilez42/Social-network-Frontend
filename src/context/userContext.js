@@ -30,20 +30,20 @@ export function UserContextProvider(props) {
 
     useEffect(() => {
         // console.log('entra al context', window.sessionStorage.getItem('tkn'));
-        /*   getInfoUser(
-              setInfo,
-              setUsername,
-              setDate_born,
-              setFullname,
-              setPhoneNumber,
-              setUrlavatar,
-              setEmail,
-              setUserBio,
-              setId_user,
-              setFriends,
-              setConfPrivate
-          );
-   */
+        getInfoUser(
+            setInfo,
+            setUsername,
+            setDate_born,
+            setFullname,
+            setPhoneNumber,
+            setUrlavatar,
+            setEmail,
+            setUserBio,
+            setId_user,
+            setFriends,
+            setConfPrivate
+        );
+
     }, []);
 
     return (

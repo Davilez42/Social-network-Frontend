@@ -14,9 +14,9 @@ export default function FeedMain() {
   const { getPosts } = usePost(navigate);
 
   useEffect(() => {
-    //console.log("RENDERIZA FEED PRINCIPAL");
-    //setReload(false);
-    //getPosts(setInfo, setPosts);
+    console.log("RENDERIZA FEED PRINCIPAL");
+    setReload(false);
+    getPosts(setInfo, setPosts);
   }, [reload]);
 
   return (
