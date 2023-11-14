@@ -48,6 +48,57 @@
     scrollbar-width: thin;
 }
 
+.loader {
+    margin-top: 100px;
+    width: 48px;
+    height: 48px;
+    border: 5px solid #4e4e4e;
+    background-color: #f1f2f6;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+.loading {
+    animation-name: loading;
+    animation-duration: 5s;
+}
+
+@keyframes loading {
+    0% {
+        background: rgb(139, 139, 139);
+    }
+
+    25% {
+        background: rgb(125, 125, 125);
+    }
+
+    50% {
+        background: rgb(101, 101, 101);
+    }
+
+    65% {
+        background: rgb(116, 116, 116);
+    }
+
+    100% {
+        background: rgb(204, 204, 204);
+    }
+}
+
 
 @keyframes deployed_box {
     0% {

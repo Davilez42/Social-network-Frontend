@@ -22,7 +22,7 @@ export default function ViewProfile({ mode_foreign = false }) {
   const [avatar_view, setAvatar_view] = useState("");
 
   const [friends_view, setFriends_view] = useState([]);
-  const [posts_view, setPosts_view] = useState([]);
+  const [posts_view, setPosts_view] = useState(null);
 
   const [view_private, setView_Private] = useState(false);
   const [activate_view_friends, setActivate_view_friend] = useState(false);
@@ -96,7 +96,7 @@ export default function ViewProfile({ mode_foreign = false }) {
 
             <div className="info_perfil view_perfil">
               <div>
-                <p className="item">{posts_view.length}</p>
+                <p className="item">{posts_view?.length || 0}</p>
                 Publicaciones
               </div>
               <div
@@ -152,28 +152,28 @@ export default function ViewProfile({ mode_foreign = false }) {
         </div>
 
         <div className="container_self_posts">
-          {posts_view.length !== 0 ? (
-            <MainViewPost posts={posts_view} info_author={false} />
-          ) : id_user !== parseInt(id_user_view) &&
-            view_private &&
-            mode_foreign ? (
-            <div className="box_info_perfil_private">
-              <TbLockOff size={50} />
-              Este perfil es privado
-            </div>
-          ) : mode_foreign ? (
-            <>
-              <div className="box_info_perfil_not_posts">
-                Este usuario aun no tiene publicaciones
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="box_info_perfil_not_posts">
-                Aun no tienes publicaciones
-              </div>
-            </>
-          )}
+          {(() => {
+            if (!posts_view) {
+              return <span className="loader"></span>;
+            } else if (posts_view.length !== 0) {
+              return <MainViewPost posts={posts_view} info_author={false} />;
+            } else if (view_private && mode_foreign) {
+              return (
+                <div className="box_info_perfil_private">
+                  <TbLockOff size={50} />
+                  Este perfil es privado
+                </div>
+              );
+            } else {
+              return (
+                <div className="box_info_perfil_not_posts">
+                  {mode_foreign
+                    ? "Este usuario aun no tiene publicaciones"
+                    : "Aun no tienes publicaciones"}
+                </div>
+              );
+            }
+          })()}
         </div>
       </div>
     </>

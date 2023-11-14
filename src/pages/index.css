@@ -17,31 +17,3 @@ body {
     text-align: center;
     color: rgb(173, 173, 173);
 }
-
-
-.loading {
-    animation-name: loading;
-    animation-duration: 5s;
-}
-
-@keyframes loading {
-    0% {
-        background: rgb(139, 139, 139);
-    }
-
-    25% {
-        background: rgb(125, 125, 125);
-    }
-
-    50% {
-        background: rgb(101, 101, 101);
-    }
-
-    65% {
-        background: rgb(116, 116, 116);
-    }
-
-    100% {
-        background: rgb(204, 204, 204);
-    }
-}

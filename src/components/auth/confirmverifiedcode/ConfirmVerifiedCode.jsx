@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import useUser from "../../../hooks/useUser";
 import { NavLink, useNavigate } from "react-router-dom";
+import { editableInputTypes } from "@testing-library/user-event/dist/utils";
 
 export default function ConfirmVerifiedCode() {
   const { id_user, name } = useParams();
@@ -14,20 +15,29 @@ export default function ConfirmVerifiedCode() {
   const [message, setMessage] = useState("");
   const usenavigate = useNavigate();
   const { confirmVerifyCode, sendEmail } = useUser(usenavigate);
-  const handlerConfirmCode = () => {
-    if ((code1 + code2 + code3 + code4).length !== 4) {
-      setMessage("Porfavor ingresa un codio correcto");
-      return;
-    }
-    confirmVerifyCode(setMessage, id_user, code1 + code2 + code3 + code4);
+
+  const clearInputs = () => {
     setCode1("");
     setCode2("");
     setCode3("");
     setCode4("");
   };
 
+  const handlerConfirmCode = () => {
+    if ((code1 + code2 + code3 + code4).length !== 4) {
+      setMessage("Porfavor ingresa un codio correcto");
+      return;
+    }
+    confirmVerifyCode(
+      setMessage,
+      id_user,
+      code1 + code2 + code3 + code4,
+      clearInputs
+    );
+  };
+
   const handlerSendEmail = () => {
-    sendEmail(setMessage, id_user, undefined, "verifyAccount");
+    sendEmail(setMessage, parseInt(id_user), undefined, "verifyAccount");
   };
 
   useEffect(() => {
@@ -39,6 +49,7 @@ export default function ConfirmVerifiedCode() {
         "background-color:#76c2f5;";
     }
   });
+
   return (
     <>
       <div className="container-text">
@@ -50,40 +61,41 @@ export default function ConfirmVerifiedCode() {
       <div className="inputs_code">
         <input
           type="text"
+          id="input_1"
+          value={code1}
           className="input-field input_digit"
           onChange={(event) => {
             setCode1(event.target.value);
-            //event.target.setAttribute("disabled", "");
             document.getElementById("input_2").focus();
           }}
         />
         <input
           id="input_2"
           type="text"
+          value={code2}
           className="input-field input_digit"
           onChange={(event) => {
             setCode2(event.target.value);
-            //event.target.setAttribute("disabled", "");
             document.getElementById("input_3").focus();
           }}
         />
         <input
           type="text"
           id="input_3"
+          value={code3}
           className="input-field input_digit"
           onChange={(event) => {
             setCode3(event.target.value);
-            //event.target.setAttribute("disabled", "");
             document.getElementById("input_4").focus();
           }}
         />
         <input
           type="text"
           id="input_4"
+          value={code4}
           className="input-field input_digit"
           onChange={(event) => {
             setCode4(event.target.value);
-            //event.target.setAttribute("disabled", "");
           }}
         />
       </div>

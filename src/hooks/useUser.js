@@ -29,19 +29,23 @@ export default function useUser(usenavigate) {
 
             }
         },
-        confirmVerifyCode: async (handlerError, id_user, code_verify) => {
+        confirmVerifyCode: async (handlerError, id_user, code_verify, actionClear) => {
             try {
-                const resp = await resource(`/api/v1/auth/signup/confirmEmail/${id_user}`, { codigo_ingresado: code_verify })
+                const resp = await resource(`/api/v1/auth/signup/confirmEmail/${id_user}`, { entered_code: code_verify })
                 const data = await resp.json()
-                console.log(data);
+                // console.log(data);
                 if (!resp.ok) {
                     handlerError([data.message])
+
                     return
                 }
                 window.sessionStorage.setItem('tkn', data.tkn)
                 usenavigate(`/home/feed`)
             } catch (e) {
                 handlerError([e.message])
+            }
+            finally {
+                actionClear()
             }
         }
         ,
