@@ -78,7 +78,7 @@ export default function ViewProfile({ mode_foreign = false }) {
     <>
       {activate_view_friends ? (
         <ViewFriendList
-          friends={friends_view}
+          friends_view={friends_view}
           actionCloseAction={setActivate_view_friend}
           actionSelectFriend={handlerActionSelectFriend}
         />
@@ -127,7 +127,7 @@ export default function ViewProfile({ mode_foreign = false }) {
                         onClick={() => {
                           alert("Esta funcion se encuentra en desarollo");
                         }}
-                        className="button_edit_profile"
+                        className="button_option_friend"
                       >
                         Eliminar amigo
                       </div>
@@ -138,7 +138,7 @@ export default function ViewProfile({ mode_foreign = false }) {
                       onClick={() => {
                         alert("Esta funcion se encuentra en desarollo");
                       }}
-                      className="button_edit_profile"
+                      className="button_option_friend"
                     >
                       Añadir amigo
                     </div>

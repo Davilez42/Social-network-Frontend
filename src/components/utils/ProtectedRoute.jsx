@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Navigate, Outlet } from "react-router-dom";
-import { UserContextProvider } from "../../context/userContext.js";
+import { UserContextProvider } from "../../context/userContext.jsx";
 export default function ProtectedRoute() {
   const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
 

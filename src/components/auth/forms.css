@@ -128,6 +128,10 @@ label {
     transition: background-color 0.3s, color 0.3s;
 }
 
+.logo_snapwire {
+    width: 50%;
+}
+
 .button:hover {
     background-color: #4298f5;
 }

@@ -12,6 +12,14 @@
   text-align: center;
 }
 
+.container_button_option {
+  width: 100%;
+}
+
+.container_button_option .button_option_friend {
+  float: right;
+}
+
 .title_container {
   color: rgb(156, 156, 156);
 }
@@ -25,12 +33,6 @@
   height: 410px;
   background-color: #ffffff;
 }
-
-.friend-list div:hover {
-  background-color: #ffffff;
-}
-
-
 
 .card_friend_friend_list {
   display: flex;

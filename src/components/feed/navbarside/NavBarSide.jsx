@@ -1,18 +1,11 @@
-import React, { useContext } from "react";
-import {
-  FaUser,
-  FaEnvelope,
-  FaHandshake,
-  FaSignOutAlt,
-  FaCog,
-} from "react-icons/fa";
+import { useContext } from "react";
+import { FaUser, FaEnvelope, FaSignOutAlt, FaCog } from "react-icons/fa";
 import "./navbarside.css";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../../../context/userContext";
 import { useCookies } from "react-cookie";
 export default function NavBarSide() {
-  const { username, fullname, numberFriends, numberPosts, url_avatar } =
-    useContext(UserContext);
+  const { username, url_avatar } = useContext(UserContext);
   const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
 
   return (
@@ -22,7 +15,6 @@ export default function NavBarSide() {
           <img src={url_avatar} className="avatar loading" alt="" />
         </NavLink>
         <div className="container_alias">
-          <p className="title_name"> {fullname}</p>
           <p className="title_username">{username}</p>
         </div>
       </div>
@@ -45,7 +37,7 @@ export default function NavBarSide() {
         </NavLink>
 
         <NavLink
-          className="item_list_main"
+          className="item_list_main item_logout"
           to="/login"
           onClick={() => {
             window.sessionStorage.removeItem("tkn");

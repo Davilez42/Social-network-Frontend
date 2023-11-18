@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import "./headermain.css";
 import { NavLink } from "react-router-dom";
+import logo2 from "../../../assets/logo2.png";
+
 export default function HeaderMain() {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -10,7 +12,7 @@ export default function HeaderMain() {
       <header className="header-main">
         <div className="container_logo_navbar">
           <NavLink to="/home/feed" className="item">
-            <p className="title-main title_logo_navbar">Snapwire</p>
+            <img className="logo_snapwire_main" src={logo2} alt="" />
           </NavLink>
         </div>
         <div className="search-bar">

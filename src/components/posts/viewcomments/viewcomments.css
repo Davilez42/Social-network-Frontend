@@ -7,7 +7,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    left: 25%;
+    left: 27%;
     width: 530px;
     top: 100px;
     height: 630px;
@@ -28,12 +28,10 @@
 .back_feed_main {
     color: black;
     float: left;
+    cursor: pointer;
 }
 
-.back {
-    top: 14px;
-    left: 20px;
-}
+
 
 .info_message {
     color: rgb(122, 122, 122);
@@ -115,6 +113,10 @@
     display: flex;
     gap: 20px;
     align-items: center;
+}
+
+.button_send_Comments {
+    cursor: pointer;
 }
 
 @media (max-width: 1200px) {

@@ -29,7 +29,8 @@
     gap: 40px;
 }
 
-.button_edit_profile {
+.button_edit_profile,
+.button_option_friend {
     color: rgb(255, 255, 255);
     border-radius: 5px;
     text-decoration: none;
@@ -40,6 +41,10 @@
     align-items: center;
     background-color: rgb(75, 171, 255);
     cursor: pointer;
+}
+
+.button_option_friend {
+    float: right;
 }
 
 .button_edit_profile:hover {

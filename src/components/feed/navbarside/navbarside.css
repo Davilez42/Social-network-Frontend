@@ -1,14 +1,11 @@
 .container-navbar-side {
-  width: 23%;
+
+  width: 19%;
   display: flex;
   background-color: rgb(255, 255, 255);
   flex-direction: column;
-  border: 1px solid rgb(243, 243, 243);
-  border-radius: 10px;
-  padding-bottom: 30px;
-  height: min-content;
-  align-self: flex-start;
-  margin-top: 50px;
+  height: 85vh;
+  border: 1px solid rgb(241, 241, 241);
   font-family: 'Lato', sans-serif;
 }
 
@@ -16,7 +13,6 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-
 }
 
 .text_logout {
@@ -24,25 +20,19 @@
 }
 
 .avatar {
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
   cursor: pointer;
   border-radius: 50%;
-  border: 6px solid rgb(224, 224, 224);
+  border: 3px solid rgb(224, 224, 224);
   display: flex;
   align-items: center;
   margin-top: 40px;
   justify-content: center;
 }
 
-.title_name {
-  font-weight: 900;
-  font-size: 22px;
-  margin: 0;
-  text-transform: lowercase;
-  color: #515151;
-}
+
 
 .title_username {
   margin: 0;
@@ -59,17 +49,20 @@
 .item,
 .item_list_main {
   margin: 0;
-  color: #424242;
+  color: #080808;
   font-size: medium;
-  font-weight: 900;
+  font-weight: 100;
   text-decoration: none;
 }
+
+
 
 .list-items-main {
   margin-top: 30px;
   display: flex;
   padding-left: 22%;
-  color: #424242;
+  height: 100vh;
+  color: #000000;
   flex-direction: column;
 }
 
@@ -80,7 +73,7 @@
 .item_list_main {
   display: flex;
   gap: 13px;
-  color: #7f7f7f;
+  color: #2b2b2b;
   align-items: center;
 }
 

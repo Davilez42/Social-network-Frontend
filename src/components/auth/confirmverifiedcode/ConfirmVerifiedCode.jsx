@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 
 import useUser from "../../../hooks/useUser";
 import { NavLink, useNavigate } from "react-router-dom";
-import { editableInputTypes } from "@testing-library/user-event/dist/utils";
 
 export default function ConfirmVerifiedCode() {
   const { id_user, name } = useParams();

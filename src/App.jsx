@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import React from "react";
 import Profile from "./pages/Profile";
 import { CookiesProvider } from "react-cookie";
 import Register from "./components/auth/register/Register";
@@ -14,94 +13,92 @@ import CreateNewPasswordReset from "./components/auth/createNewPasswordReset/Cre
 import Home from "./pages/Home";
 import FeedMain from "./components/feed/viewMain/FeedMain";
 import ViewProfile from "./components/user/ViewProfile/ViewProfile";
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import ViewConfiguration from "./components/user/viewConfiguration/ViewConfiguration";
 const routes = createBrowserRouter([
-
   {
     path: "",
     element: <RedirectRouteIndex />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Forms />,
         children: [
           {
-            path: '/login',
-            element: <Login />
-
+            path: "/login",
+            element: <Login />,
           },
           {
-            path: '/register',
-            element: <Register />
+            path: "/register",
+            element: <Register />,
           },
           {
-            path: '/confirmEmail/:id_user/:name',
+            path: "/confirmEmail/:id_user/:name",
             props: true,
             element: <ConfirmVerifiedCode />,
-          }, {
-            path: '/passwordRestore',
-            element: <RestorePassword />
           },
           {
-            path: '/createNewPassword/:accesToken',
-            element: <CreateNewPasswordReset />
-          }
-        ]
-      }
+            path: "/passwordRestore",
+            element: <RestorePassword />,
+          },
+          {
+            path: "/createNewPassword/:accesToken",
+            element: <CreateNewPasswordReset />,
+          },
+        ],
+      },
     ],
   },
   {
     element: <ProtectedRoute />,
     children: [
       {
-        path: '/home',
+        path: "/home",
         element: <Home />,
         children: [
           {
-            path: 'feed',
-            element: <FeedMain />
+            path: "feed",
+            element: <FeedMain />,
           },
           {
-            path: 'profile',
+            path: "profile",
             element: <Profile />,
             children: [
               {
-                path: 'edit',
+                path: "edit",
                 props: true,
-                element: <EditFormProfile />
+                element: <EditFormProfile />,
               },
               {
-                path: 'view',
-                element: <ViewProfile />
+                path: "view",
+                element: <ViewProfile />,
               },
               {
-                path: 'view/:id_user_view',
+                path: "view/:id_user_view",
                 element: <ViewProfile mode_foreign={true} />,
-                props: true
+                props: true,
               },
               {
-                path: 'config',
-                element: <ViewConfiguration />
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-
-
-
-])
+                path: "config",
+                element: <ViewConfiguration />,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]);
 function App() {
-  return <>
-    <CookiesProvider defaultSetOptions={{ path: "/" }}>
-      <GoogleOAuthProvider clientId="850844004503-ij5nnakoum3lr6tnetu1up7ost42pqi6.apps.googleusercontent.com">
-        <RouterProvider router={routes} />
-      </GoogleOAuthProvider>
-    </CookiesProvider>
-  </>
+  return (
+    <>
+      <CookiesProvider defaultSetOptions={{ path: "/" }}>
+        <GoogleOAuthProvider clientId="850844004503-ij5nnakoum3lr6tnetu1up7ost42pqi6.apps.googleusercontent.com">
+          <RouterProvider router={routes} />
+        </GoogleOAuthProvider>
+      </CookiesProvider>
+    </>
+  );
 }
 
 export default App;

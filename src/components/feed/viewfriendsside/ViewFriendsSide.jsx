@@ -1,5 +1,6 @@
+/* eslint-disable react/no-unknown-property */
 import { useContext } from "react";
-import { UserContext } from "../../../context/userContext";
+import { UserContext } from "../../../context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import "./viewfriendsside.css";
 

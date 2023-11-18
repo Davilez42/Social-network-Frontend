@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
 import { AiTwotoneHeart } from "react-icons/ai";
 import "./mainviewposts.css";
 import {
@@ -9,26 +8,15 @@ import {
 } from "react-icons/bi";
 import ViewComments from "../viewcomments/ViewComments.jsx";
 import { useNavigate } from "react-router-dom";
+import useUser from "../../../hooks/useUser.js";
+import ButtonLike from "../buttonlike/ButtonLike.jsx";
 export default function MainViewPost({ posts, info_author = true }) {
-  const [stateComments, setStateComments] = useState(false);
-  const [postSelect, setPostSelect] = useState();
+  const { id_user } = useUser();
+
   const usenavigate = useNavigate();
-  const handlerLike = (id_post) => {
-    console.log(stateComments);
-    console.log("LIKE POST ", id_post);
-  };
 
   return (
     <>
-      {stateComments ? (
-        <ViewComments
-          key={501}
-          id_post={postSelect}
-          handlerClose={setStateComments}
-        />
-      ) : (
-        <></>
-      )}
       <div className="container-posts">
         {posts.length !== 0 ? (
           posts.map((post, ind) => (
@@ -72,7 +60,7 @@ export default function MainViewPost({ posts, info_author = true }) {
                   }
                 >
                   {post.media_links.map((media, ind) => {
-                    if (!media) return;
+                    if (!media) return <></>;
                     const format = media.split(".").pop().toLowerCase();
                     if (format === "mp4") {
                       return (
@@ -96,35 +84,19 @@ export default function MainViewPost({ posts, info_author = true }) {
                         />
                       );
                     }
+                    return <></>;
                   })}
                 </div>
               </div>
               <div className="info_post_options">
                 <div className="option">
-                  {false ? (
-                    <AiTwotoneHeart
-                      key={503}
-                      onClick={() => handlerLike(post.id_post)}
-                      size={30}
-                      color="red"
-                    />
-                  ) : (
-                    <BiHeart
-                      key={504}
-                      onClick={() => handlerLike(post.id_post)}
-                      size={30}
-                    />
-                  )}
-                  <p>{parseInt(Math.random() * 1000)}</p>
+                  <ButtonLike likes_post={post.likes} id_post={post.id_post} />
                 </div>
-                <div>
-                  <BiCommentDetail
-                    className="option"
-                    onClick={() => {
-                      setPostSelect(post.id_post);
-                      setStateComments(true);
-                    }}
-                    size={30}
+                <div className="option">
+                  <ViewComments
+                    key={501}
+                    id_post={post.id_post}
+                    count_comments={post.countcomments}
                   />
                 </div>
               </div>

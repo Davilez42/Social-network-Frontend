@@ -1,12 +1,13 @@
-import React, { useState, useContext } from "react";
+/* eslint-disable no-undef */
 import { Outlet } from "react-router-dom";
+import logo from "../../assets/type10.png";
 import "./forms.css";
 export default function Forms() {
   return (
     <>
       <div className="container-forms">
         <div className="mainform">
-          <p className="title-main">Snapwire</p>
+          <img className="logo_snapwire" src={logo} alt="" />
           {<Outlet />}
         </div>
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useCookies } from "react-cookie";
 import resource from "../services/source";
 import PermissionInvalid from "../exceptions/PermissionInvalid";
