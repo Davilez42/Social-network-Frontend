@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { AiTwotoneHeart } from "react-icons/ai";
-import { BiHeart } from "react-icons/bi";
+import { FcLike } from "react-icons/fc";
+import { AiOutlineHeart } from "react-icons/ai";
 import { UserContext } from "../../../context/userContext";
 import { useContext } from "react";
 import usePost from "../../../hooks/usePost";
@@ -31,7 +32,8 @@ export default function ButtonLike({ id_post, likes_post }) {
   return (
     <>
       {state_button ? (
-        <AiTwotoneHeart
+        <FcLike
+          className="liked"
           key={503}
           onClick={() => {
             setState_button(false);
@@ -39,10 +41,9 @@ export default function ButtonLike({ id_post, likes_post }) {
             handlerLike(id_post);
           }}
           size={30}
-          color="red"
         />
       ) : (
-        <BiHeart
+        <AiOutlineHeart
           key={504}
           onClick={() => {
             setState_Like(state_likes + 1);
