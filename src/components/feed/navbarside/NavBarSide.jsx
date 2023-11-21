@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FaUser, FaEnvelope, FaSignOutAlt, FaCog } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaSignOutAlt, FaCog , FaUsers } from "react-icons/fa";
 import "./navbarside.css";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../../../context/userContext";
@@ -26,6 +26,10 @@ export default function NavBarSide() {
           href="/perfil"
         >
           <FaUser className="icon" size={18} /> <p>Perfil</p>
+        </NavLink>
+
+        <NavLink className="item_list_main" to="/home/solicitudes">
+        <FaUsers className="icon" size={18} /> <p>Solicitudes</p>
         </NavLink>
 
         <NavLink className="item_list_main" href="/mensajes">
