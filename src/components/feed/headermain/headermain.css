@@ -1,12 +1,11 @@
 .header-main {
     margin: 0;
-    display: flex;
+
     width: 100%;
-    height: 50px;
-    margin-bottom: 15px;
+    display: flex;
+    height: min-content;
+    flex-direction: row;
     border-bottom: 1px solid rgb(252, 252, 252);
-    flex-wrap: wrap;
-    align-items: center;
 }
 
 .title_logo_navbar {
@@ -19,16 +18,18 @@
 
 #input_search {
     border: 1px solid rgb(255, 255, 255);
+    width: 90%;
     height: 30px;
     border-radius: 100px;
     background-color: #f1f2f6;
 }
 
 .search-bar {
-    width: 33%;
+    width: 30%;
     display: flex;
     gap: 30px;
     align-items: center;
+    margin-left: 130px;
 }
 
 .logo_snapwire_main {
@@ -36,27 +37,6 @@
     margin-left: 20px;
 }
 
-.navbar-box {
-    width: 33%;
-    justify-content: end;
-}
-
-.nav-list {
-    padding: 0;
-    display: flex;
-    width: 100%;
-    gap: 16px;
-    justify-content: end;
-}
-
-.item-navbar-list {
-    color: rgb(106, 106, 106);
-    text-decoration: none;
-}
-
-.item-navbar-list:hover {
-    color: rgb(37, 37, 37);
-}
 
 
 @media (max-width: 1000px) {

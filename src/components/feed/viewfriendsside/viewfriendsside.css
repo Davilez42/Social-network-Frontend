@@ -1,9 +1,8 @@
 .container-view-friends {
     background-color: rgb(255, 255, 255);
-    width: 10%;
-    height: 80vh;
-    border: 1px solid rgb(238, 238, 238);
-    border-radius: 5px;
+    width: 35%;
+    height: 100vh;
+    outline: 1px solid rgb(238, 238, 238);
 }
 
 .avatar_friend {
@@ -27,10 +26,11 @@
     justify-content: center;
     overflow-y: visible;
     overflow-x: hidden;
-    max-height: 73vh;
+    max-height: 83vh;
+    /*Estilos estándar experimentales (Principalmente Firefox)*/
+    scrollbar-color: rgba(226, 226, 226, 0.5) rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
 }
-
-
 
 
 .card_friend {
@@ -46,7 +46,7 @@
     font-size: 13px;
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 600px) {
     .container-view-friends {
         width: 100%;
         display: flex;
@@ -56,10 +56,12 @@
 
     .container_friends {
         width: 100%;
+
         flex-wrap: nowrap;
+        justify-content: start;
         overflow-x: scroll;
         overflow-y: hidden;
-
+        gap: 20px;
     }
 
     .title_navbar_side {
@@ -69,7 +71,5 @@
         height: 30px;
     }
 
-    .card_friend p {
-        display: none;
-    }
+
 }

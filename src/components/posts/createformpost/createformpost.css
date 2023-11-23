@@ -1,12 +1,22 @@
 .container-form-create-post {
+    position: absolute;
     display: flex;
-    width: 70%;
+    left: 0;
+    right: 0;
+    top: 190px;
+    margin: 0 auto;
+    width: 40%;
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
     align-self: self-start;
     background-color: rgb(255, 255, 255);
-    border-radius: 10px;
+    border-radius: 5px;
+}
+
+.icon_back_create_view {
+    width: 95%;
+    margin-top: 5px;
 }
 
 .container_data {

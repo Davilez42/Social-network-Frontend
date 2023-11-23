@@ -3,13 +3,42 @@
   position: absolute;
   border: 1px solid rgb(241, 241, 241);
   border-radius: 6px;
-  width: 25%;
-  left: 55%;
-  top: 23%;
+  width: 35%;
+  left: 0;
+  right: 0;
+  top: 150px;
+  margin: 0 auto;
   height: 470px;
-  cursor: pointer;
-
   text-align: center;
+  animation: open_container_friendlist;
+  animation-delay: 0;
+  animation-duration: .1s;
+}
+
+@keyframes open_container_friendlist {
+  0% {
+    filter: brightness(10%);
+    overflow: hidden;
+    width: 600px;
+    height: 600px;
+  }
+
+  50% {
+    filter: brightness(30%);
+
+    overflow: hidden;
+  }
+
+  70% {
+    filter: brightness(70%);
+
+    overflow: hidden;
+  }
+
+  100% {
+    filter: brightness(100%);
+    overflow: none;
+  }
 }
 
 .container_button_option {
@@ -49,5 +78,21 @@
 .avatar_friend_list {
   width: 50px;
   height: 50px;
-  border-radius: 100px
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.card_name_user {
+  cursor: pointer;
+}
+
+
+@media (max-width: 600px) {
+  .container_friend_list_profile {
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0%;
+    height: 100vh;
+  }
 }

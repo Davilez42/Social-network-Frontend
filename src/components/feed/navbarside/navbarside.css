@@ -1,34 +1,33 @@
 .container-navbar-side {
 
-  width: 19%;
+  width: 70%;
   display: flex;
   background-color: rgb(255, 255, 255);
   flex-direction: column;
-  height: 85vh;
-  border: 1px solid rgb(241, 241, 241);
+  justify-content: center;
+  height: 100vh;
   font-family: 'Lato', sans-serif;
 }
 
 .container_side_avatar {
   display: flex;
+  width: 80%;
   align-items: center;
-  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  flex-direction: row;
 }
 
-.text_logout {
-  color: rgb(87, 87, 87);
-}
 
 .avatar {
-  width: 70px;
-  height: 70px;
+  width: 40px;
+  height: 40px;
   object-fit: cover;
   cursor: pointer;
   border-radius: 50%;
   border: 3px solid rgb(224, 224, 224);
   display: flex;
   align-items: center;
-  margin-top: 40px;
   justify-content: center;
 }
 
@@ -50,6 +49,7 @@
 .item_list_main {
   margin: 0;
   color: #080808;
+  cursor: pointer;
   font-size: medium;
   font-weight: 100;
   text-decoration: none;
@@ -60,15 +60,13 @@
 .list-items-main {
   margin-top: 30px;
   display: flex;
-  padding-left: 22%;
-  height: 100vh;
+  padding-left: 15%;
+  gap: 5px;
+  height: 70vh;
   color: #000000;
   flex-direction: column;
 }
 
-.icon {
-  color: #181818;
-}
 
 .item_list_main {
   display: flex;
@@ -77,8 +75,28 @@
   align-items: center;
 }
 
+.box_icon {
+  width: 12%;
+}
 
-@media (max-width: 1035px) {
+.icon {
+  color: #181818;
+  transition: all .3s;
+}
+
+.icon:hover {
+  width: 30px;
+  height: 30px;
+}
+
+
+
+.item_list_main p {
+  width: 50%;
+}
+
+
+@media (max-width: 600px) {
   .container-navbar-side {
     display: none;
   }

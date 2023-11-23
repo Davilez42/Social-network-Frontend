@@ -71,6 +71,7 @@ export function UserContextProvider(props) {
           setConfPrivate,
           setConfNotifications,
           setConfRequests,
+          setFriends,
         }}
       >
         {props.children}

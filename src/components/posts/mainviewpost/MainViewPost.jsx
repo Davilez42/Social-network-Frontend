@@ -1,18 +1,10 @@
-import React, { useState } from "react";
-import { AiTwotoneHeart } from "react-icons/ai";
 import "./mainviewposts.css";
-import {
-  BiHeart,
-  BiCommentDetail,
-  BiDotsHorizontalRounded,
-} from "react-icons/bi";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { GoBookmark } from "react-icons/go";
 import ViewComments from "../viewcomments/ViewComments.jsx";
 import { useNavigate } from "react-router-dom";
-import useUser from "../../../hooks/useUser.js";
 import ButtonLike from "../buttonlike/ButtonLike.jsx";
 export default function MainViewPost({ posts, info_author = true }) {
-  const { id_user } = useUser();
-
   const usenavigate = useNavigate();
 
   return (
@@ -98,6 +90,9 @@ export default function MainViewPost({ posts, info_author = true }) {
                     id_post={post.id_post}
                     count_comments={post.countcomments}
                   />
+                </div>
+                <div className="option option_saved_post">
+                  <GoBookmark size={25} />
                 </div>
               </div>
             </div>

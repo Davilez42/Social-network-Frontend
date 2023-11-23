@@ -29,16 +29,6 @@ export default function HeaderMain() {
             <FaSearch />
           </div>
         </div>
-        <nav className="navbar-box">
-          <ul className="nav-list">
-            <NavLink to="/home/feed" className="item-navbar-list">
-              Inicio
-            </NavLink>
-            <NavLink className="item-navbar-list">Ayuda</NavLink>
-            <NavLink className="item-navbar-list">Contactos</NavLink>
-            <NavLink className="item-navbar-list">Acerca de nosotros</NavLink>
-          </ul>
-        </nav>
       </header>
     </>
   );

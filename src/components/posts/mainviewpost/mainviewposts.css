@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    width: 100%;
+    gap: 15px;
+    width: 90%;
 
 }
 
@@ -23,11 +23,10 @@
 }
 
 .card_post {
-    width: 70%;
+    width: 100%;
     background-color: rgb(255, 255, 255);
-    padding-top: 20px;
-
-    border-radius: 10px;
+    border-bottom: 1px solid rgb(221, 221, 221);
+    border-radius: 1px;
 }
 
 .info_owner {
@@ -44,7 +43,6 @@
     display: flex;
     min-height: max-content;
     justify-content: center;
-    border-bottom: 1px solid rgb(231, 231, 231);
     padding-bottom: 20px;
     max-height: 500px;
 }
@@ -55,25 +53,19 @@
     gap: 10px;
     overflow-y: hidden;
     overflow-x: auto;
-
-    padding: 5px;
 }
 
 .image_media,
 .video_media {
     min-width: 350px;
-    max-width: 520px;
+    max-width: 100%;
     min-height: 400px;
     max-height: 500px;
-    border-radius: 4px;
-}
-
-.image_media {
-    border: 1px solid rgb(240, 240, 240);
 }
 
 .list_options_post {
-    float: right;
+    margin-left: auto;
+    margin-right: 20px;
 }
 
 .option {
@@ -88,11 +80,22 @@
     padding-left: 30px;
     display: flex;
     gap: 40px;
-    align-items: center;
+    flex-direction: row;
+}
+
+.option_saved_post {
+    margin-left: auto;
+    margin-right: 10px;
 }
 
 
+
+
 @media (max-width: 1000px) {
+    .container-posts {
+        width: 100%;
+    }
+
     .card_post {
         width: 100%;
     }

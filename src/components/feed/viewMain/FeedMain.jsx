@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import NavBarSide from "../navbarside/NavBarSide";
-import CreateFormPosts from "../../posts/createformpost/CreateFormPost";
 import MainViewPost from "../../posts/mainviewpost/MainViewPost";
 import "./feedmain.css";
 import ViewFriendsSide from "../viewfriendsside/ViewFriendsSide.jsx";
@@ -14,19 +13,20 @@ export default function FeedMain() {
   const { getPosts } = usePost(navigate);
 
   useEffect(() => {
-    console.log("RENDERIZA FEED PRINCIPAL");
     setReload(false);
     getPosts(setInfo, setPosts);
   }, [reload]);
 
   return (
     <>
-      <ViewFriendsSide />
+      <div className="container-feed-side">
+        <NavBarSide />
+        <ViewFriendsSide />
+      </div>
+
       <div className="container-feed-main">
-        <CreateFormPosts />
         <MainViewPost posts={posts} />
       </div>
-      <NavBarSide />
     </>
   );
 }

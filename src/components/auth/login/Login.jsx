@@ -12,7 +12,6 @@ function Login() {
 
   const handlerLogin = () => {
     if (correoElectronico.trim() !== "" && contrasena.trim() !== "") {
-      console.log("ENVIA DATOS");
       userLogin(setMessage, correoElectronico, contrasena);
     }
   };
@@ -45,7 +44,7 @@ function Login() {
         id="input_email"
         required
         className="input-field"
-        placeholder="Correo electrónico"
+        placeholder="Correo electrónico o usuario"
         value={correoElectronico}
         onChange={(e) => setCorreoElectronico(e.target.value)}
       />

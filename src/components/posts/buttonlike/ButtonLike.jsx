@@ -40,7 +40,7 @@ export default function ButtonLike({ id_post, likes_post }) {
             setState_Like(state_likes - 1);
             handlerLike(id_post);
           }}
-          size={30}
+          size={29}
         />
       ) : (
         <AiOutlineHeart

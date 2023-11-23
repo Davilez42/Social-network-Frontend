@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import "./viewprofile.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import MainViewPost from "../../posts/mainviewpost/MainViewPost";
@@ -12,7 +13,7 @@ import ViewFriendList from "../viewfriendslist/ViewFriendList";
 
 export default function ViewProfile({ mode_foreign = false }) {
   const navigate = useNavigate();
-  const { getInfoUser } = useUser(navigate);
+  const { getInfoUser, sendRequestFriend } = useUser(navigate);
   const { getPosts } = usePost(navigate);
 
   const { id_user_view } = useParams();
@@ -26,6 +27,7 @@ export default function ViewProfile({ mode_foreign = false }) {
 
   const [view_private, setView_Private] = useState(false);
   const [activate_view_friends, setActivate_view_friend] = useState(false);
+  const [sendRequest, setSendRequest] = useState(false);
   //Contexto del usuario
   const [refresh, setRefresh] = useState(false);
 
@@ -37,11 +39,13 @@ export default function ViewProfile({ mode_foreign = false }) {
     username,
     user_bio,
     url_avatar,
+    setFriends,
   } = useContext(UserContext);
 
   useEffect(() => {
     if (!id_user && !id_user_view) return;
     if (id_user_view && parseInt(id_user_view) !== id_user) {
+      console.log("conecta");
       getPosts(setInfo, setPosts_view, id_user_view, false);
       getInfoUser(
         setInfo,
@@ -62,7 +66,7 @@ export default function ViewProfile({ mode_foreign = false }) {
     setFullname_view(fullname);
     setAvatar_view(url_avatar);
     setUsername_view(username);
-    setFriends_view(friends);
+    setFriends_view(friends.filter((f) => f.friend_state === "accepted"));
     setUser_Bio_view(user_bio);
     getPosts(setInfo, setPosts_view, id_user);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,6 +76,21 @@ export default function ViewProfile({ mode_foreign = false }) {
     navigate(`/home/profile/view/${id_user}`);
     setActivate_view_friend(false);
     setRefresh(!refresh);
+  };
+
+  const actionRevert = () => {
+    setFriends(friends.filter((f) => f.user[0] !== parseInt(id_user_view)));
+  };
+
+  const handlerSendRequest = () => {
+    if (!id_user_view) return;
+    sendRequestFriend(setInfo, id_user_view, actionRevert);
+  };
+
+  const handlerDeleteRequest = () => {
+    if (!id_user_view) return;
+    setFriends(friends.filter((f) => f.user[0] !== parseInt(id_user_view)));
+    setSendRequest(false);
   };
 
   return (
@@ -91,23 +110,8 @@ export default function ViewProfile({ mode_foreign = false }) {
             <img className="avatar avatar_profile" src={avatar_view} alt="" />
           </div>
           <div className="container_info">
-            <div className="title_fullname">{fullname_view}</div>
-            <div className="title_username">@{username_view}</div>
-
-            <div className="info_perfil view_perfil">
-              <div>
-                <p className="item">{posts_view?.length || 0}</p>
-                Publicaciones
-              </div>
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  setActivate_view_friend(!activate_view_friends);
-                }}
-              >
-                <p className="item">{friends_view.length}</p>
-                Amigos
-              </div>
+            <div className="box_fullname">
+              <span className="title_fullname">{fullname_view}</span>
 
               {(() => {
                 const id_user_v = parseInt(id_user_view);
@@ -121,22 +125,64 @@ export default function ViewProfile({ mode_foreign = false }) {
                     </NavLink>
                   );
                 } else {
-                  if (friends.some((f) => f.user[0] === id_user_v)) {
-                    return (
-                      <div
-                        onClick={() => {
-                          alert("Esta funcion se encuentra en desarollo");
-                        }}
-                        className="button_option_friend"
-                      >
-                        Eliminar amigo
-                      </div>
-                    );
+                  const friend_found = friends.filter(
+                    (f) => f.user[0] === id_user_v
+                  );
+                  console.log(friend_found);
+                  if (friend_found.length !== 0) {
+                    if (friend_found[0].friend_state === "accepted") {
+                      return (
+                        <div
+                          onClick={() => {
+                            alert("Esta funcion se encuentra en desarollo");
+                          }}
+                          className="button_option_friend"
+                        >
+                          Eliminar amigo
+                        </div>
+                      );
+                    }
+                    if (friend_found[0].friend_state === "pending") {
+                      if (friend_found[0].user_requesting === id_user)
+                        return (
+                          <div
+                            onClick={() => {
+                              handlerDeleteRequest();
+                            }}
+                            className="button_option_friend"
+                          >
+                            Cancelar solicitud
+                          </div>
+                        );
+
+                      return (
+                        <div
+                          onClick={() => {
+                            handlerSendRequest();
+                            setRefresh(!refresh);
+                          }}
+                          className="button_option_friend"
+                        >
+                          Aceptar solicitud
+                        </div>
+                      );
+                    }
                   }
-                  return (
+                  //||friends_view.some((f) =>f.user[0] === parseInt(id_user_view) && f.friend_state === "pending")
+                  return sendRequest ? (
                     <div
                       onClick={() => {
-                        alert("Esta funcion se encuentra en desarollo");
+                        handlerDeleteRequest();
+                      }}
+                      className="button_option_friend"
+                    >
+                      Cancelar solicitud
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        setSendRequest(true);
+                        handlerSendRequest();
                       }}
                       className="button_option_friend"
                     >
@@ -146,8 +192,25 @@ export default function ViewProfile({ mode_foreign = false }) {
                 }
               })()}
             </div>
+            <div className="title_username">@{username_view}</div>
 
-            <div>{user_bio_view}</div>
+            <div className="info_perfil view_perfil">
+              <div>
+                <p className="item">{posts_view?.length || 0}</p>
+                publicaciones
+              </div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  setActivate_view_friend(!activate_view_friends);
+                }}
+              >
+                <p className="item">{friends_view.length}</p>
+                amigos
+              </div>
+            </div>
+
+            <div className="box_user_bio">{user_bio_view}</div>
           </div>
         </div>
 

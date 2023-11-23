@@ -5,7 +5,8 @@ import { PiArrowLeftBold } from "react-icons/pi";
 import { BiNavigation } from "react-icons/bi";
 import { UserContext } from "../../../context/userContext.jsx";
 import { BiCommentDetail } from "react-icons/bi";
-
+import formatDate from "../../../helpers/formatDate.js";
+// eslint-disable-next-line react/prop-types
 export default function ViewComments({ id_post, count_comments }) {
   const { getCommentsPost, sendComment } = usePost();
   const { username, url_avatar, setInfo, id_user } = useContext(UserContext);
@@ -24,7 +25,10 @@ export default function ViewComments({ id_post, count_comments }) {
   const handlerSendComment = () => {
     if (text.trim() !== "") {
       sendComment(setInfo, id_post, text);
-      setComments([{ username, id_user, url_avatar, text }, ...comments]);
+      setComments([
+        { username, id_user, url_avatar, text, date_created: new Date() },
+        ...comments,
+      ]);
       setText("");
     }
   };
@@ -37,69 +41,79 @@ export default function ViewComments({ id_post, count_comments }) {
         size={30}
       />
       <span>{countComments}</span>
-      {state_view ? (
-        <div className="container_view_comments">
-          <div className="header_comments">
-            <PiArrowLeftBold
-              className="back_feed_main"
-              onClick={() => {
-                setSate_view(false);
-              }}
-              size={30}
-            />
-            <p>Comentarios</p>
-          </div>
 
-          <div className="container_comments">
-            {(() => {
-              if (comments) {
-                if (comments.length === 0) {
-                  return (
-                    <p className="info_message">Todavia no hay comentarios</p>
-                  );
-                }
-                return comments.map((comment, ind) => (
-                  <div key={ind} className="card_comment">
-                    <div className="container_avatar_owner">
-                      <img
-                        src={comment.url_avatar}
-                        className="avatar avatar_comment_owner"
-                        alt=""
-                      />
-                    </div>
-                    <div className="metadata">
-                      <div className="box_username"> @{comment.username}</div>
-                      <div className="comment">
-                        <p>{comment.text}</p>
+      {state_view ? (
+        <div className="container_filter">
+          <div className="container_view_comments">
+            <div className="header_comments">
+              <PiArrowLeftBold
+                className="back_feed_main"
+                onClick={() => {
+                  setSate_view(false);
+                }}
+                size={30}
+              />
+              <p>Comentarios</p>
+            </div>
+
+            <div className="container_comments">
+              {(() => {
+                if (comments) {
+                  if (comments.length === 0) {
+                    return (
+                      <p className="info_message">Todavia no hay comentarios</p>
+                    );
+                  }
+                  return comments.map((comment, ind) => (
+                    <div key={ind} className="card_comment">
+                      <div className="container_avatar_owner">
+                        <img
+                          src={comment.url_avatar}
+                          className="avatar avatar_comment_owner"
+                          alt=""
+                        />
+                      </div>
+                      <div className="metadata">
+                        <div className="box_username">
+                          {" "}
+                          @{comment.username}{" "}
+                          <span className="time_comment">
+                            {formatDate(comment.date_created)}
+                          </span>
+                        </div>
+
+                        <div className="comment">
+                          <p>{comment.text}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ));
-              }
+                  ));
+                }
 
-              return <span className="loader"></span>;
-            })()}
-          </div>
-          <div className="cotainer_input_comment">
-            <input
-              type="text"
-              className="input-field input_comment"
-              name=""
-              placeholder="Escribe un comentario..."
-              id=""
-              value={text}
-              onChange={(event) => {
-                setText(event.target.value);
-              }}
-            />
-            <BiNavigation
-              className="button_send_Comments"
-              size={30}
-              onClick={() => {
-                handlerSendComment();
-                setCountComments(countComments + 1);
-              }}
-            />
+                return <span className="loader"></span>;
+              })()}
+            </div>
+            <div className="cotainer_input_comment">
+              <input
+                type="text"
+                className="input-field input_comment"
+                name=""
+                placeholder="Escribe un comentario..."
+                id=""
+                value={text}
+                onChange={(event) => {
+                  setText(event.target.value);
+                }}
+              />
+              <BiNavigation
+                className="button_send_Comments"
+                size={30}
+                onClick={() => {
+                  handlerSendComment();
+                  setCountComments(countComments + 1);
+                }}
+              />
+            </div>
           </div>
         </div>
       ) : (

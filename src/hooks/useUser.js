@@ -78,9 +78,9 @@ export default function useUser(usenavigate) {
                 handlerError([e.message])
             }
         },
-        userLogin: async (handlerError, email, password) => {
+        userLogin: async (handlerError, user, password) => {
             try {
-                const resp = await resource(`/api/v1/auth/sign`, { email, password })
+                const resp = await resource(`/api/v1/auth/sign`, { user, password })
                 const data = await resp.json()
                 if (!resp.ok) {
                     console.log(data);
@@ -123,6 +123,22 @@ export default function useUser(usenavigate) {
                 }
             } catch (e) {
                 handlerError([e.message])
+            }
+        },
+        sendRequestFriend: async (handlerError, id_user, actionRevert) => {
+            try {
+
+                const tkn = window.sessionStorage.getItem("tkn");
+                const resp = await resource(`/api/v1/user/SendFriendReq/${id_user}`, undefined, 'POST', tkn)
+                const data = await resp.json()
+                if (!resp.ok) {
+                    actionRevert()
+                    handlerError([data.message])
+                    return
+                }
+
+            } catch (e) {
+                if (e instanceof PermissionInvalid) return logout()
             }
         },
 

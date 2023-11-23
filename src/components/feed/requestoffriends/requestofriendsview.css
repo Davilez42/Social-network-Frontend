@@ -1,0 +1,61 @@
+.icon_back_request_view {
+    float: right;
+}
+
+.back {
+    cursor: pointer;
+}
+
+#request_container {
+    top: 14%;
+    border-color: rgb(228, 228, 228);
+    height: 500px;
+    cursor: default;
+    animation: open_container_requests;
+    animation-delay: 0;
+    animation-duration: .04s;
+}
+
+@keyframes open_container_requests {
+    0% {
+
+        filter: brightness(10%);
+        overflow: hidden;
+        width: 700px;
+        height: 700px;
+    }
+
+    50% {
+        filter: brightness(30%);
+
+        overflow: hidden;
+    }
+
+    70% {
+        filter: brightness(70%);
+
+        overflow: hidden;
+    }
+
+    100% {
+        filter: brightness(100%);
+        overflow: none;
+        width: 530px;
+        height: 500px;
+    }
+}
+
+.container_button_option_request {
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+    width: 100%;
+}
+
+.container_button_option_request .button_option_request {
+    width: 30%;
+}
+
+.button_option_request:hover {
+    background-color: rgb(163, 163, 163);
+}
