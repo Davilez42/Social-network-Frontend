@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    width: 90%;
+    width: 480px;
 
 }
 
@@ -16,6 +16,10 @@
 .description_post {
     margin-left: 20px;
     width: 90%;
+}
+
+.description_post p {
+    margin: 5px 1px;
 }
 
 .list_options_post {
@@ -36,32 +40,27 @@
     display: flex;
     color: black;
     align-items: center;
-
 }
 
 .container_media_post {
     display: flex;
-    min-height: max-content;
+    width: 100%;
+    max-height: 640px;
     justify-content: center;
-    padding-bottom: 20px;
-    max-height: 500px;
 }
 
 .preview_media {
-    width: 600px;
     display: flex;
-    gap: 10px;
     overflow-y: hidden;
     overflow-x: auto;
 }
 
 .image_media,
 .video_media {
-    min-width: 350px;
     max-width: 100%;
-    min-height: 400px;
-    max-height: 500px;
+    object-fit: contain;
 }
+
 
 .list_options_post {
     margin-left: auto;
@@ -69,7 +68,7 @@
 }
 
 .option {
-    height: 60px;
+    height: 50px;
     display: flex;
     gap: 10px;
     cursor: pointer;
@@ -79,7 +78,8 @@
 .info_post_options {
     padding-left: 30px;
     display: flex;
-    gap: 40px;
+    gap: 20px;
+    min-height: min-content;
     flex-direction: row;
 }
 
@@ -88,7 +88,12 @@
     margin-right: 10px;
 }
 
-
+.box_info_end_posts {
+    color: rgb(173, 173, 173);
+    display: flex;
+    align-items: center;
+    height: 100px;
+}
 
 
 @media (max-width: 1000px) {

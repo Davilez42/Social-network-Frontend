@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import "./moreoptionsview.css";
 import {
   GoSignOut,
@@ -8,9 +7,15 @@ import {
   GoUnverified,
   GoSponsorTiers,
 } from "react-icons/go";
+import useUser from "../../../hooks/useUser";
 import { PiArrowLeftBold } from "react-icons/pi";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../../features/auth/authSlice";
+
 export default function MoreOptionsView({ actionClose }) {
-  const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
+  const dispatch = useDispatch();
+  const { logout } = useUser();
+
   return (
     <>
       <div className="container_filter">
@@ -24,28 +29,19 @@ export default function MoreOptionsView({ actionClose }) {
             >
               <PiArrowLeftBold size={30} />
             </div>
-            <NavLink
-              className="item_list_main item_more_option"
-              to="/home/profile/config"
-            >
+            <NavLink className="item_list_main item_more_option">
               <span className="box_icon">
                 <GoSponsorTiers className="icon" size={25} />
               </span>
               <p>Ayuda</p>
             </NavLink>
-            <NavLink
-              className="item_list_main item_more_option"
-              to="/home/profile/config"
-            >
+            <NavLink className="item_list_main item_more_option">
               <span className="box_icon">
                 <GoUnverified className="icon" size={25} />
               </span>
               <p>Acerca de nosotros</p>
             </NavLink>
-            <NavLink
-              className="item_list_main item_more_option"
-              to="/home/profile/config"
-            >
+            <NavLink className="item_list_main item_more_option">
               <span className="box_icon">
                 <GoUnread className="icon" size={25} />
               </span>
@@ -55,6 +51,9 @@ export default function MoreOptionsView({ actionClose }) {
             <NavLink
               className="item_list_main item_more_option"
               to="/home/profile/config"
+              onClick={() => {
+                actionClose(false);
+              }}
             >
               <span className="box_icon">
                 <GoGear className="icon" size={25} />
@@ -66,8 +65,9 @@ export default function MoreOptionsView({ actionClose }) {
               className="item_list_main item_more_option item_logout_more_options"
               to="/login"
               onClick={() => {
-                window.sessionStorage.removeItem("tkn");
-                removeCookie("tkn");
+                window.localStorage.removeItem("sessionId");
+                dispatch(setAuth(false));
+                logout();
               }}
             >
               <span className="">

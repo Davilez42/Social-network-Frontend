@@ -4,10 +4,10 @@ import Index from "../../pages/Index";
 
 export default function RedirectRouteIndex() {
   // eslint-disable-next-line no-unused-vars
-  const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
-  const tkn = window.sessionStorage.getItem("tkn");
-  //!cookies.tkn && !tkn
-  if (!cookies.tkn && !tkn) {
+  const [cookies, setCookie, removeCookie] = useCookies();
+  const sessionId = window.localStorage.getItem("sessionId");
+
+  if (!cookies.tkn && !sessionId) {
     return <Index />;
   }
   return <Navigate to={`/home/feed`} />;

@@ -1,14 +1,19 @@
 .container-view-friends {
-    background-color: rgb(255, 255, 255);
-    width: 35%;
-    height: 100vh;
-    outline: 1px solid rgb(238, 238, 238);
+    display: flex;
+    width: 90%;
+    flex-wrap: wrap;
+    height: 17vh;
+    gap: 5px;
+}
+
+.container-view-friends p {
+    margin: 0;
 }
 
 .avatar_friend {
-    width: 50px;
+    width: 60px;
     margin: 0;
-    height: 50px;
+    height: 60px;
     border: none;
 }
 
@@ -20,13 +25,11 @@
 
 .container_friends {
     width: 100%;
+    gap: 20px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    justify-content: center;
-    overflow-y: visible;
-    overflow-x: hidden;
-    max-height: 83vh;
+    padding-left: 25px;
+    overflow-y: hidden;
+    overflow-x: scroll;
     /*Estilos estándar experimentales (Principalmente Firefox)*/
     scrollbar-color: rgba(226, 226, 226, 0.5) rgba(0, 0, 0, 0);
     scrollbar-width: thin;
@@ -36,7 +39,6 @@
 .card_friend {
     display: flex;
     width: 110px;
-    height: 100px;
     text-align: center;
     flex-direction: column;
     align-items: center;

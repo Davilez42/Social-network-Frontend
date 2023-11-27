@@ -1,17 +1,13 @@
 import { useEffect } from "react";
-import { useCookies } from "react-cookie";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import { UserContextProvider } from "../../context/userContext.jsx";
+import { decryptDate } from "../../helpers/encrypt.js";
 export default function ProtectedRoute() {
-  const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
-
-  const tkn = window.sessionStorage.getItem("tkn");
-  /*  console.log("TOKEN EN SESSION", tkn);
-  console.log("cookies", cookies.tkn);
- */
+  const userAuth = decryptDate(useSelector((state) => state.auth.userAuth));
   useEffect(() => {}, []);
-  //!cookies.tkn && !tkn
-  if (!cookies.tkn && !tkn) {
+
+  if (!userAuth) {
     return <Navigate to="/login" replace />;
   }
   return (

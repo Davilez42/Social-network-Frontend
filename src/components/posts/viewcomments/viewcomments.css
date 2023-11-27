@@ -7,11 +7,12 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    top: 0;
     left: 0;
     right: 0;
-    margin: 0 auto;
+    bottom: 0;
+    margin: auto auto;
     width: 530px;
-    top: 70px;
     height: 630px;
     animation: open_container_comments;
     animation-delay: 0;
@@ -20,7 +21,6 @@
 
 @keyframes open_container_comments {
     0% {
-
         filter: brightness(10%);
         overflow: hidden;
         width: 600px;
@@ -173,12 +173,18 @@
 }
 
 @media (max-width: 600px) {
+    .container_comments {
+        margin-top: 0;
+        height: 70%;
+    }
+
     .container_view_comments {
         width: 100%;
         top: 0;
         bottom: 0;
         left: 0%;
         height: 100vh;
+        border: none;
         justify-content: start;
         animation: none;
     }
@@ -187,7 +193,4 @@
         margin-top: 0;
     }
 
-    .cotainer_input_comment {
-        margin-top: 100px;
-    }
 }

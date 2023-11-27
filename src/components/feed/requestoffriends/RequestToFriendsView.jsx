@@ -1,33 +1,44 @@
 /* eslint-disable react/prop-types */
-import { PiArrowRightBold } from "react-icons/pi";
+import { PiArrowLeftBold } from "react-icons/pi";
 import "./requestofriendsview.css";
 import useUser from "../../../hooks/useUser";
 import { UserContext } from "../../../context/userContext";
-
+import { decryptDate } from "../../../helpers/encrypt";
+import { useSelector, useDispatch } from "react-redux";
 import { useContext, useState } from "react";
+import { updateUserInfoLocal } from "../../../features/user/userSlice";
+
 const RequestToFriendsView = ({ requests_pending = [], actionCloseAction }) => {
   const [requestsFriend, setRequestsFriend] = useState(requests_pending);
+  const { friends } = decryptDate(useSelector((state) => state.user.userInfo));
+  const { setInfo } = useContext(UserContext);
+  const dispatch = useDispatch();
 
-  const { setInfo, friends, setFriends } = useContext(UserContext);
   const { sendRequestFriend } = useUser();
-  const handlerAcceptRequest = (request_user) => {
-    setRequestsFriend(
-      //elimino de la vista de solicitudes
-      requestsFriend.filter((r) => r.user[0] !== request_user.user[0])
-    );
-    setFriends(
-      //mapeo la lista de amigos para que muestre el usuario en amigos
-      friends.map((r) => {
-        const aux = r;
-        if (r.user[0] === request_user.user[0]) {
-          aux.friend_state = "accepted";
-        }
-        return aux;
-      })
-    );
 
-    console.log(requestsFriend);
-    sendRequestFriend(setInfo, request_user.user[0], () => {});
+  const handlerAcceptRequest = (request_user) => {
+    sendRequestFriend(
+      setInfo,
+      request_user.user[0],
+      () => {},
+      () => {
+        setRequestsFriend(
+          //elimino de la vista de solicitudes
+          requestsFriend.filter((r) => r.user[0] !== request_user.user[0])
+        );
+        dispatch(
+          updateUserInfoLocal({
+            friends: friends.map((r) => {
+              const aux = r;
+              if (r.user[0] === request_user.user[0]) {
+                aux.friend_state = "accepted";
+              }
+              return aux;
+            }),
+          })
+        );
+      }
+    );
   };
 
   const actionSelectFriend = () => {};
@@ -36,12 +47,12 @@ const RequestToFriendsView = ({ requests_pending = [], actionCloseAction }) => {
     <div className="container_filter">
       <div id="request_container" className="container_friend_list_profile">
         <div
-          className="back icon_back_request_view"
+          className="back"
           onClick={() => {
             actionCloseAction(false);
           }}
         >
-          <PiArrowRightBold size={30} />
+          <PiArrowLeftBold size={30} />
         </div>
 
         <p className="title_container">Solicitudes</p>
@@ -50,14 +61,14 @@ const RequestToFriendsView = ({ requests_pending = [], actionCloseAction }) => {
             {requestsFriend.length !== 0 ? (
               requestsFriend.map((request_user, index) => (
                 <div
-                  className="card_friend_friend_list"
+                  className="card_user_list"
                   key={index}
                   onClick={() => {
                     actionSelectFriend(request_user.user[0]);
                   }}
                 >
                   <img
-                    className="avatar_friend_list"
+                    className="avatar_user_list"
                     src={request_user.user[2]}
                     alt=""
                   />

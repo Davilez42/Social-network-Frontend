@@ -1,14 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { useCookies } from "react-cookie";
 import resource from "../services/source";
 import PermissionInvalid from "../exceptions/PermissionInvalid";
 import AuthenticationRequired from "../exceptions/authenticationRequired";
-
+import { useDispatch } from "react-redux";
+import { setAuth } from "../features/auth/authSlice";
 export default function useUser(usenavigate) {
-    const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
+    const dispatch = useDispatch()
     const logout = () => {
-        removeCookie('tkn')
-        window.sessionStorage.removeItem('tkn')
+        dispatch(setAuth(false))
         usenavigate('/login')
     }
     return {
@@ -37,10 +36,8 @@ export default function useUser(usenavigate) {
                 // console.log(data);
                 if (!resp.ok) {
                     handlerError([data.message])
-
                     return
                 }
-                window.sessionStorage.setItem('tkn', data.tkn)
                 usenavigate(`/home/feed`)
             } catch (e) {
                 handlerError([e.message])
@@ -50,26 +47,14 @@ export default function useUser(usenavigate) {
             }
         }
         ,
-        getInfoUser: async (handlerError, setUsername, setDate_born, setFullname, setPhoneNumber, setUrlavatar, setEmail, setUserBio, setIdUser, setFriends, setConfPrivate, id_user_foreign) => {
+        getInfoUser: async (handlerError, id_user, setUser) => {
             try {
-                const query = id_user_foreign ? `?view_foreign=${id_user_foreign}` : ''
-
-                const tkn = window.sessionStorage.getItem("tkn");
-                //console.log('PETICION GETINFO', tkn);
-                const resp = await resource(`/api/v1/user/getInfo/${query}`, undefined, 'POST', tkn)
+                const query = id_user ? `?foreign_view=${id_user}` : ''
+                const resp = await resource(`/api/v1/user/getInfo/${query}`, undefined, 'POST')
                 const data = await resp.json()
                 if (resp.ok) {
-                    setFullname(data.fullname)
-                    setPhoneNumber(data.phone_number)
-                    setDate_born(data.date_born)
-                    setUsername(data.username)
-                    setDate_born(data.date_born?.split('T')[0])
-                    setUrlavatar(data.url_avatar)
-                    setEmail(data.email)
-                    setUserBio(data.user_bio)
-                    setIdUser(data.id_user)
-                    setFriends(data.friends)
-                    setConfPrivate(data.view_private)
+                    setUser(data)
+
                 } else {
                     handlerError([data.message])
                 }
@@ -91,7 +76,8 @@ export default function useUser(usenavigate) {
                     usenavigate(`/confirmEmail/${data.data.id_user}/${data.data.fullname.split(' ')[0]}`)
                     return
                 }
-                window.sessionStorage.setItem(data.tkn ? 'tkn' : null, data.tkn || null)
+                window.localStorage.setItem('sessionId', parseInt(10000000 + Math.random() * 10000000))
+                dispatch(setAuth(true))
                 usenavigate(`/home/feed`)
 
             } catch (e) {
@@ -106,8 +92,7 @@ export default function useUser(usenavigate) {
                     handlerError([data.message])
                     return
                 }
-                //console.log(data);
-                window.sessionStorage.setItem(data.tkn ? 'tkn' : null, data.tkn || null)
+                dispatch(setAuth(true))
                 usenavigate(`/home/feed`)
 
             } catch (e) {
@@ -125,28 +110,27 @@ export default function useUser(usenavigate) {
                 handlerError([e.message])
             }
         },
-        sendRequestFriend: async (handlerError, id_user, actionRevert) => {
+        sendRequestFriend: async (handlerError, id_user, actionRevert, actionSuccess) => {
             try {
-
-                const tkn = window.sessionStorage.getItem("tkn");
-                const resp = await resource(`/api/v1/user/SendFriendReq/${id_user}`, undefined, 'POST', tkn)
+                const resp = await resource(`/api/v1/user/SendFriendReq/${id_user}`, undefined, 'POST')
                 const data = await resp.json()
                 if (!resp.ok) {
                     actionRevert()
+                    console.log(data);
                     handlerError([data.message])
                     return
                 }
+                actionSuccess()
 
             } catch (e) {
                 if (e instanceof PermissionInvalid) return logout()
             }
         },
 
-        updateInfoUser: async (handlerError, data_to_update, type) => {
+        updateUserInfo: async (handlerError, data_to_update, type, actionSuccess) => {
             try {
                 const query = type ? `?data=${type}` : ''
-                const tkn = window.sessionStorage.getItem("tkn");
-                const resp = await resource(`/api/v1/user/data_update/${query}`, data_to_update, 'PATCH', tkn)
+                const resp = await resource(`/api/v1/user/data_update/${query}`, data_to_update, 'PATCH')
                 const data = await resp.json()
                 if (!resp.ok) {
                     handlerError([data.message])
@@ -154,7 +138,7 @@ export default function useUser(usenavigate) {
                 }
 
                 handlerError(['Se han actualizado tus datos'])
-
+                actionSuccess()
             } catch (e) {
                 if (e instanceof PermissionInvalid) return logout()
             }
@@ -175,22 +159,23 @@ export default function useUser(usenavigate) {
                 if (e instanceof PermissionInvalid) return logout()
             }
         },
-        updateAvatarUser: async (handlerError, file) => {
+        updateAvatarUser: async (handlerError, file, actionRevert, actionSuccess) => {
             try {
                 const tkn = window.sessionStorage.getItem("tkn");
                 const formData = new FormData()
                 formData.append('avatar_file', file)
 
                 const resp = await resource(`/api/v1/user/avatar_update`, undefined, 'PATCH', tkn, formData)
-                const data = await resp.json()
-                if (!resp.ok) {
+                if (resp.status !== 204) {
+                    const data = await resp.json()
+                    console.log('pasa');
                     handlerError([data.message])
                     return
                 }
+                actionSuccess()
                 handlerError(['Se ha actualizado tu avatar'])
-                usenavigate(`/home/profile/edit`)
-
             } catch (e) {
+                console.log(e);
                 if (e instanceof PermissionInvalid) return logout()
             }
         },
@@ -206,6 +191,34 @@ export default function useUser(usenavigate) {
                 usenavigate('/login')
             } catch (e) {
                 if (e instanceof PermissionInvalid) return logout()
+            }
+        },
+        deleteRelationFriend: async (handlerError, id_relation, actionRevert, actionSuccess, request) => {
+            try {
+                const query = request ? `?type=request` : ''
+                const resp = await resource(`/api/v1/user/deleteFriend/${id_relation}/${query}`, undefined, 'DELETE')
+                const data = await resp.json()
+                if (!resp.ok) {
+                    actionRevert()
+                    handlerError([data.message])
+                    return
+                }
+                actionSuccess()
+            } catch (e) {
+                if (e instanceof PermissionInvalid) return logout()
+            }
+        },
+
+        logout: async () => {
+            try {
+                const resp = await resource(`/api/v1/auth/logout`, undefined, 'DELETE')
+                const data = await resp.json()
+                if (!resp.ok) {
+                    console.log(data);
+                    return
+                }
+            } catch (e) {
+                console.log(e);
             }
         }
 

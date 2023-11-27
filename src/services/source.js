@@ -3,7 +3,6 @@ import AuthenticationRequired from "../exceptions/authenticationRequired"
 import PermissionInvalid from "../exceptions/PermissionInvalid"
 const resource = async (route, body, method = 'POST', tkn, formData) => {
     const url = import.meta.env.VITE_API
-    console.log(url);
     const contenttype = body ? { "Content-type": "application/json" } : null
     const resp = await fetch(url + route, {
         method,

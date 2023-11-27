@@ -6,8 +6,9 @@
   width: 35%;
   left: 0;
   right: 0;
-  top: 150px;
-  margin: 0 auto;
+  top: 0;
+  bottom: 0;
+  margin: auto auto;
   height: 470px;
   text-align: center;
   animation: open_container_friendlist;
@@ -50,6 +51,7 @@
 }
 
 .title_container {
+  width: 90%;
   color: rgb(156, 156, 156);
 }
 
@@ -63,24 +65,8 @@
   background-color: #ffffff;
 }
 
-.card_friend_friend_list {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 20px;
-  width: 90%;
-  text-decoration: none;
-  padding: 6px;
-  color: black;
-  border-bottom: 1px solid rgb(238, 238, 238);
-}
 
-.avatar_friend_list {
-  width: 50px;
-  height: 50px;
-  border-radius: 100px;
-  cursor: pointer;
-}
+
 
 .card_name_user {
   cursor: pointer;
@@ -93,6 +79,16 @@
     top: 0;
     bottom: 0;
     left: 0%;
+    border-radius: 0;
     height: 100vh;
   }
+
+  .button_option_friend {
+    width: 10%;
+  }
+
+  .friend-list {
+    height: 100vh;
+  }
+
 }

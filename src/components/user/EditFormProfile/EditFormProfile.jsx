@@ -1,21 +1,17 @@
 import { NavLink } from "react-router-dom";
 import "./editformprofile.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../../context/userContext";
 import useUser from "../../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
 import { PiArrowLeftBold } from "react-icons/pi";
+import { decryptDate } from "../../../helpers/encrypt";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserInfoLocal } from "../../../features/user/userSlice";
 
 export default function EditFormProfile() {
   const {
-    setInfo,
-    setUsername,
-    setDate_born,
-    setFullname,
-    setPhoneNumber,
-    setEmail,
-    setUserBio,
     username,
     user_bio,
     url_avatar,
@@ -23,23 +19,39 @@ export default function EditFormProfile() {
     fullname,
     email,
     phone_number,
-  } = useContext(UserContext);
+  } = decryptDate(useSelector((state) => state.user.userInfo));
+  const dispatch = useDispatch();
+  //estados del propio componente
+  const [username_edit, setUsername_edit] = useState("");
+  const [user_bio_edit, setUser_bio_edit] = useState("");
+  const [url_avatar_edit, setUrl_avatar_edit] = useState("");
+  const [fullname_edit, setFullname_edit] = useState("");
+  const [date_born_edit, setDate_born_edit] = useState("");
+  const [phone_number_edit, setPhone_number_edit] = useState("");
+  const [email_edit, setEmail_edit] = useState("");
+
+  const { setInfo } = useContext(UserContext);
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
   const [stateUpdateInfo, setStateUpdateInfo] = useState("gray");
   const [stateUpdatePassword, setStateUpdatePassword] = useState("gray");
+
   const [objectParams, setParams] = useState({});
   const [avatar, setAvatar] = useState({});
   const usenavigate = useNavigate();
 
-  const { updateInfoUser, updatePassword, updateAvatarUser } =
+  const { updateUserInfo, updatePassword, updateAvatarUser } =
     useUser(usenavigate);
 
   const handlerSendData = () => {
     setParams({});
+    console.log(date_born_edit);
     if (Object.keys(objectParams).length !== 0) {
-      updateInfoUser(setInfo, objectParams);
+      updateUserInfo(setInfo, objectParams, undefined, () => {
+        dispatch(updateUserInfoLocal(objectParams));
+      });
     }
   };
 
@@ -51,9 +63,36 @@ export default function EditFormProfile() {
 
   const handlerUpdateAvatarUser = () => {
     if (avatar instanceof File) {
-      updateAvatarUser(setInfo, avatar);
+      updateAvatarUser(
+        setInfo,
+        avatar,
+        () => {},
+        () => {
+          dispatch(updateUserInfoLocal({ url_avatar: url_avatar_edit }));
+        }
+      );
     }
   };
+
+  useEffect(() => {
+    setUsername_edit(username);
+    setUser_bio_edit(user_bio);
+    setFullname_edit(fullname);
+    setEmail_edit(email);
+    setUrl_avatar_edit(url_avatar);
+    setDate_born_edit(date_born.split("T")[0]);
+    setUsername_edit(username);
+    setPhone_number_edit(phone_number);
+  }, [
+    username,
+    user_bio,
+    url_avatar,
+    date_born,
+    fullname,
+    email,
+    phone_number,
+  ]);
+
   return (
     <>
       <div className="form-edit-profile">
@@ -70,7 +109,7 @@ export default function EditFormProfile() {
               id="avatar_user"
               className="img-avatar loading"
               loading="lazy"
-              src={url_avatar}
+              src={url_avatar_edit}
               alt=""
             />
           </div>
@@ -84,8 +123,11 @@ export default function EditFormProfile() {
               className="input-field input-file"
               onChange={(event) => {
                 const file = event.target.files[0];
+                const url = URL.createObjectURL(file);
                 document.getElementById("avatar_user").src =
                   URL.createObjectURL(file);
+                setUrl_avatar_edit(url);
+
                 setAvatar(file);
               }}
             />
@@ -101,18 +143,18 @@ export default function EditFormProfile() {
               <label htmlFor="input_bio">Biografia</label>
               <textarea
                 id="input_bio"
-                value={user_bio}
+                value={user_bio_edit}
                 className="input-field"
                 placeholder="biografia"
                 onChange={(event) => {
                   setStateUpdateInfo("#4298f5");
-                  setUserBio(event.target.value);
+                  setUser_bio_edit(event.target.value);
                   const aux = objectParams;
                   aux.user_bio = event.target.value;
                   setParams(aux);
                 }}
               >
-                {user_bio}
+                {user_bio_edit}
               </textarea>
             </div>
           </div>
@@ -123,12 +165,12 @@ export default function EditFormProfile() {
               <input
                 id="input_names"
                 type="text"
-                value={fullname}
+                value={fullname_edit}
                 className="input-field"
                 placeholder="Nombre completo"
                 onChange={(event) => {
                   setStateUpdateInfo("#4298f5");
-                  setFullname(event.target.value);
+                  setFullname_edit(event.target.value);
                   const aux = objectParams;
                   aux.fullname = event.target.value;
                   setParams(aux);
@@ -140,12 +182,12 @@ export default function EditFormProfile() {
               <input
                 id="input_phone_number"
                 type="text"
-                value={phone_number}
+                value={phone_number_edit}
                 className="input-field"
                 placeholder="Telefono"
                 onChange={(event) => {
                   setStateUpdateInfo("#4298f5");
-                  setPhoneNumber(event.target.value);
+                  setPhone_number_edit(event.target.value);
                   const aux = objectParams;
                   aux.phone_number = event.target.value;
                   setParams(aux);
@@ -156,12 +198,12 @@ export default function EditFormProfile() {
               <label htmlFor="input-birthday"> Fecha nacimiento</label>
               <input
                 id="input-birthday"
-                value={date_born}
+                value={date_born_edit}
                 type="date"
                 className="input-field"
                 onChange={(event) => {
                   setStateUpdateInfo("#4298f5");
-                  setDate_born(event.target.value);
+                  setDate_born_edit(event.target.value);
                   const aux = objectParams;
                   aux.date_born = event.target.value;
                   setParams(aux);
@@ -174,11 +216,11 @@ export default function EditFormProfile() {
                 id="input_username"
                 type="nickname"
                 className="input-field"
-                value={username}
+                value={username_edit}
                 placeholder="Username"
                 onChange={(event) => {
                   setStateUpdateInfo("#4298f5");
-                  setUsername(event.target.value);
+                  setUsername_edit(event.target.value);
                   const aux = objectParams;
                   aux.username = event.target.value;
                   setParams(aux);
@@ -192,7 +234,7 @@ export default function EditFormProfile() {
                 type="email"
                 className="input-field"
                 disabled
-                value={email}
+                value={email_edit}
                 placeholder="Correo electrónico"
               />
             </div>

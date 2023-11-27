@@ -1,19 +1,36 @@
 /* eslint-disable react/prop-types */
 import "./viewprofile.css";
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+
+import ViewFriendList from "../viewfriendslist/ViewFriendList";
 import MainViewPost from "../../posts/mainviewpost/MainViewPost";
-import usePost from "../../../hooks/usePost";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../../context/userContext";
-import { useParams } from "react-router-dom";
+
 import useUser from "../../../hooks/useUser";
+import usePost from "../../../hooks/usePost";
 
 import { TbLockOff } from "react-icons/tb";
-import ViewFriendList from "../viewfriendslist/ViewFriendList";
+
+import { useParams } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setUserPosts,
+  deleteRelationFriendLocal,
+  deleteRequestUserLocal,
+  setRequestUserLocal,
+} from "../../../features/user/userSlice";
+import { UserContext } from "../../../context/userContext";
+import { useContext } from "react";
+
+import { decryptDate } from "../../../helpers/encrypt";
 
 export default function ViewProfile({ mode_foreign = false }) {
   const navigate = useNavigate();
-  const { getInfoUser, sendRequestFriend } = useUser(navigate);
+  const { setInfo } = useContext(UserContext);
+
+  const { getInfoUser, sendRequestFriend, deleteRelationFriend } =
+    useUser(navigate);
   const { getPosts } = usePost(navigate);
 
   const { id_user_view } = useParams();
@@ -27,40 +44,34 @@ export default function ViewProfile({ mode_foreign = false }) {
 
   const [view_private, setView_Private] = useState(false);
   const [activate_view_friends, setActivate_view_friend] = useState(false);
-  const [sendRequest, setSendRequest] = useState(false);
+  const [sendRequest, setSendRequest] = useState(true);
   //Contexto del usuario
   const [refresh, setRefresh] = useState(false);
 
   const {
     friends,
-    setInfo,
     id_user,
     fullname,
     username,
     user_bio,
     url_avatar,
-    setFriends,
-  } = useContext(UserContext);
+    userPosts,
+  } = decryptDate(useSelector((state) => state.user.userInfo));
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!id_user && !id_user_view) return;
     if (id_user_view && parseInt(id_user_view) !== id_user) {
-      console.log("conecta");
-      getPosts(setInfo, setPosts_view, id_user_view, false);
-      getInfoUser(
-        setInfo,
-        setUsername_view,
-        () => {},
-        setFullname_view,
-        () => {},
-        setAvatar_view,
-        () => {},
-        setUser_Bio_view,
-        () => {},
-        setFriends_view,
-        setView_Private,
-        id_user_view
-      );
+      getPosts(setInfo, setPosts_view, { by_user: id_user_view });
+      getInfoUser(setInfo, id_user_view, (user) => {
+        setUsername_view(user.username);
+        setFullname_view(user.fullname);
+        setAvatar_view(user.url_avatar);
+        setUser_Bio_view(user.user_bio);
+        setFriends_view(user.friends);
+        setView_Private(user.view_private);
+      });
       return;
     }
     setFullname_view(fullname);
@@ -68,9 +79,22 @@ export default function ViewProfile({ mode_foreign = false }) {
     setUsername_view(username);
     setFriends_view(friends.filter((f) => f.friend_state === "accepted"));
     setUser_Bio_view(user_bio);
-    getPosts(setInfo, setPosts_view, id_user);
+    if (!userPosts) {
+      //*OPTIMIZACION DE PUBLICACIONES DEL PROPIO USUARIO
+      getPosts(
+        setInfo,
+        (posts) => {
+          setPosts_view(posts);
+          dispatch(setUserPosts(posts));
+        },
+        { by_user: id_user }
+      );
+    } else {
+      setPosts_view(userPosts.filter((p) => p.post_visibility));
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id_user, refresh]);
+  }, [id_user, refresh, mode_foreign]);
 
   const handlerActionSelectFriend = (id_user) => {
     navigate(`/home/profile/view/${id_user}`);
@@ -78,19 +102,50 @@ export default function ViewProfile({ mode_foreign = false }) {
     setRefresh(!refresh);
   };
 
-  const actionRevert = () => {
-    setFriends(friends.filter((f) => f.user[0] !== parseInt(id_user_view)));
+  const handlerDeleteFriend = (id_relation) => {
+    if (!id_user_view) return;
+    deleteRelationFriend(
+      setInfo,
+      id_relation,
+      () => {},
+      () => {
+        dispatch(deleteRelationFriendLocal(id_relation));
+      },
+      false
+    );
+    setFriends_view(friends_view.filter((f) => f.user[0] !== id_user));
   };
 
   const handlerSendRequest = () => {
     if (!id_user_view) return;
-    sendRequestFriend(setInfo, id_user_view, actionRevert);
+    sendRequestFriend(
+      setInfo,
+      id_user_view,
+      () => {
+        setSendRequest(false);
+      },
+      () => {
+        dispatch(
+          setRequestUserLocal([id_user_view, username_view, avatar_view])
+        );
+        setSendRequest(false);
+      }
+    );
   };
-
-  const handlerDeleteRequest = () => {
-    if (!id_user_view) return;
-    setFriends(friends.filter((f) => f.user[0] !== parseInt(id_user_view)));
-    setSendRequest(false);
+  const handlerDeleteRequest = (id_user_delete) => {
+    console.log(id_user_delete);
+    deleteRelationFriend(
+      setInfo,
+      id_user_delete,
+      () => {
+        setSendRequest(true);
+      },
+      () => {
+        setSendRequest(true);
+        dispatch(deleteRequestUserLocal(id_user_delete));
+      },
+      true
+    );
   };
 
   return (
@@ -115,6 +170,7 @@ export default function ViewProfile({ mode_foreign = false }) {
 
               {(() => {
                 const id_user_v = parseInt(id_user_view);
+
                 if (id_user === id_user_v || !id_user_view) {
                   return (
                     <NavLink
@@ -125,16 +181,19 @@ export default function ViewProfile({ mode_foreign = false }) {
                     </NavLink>
                   );
                 } else {
-                  const friend_found = friends.filter(
-                    (f) => f.user[0] === id_user_v
+                  const friend_found = (friends || []).find(
+                    (f) => parseInt(f.user[0]) === id_user_v
                   );
-                  console.log(friend_found);
-                  if (friend_found.length !== 0) {
-                    if (friend_found[0].friend_state === "accepted") {
+
+                  if (friend_found) {
+                    const { friend_state, user_requesting } = friend_found;
+
+                    if (friend_state === "accepted") {
                       return (
                         <div
                           onClick={() => {
-                            alert("Esta funcion se encuentra en desarollo");
+                            setSendRequest(true);
+                            handlerDeleteFriend(friend_found.id_relation);
                           }}
                           className="button_option_friend"
                         >
@@ -142,24 +201,23 @@ export default function ViewProfile({ mode_foreign = false }) {
                         </div>
                       );
                     }
-                    if (friend_found[0].friend_state === "pending") {
-                      if (friend_found[0].user_requesting === id_user)
+                    if (friend_state === "pending") {
+                      if (user_requesting === id_user) {
                         return (
                           <div
                             onClick={() => {
-                              handlerDeleteRequest();
+                              handlerDeleteRequest(id_user_v);
                             }}
                             className="button_option_friend"
                           >
                             Cancelar solicitud
                           </div>
                         );
-
+                      }
                       return (
                         <div
                           onClick={() => {
                             handlerSendRequest();
-                            setRefresh(!refresh);
                           }}
                           className="button_option_friend"
                         >
@@ -169,10 +227,10 @@ export default function ViewProfile({ mode_foreign = false }) {
                     }
                   }
                   //||friends_view.some((f) =>f.user[0] === parseInt(id_user_view) && f.friend_state === "pending")
-                  return sendRequest ? (
+                  return !sendRequest ? (
                     <div
                       onClick={() => {
-                        handlerDeleteRequest();
+                        handlerDeleteRequest(id_user_v);
                       }}
                       className="button_option_friend"
                     >
@@ -181,7 +239,6 @@ export default function ViewProfile({ mode_foreign = false }) {
                   ) : (
                     <div
                       onClick={() => {
-                        setSendRequest(true);
                         handlerSendRequest();
                       }}
                       className="button_option_friend"

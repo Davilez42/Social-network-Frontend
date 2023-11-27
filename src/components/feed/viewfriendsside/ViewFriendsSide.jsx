@@ -1,11 +1,10 @@
-/* eslint-disable react/no-unknown-property */
-import { useContext } from "react";
-import { UserContext } from "../../../context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import "./viewfriendsside.css";
+import { useSelector } from "react-redux";
+import { decryptDate } from "../../../helpers/encrypt";
 
 export default function ViewFriendsSide() {
-  const { friends } = useContext(UserContext);
+  const { friends } = decryptDate(useSelector((state) => state.user.userInfo));
   const usernavigate = useNavigate();
   return (
     <>
@@ -13,7 +12,7 @@ export default function ViewFriendsSide() {
         <p className=" title_navbar_side ">Amigos</p>
         <div className="container_friends">
           {friends
-            .filter((f) => f.friend_state === "accepted")
+            ?.filter((f) => f.friend_state === "accepted")
             .map((friend, i) => (
               <div
                 key={i}

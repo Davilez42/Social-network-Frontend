@@ -1,6 +1,5 @@
 .container-navbar-side {
-
-  width: 70%;
+  width: 100%;
   display: flex;
   background-color: rgb(255, 255, 255);
   flex-direction: column;
@@ -11,7 +10,7 @@
 
 .container_side_avatar {
   display: flex;
-  width: 80%;
+  width: 70%;
   align-items: center;
   justify-content: center;
   gap: 20px;
@@ -89,15 +88,27 @@
   height: 30px;
 }
 
+.notificacion_active_request {
+  width: 34px;
+}
 
 
 .item_list_main p {
   width: 50%;
 }
 
+.logo_snapwire_main {
+  width: 70%;
+}
+
+.container_logo_navbar {
+  padding-left: 33px;
+  margin: 30px 0;
+}
+
 
 @media (max-width: 600px) {
-  .container-navbar-side {
-    display: none;
+  .logo_snapwire_main {
+    width: 40%;
   }
 }

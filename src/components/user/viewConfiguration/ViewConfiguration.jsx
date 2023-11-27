@@ -1,41 +1,48 @@
-import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../../context/userContext";
 import useUser from "../../../hooks/useUser";
-import { useNavigate } from "react-router-dom";
+import { updateUserInfoLocal } from "../../../features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   FaRegEyeSlash,
   FaRegBell,
-  FaRegBellSlash,
-  FaRegEye,
   FaRegHandshake,
   FaToggleOff,
   FaToggleOn,
 } from "react-icons/fa";
 import "./viewconfiguration.css";
-import { render } from "@testing-library/react";
 
 export default function ViewConfiguration() {
-  const {
-    setInfo,
-    confi_view_private,
-    confi_notif,
-    confi_requests,
-    setConfRequests,
-    setConfNotifications,
-    setConfPrivate,
-  } = useContext(UserContext);
+  const { view_private } = useSelector((state) => state.user.userInfo);
+  const dispatch = useDispatch();
+  const { setInfo } = useContext(UserContext);
 
   const [stateButton, setStateButton] = useState("#89caf5");
   const [configs, setConfigs] = useState();
-  const { updateInfoUser } = useUser();
+
+  const [confi_view_private_edit, setConfPrivate] = useState();
+  const [confi_notif_edit, setConfNotifications] = useState();
+  const [confi_requests_edit, setConfRequests] = useState();
+
+  const { updateUserInfo } = useUser();
+
+  const actionUpdateInfoLocal = () => {
+    //actualizo la informacion en redux
+    dispatch(updateUserInfoLocal(configs));
+  };
 
   const handlerSendConfig = () => {
     if (configs) {
-      updateInfoUser(setInfo, configs, "config");
+      updateUserInfo(setInfo, configs, "config", actionUpdateInfoLocal);
     }
   };
+
+  useEffect(() => {
+    setConfPrivate(view_private);
+  }, []);
+
   return (
     <>
       <div className="container_configs">
@@ -49,13 +56,13 @@ export default function ViewConfiguration() {
             <span
               onClick={() => {
                 const aux = configs ?? {};
-                setConfPrivate(!confi_view_private);
-                aux.view_private = !confi_view_private;
+                setConfPrivate(!confi_view_private_edit);
+                aux.view_private = !confi_view_private_edit;
                 setConfigs(aux);
                 setStateButton("#4298f5");
               }}
             >
-              {confi_view_private ? (
+              {confi_view_private_edit ? (
                 <FaToggleOn size={32} className="input_toggle" />
               ) : (
                 <FaToggleOff size={32} className="input_toggle" />
@@ -70,10 +77,10 @@ export default function ViewConfiguration() {
 
             <span
               onClick={() => {
-                setConfNotifications(!confi_notif);
+                setConfNotifications(!confi_notif_edit);
               }}
             >
-              {confi_notif ? (
+              {confi_notif_edit ? (
                 <FaToggleOn size={32} className="input_toggle" />
               ) : (
                 <FaToggleOff size={32} className="input_toggle" />
@@ -88,10 +95,10 @@ export default function ViewConfiguration() {
 
             <span
               onClick={() => {
-                setConfRequests(!confi_requests);
+                setConfRequests(!confi_requests_edit);
               }}
             >
-              {confi_requests ? (
+              {confi_requests_edit ? (
                 <FaToggleOn size={32} className="input_toggle" />
               ) : (
                 <FaToggleOff size={32} className="input_toggle" />

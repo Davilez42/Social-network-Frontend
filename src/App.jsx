@@ -7,7 +7,6 @@ import Forms from "./components/auth/Forms";
 import ConfirmVerifiedCode from "./components/auth/confirmverifiedcode/ConfirmVerifiedCode";
 import EditFormProfile from "./components/user/EditFormProfile/EditFormProfile";
 import ProtectedRoute from "./components/utils/ProtectedRoute";
-import RedirectRouteIndex from "./components/utils/RedirectRouteIndex";
 import RestorePassword from "./components/auth/restorePassword/RestorePassword";
 import CreateNewPasswordReset from "./components/auth/createNewPasswordReset/CreateNewPasswordReset";
 import Home from "./pages/Home";
@@ -15,10 +14,11 @@ import FeedMain from "./components/feed/viewMain/FeedMain";
 import ViewProfile from "./components/user/ViewProfile/ViewProfile";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ViewConfiguration from "./components/user/viewConfiguration/ViewConfiguration";
+import Index from "./pages/Index";
 const routes = createBrowserRouter([
   {
     path: "",
-    element: <RedirectRouteIndex />,
+    element: <Index />,
     children: [
       {
         path: "/",

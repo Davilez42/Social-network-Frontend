@@ -2,53 +2,50 @@
 import resource from "../services/source";
 import { useCookies } from 'react-cookie';
 import PermissionInvalid from '../exceptions/PermissionInvalid';
-
+import { useDispatch } from "react-redux";
+import { setAuth } from "../features/auth/authSlice";
 
 const usePost = (usenavigate) => {
-    const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
+
+    const dispatch = useDispatch()
     const logout = () => {
-        removeCookie('tkn')
-        window.sessionStorage.removeItem('tkn')
+        dispatch(setAuth(false))
         usenavigate('/login')
     }
 
     return ({
-        getPosts: async (handlerError, setPosts, id_user, self = true) => {
+        getPosts: async (handlerError, setPosts, optionsQuery) => {
             try {
-                //alert(id_user)
-                const query = id_user ? (self ? `?self_user=${id_user}` : `?by_user=${id_user}`) : ''
-
-                const tkn = window.sessionStorage.getItem('tkn')
-                const resp = await resource(`/api/v1/post/getPosts/${query}`, undefined, 'GET', tkn)
+                let query = []
+                for (let key in optionsQuery) {
+                    query.push(`${key}=${optionsQuery[key]}`)
+                }
+                const resp = await resource(`/api/v1/post/${query.length >= 0 ? '?' + query.join('&') : ''}`, undefined, 'GET')
                 const data = await resp.json()
                 if (!resp.ok) {
                     return handlerError([data.message])
-
                 }
                 //console.log(data.posts);
                 setPosts(data.posts)
 
             } catch (e) {
+                console.log(e);
                 if (e instanceof PermissionInvalid) return logout()
             }
         },
         sendPost: async (handlerError, text, files, actionClear) => {
             try {
-                const tkn = window.sessionStorage.getItem('tkn')
                 const formData = new FormData();
-                console.log(text, files);
                 formData.append('text', text)
                 for (const file of files) {
                     formData.append('media', file)
                 }
-                const resp = await resource('/api/v1/post/createPost', undefined, 'POST', tkn, formData)
-
+                const resp = await resource('/api/v1/post/', undefined, 'PUT', undefined, formData)
                 if (!resp.ok) {
                     const data = await resp.json()
                     handlerError([data.message])
                     return
                 }
-                actionClear()
                 usenavigate('/home/feed')
                 handlerError(['¡Listo! Tu publicación se ha cargado correctamente.'])
 
@@ -56,25 +53,24 @@ const usePost = (usenavigate) => {
                 if (e instanceof PermissionInvalid) {
                     if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
                         handlerError([e.message])
-                        actionClear()
                         return
                     }
                     logout()
                 }
 
+            } finally {
+                actionClear()
             }
         }
         ,
         getCommentsPost: async (handlerError, id_post, setComments) => {
 
             try {
-                const tkn = window.sessionStorage.getItem('tkn')
-                const resp = await resource(`/api/v1/comment/getComments/${id_post}`, undefined, 'GET', tkn)
-
+                const resp = await resource(`/api/v1/comment/getComments/${id_post}`, undefined, 'GET')
                 const data = await resp.json()
-                /*                 if (!resp.ok) {
-                                    //console.log(data);
-                                } */
+                if (!resp.ok) {
+                    handlerError(['No pudimos cargar los comentarios de este post'])
+                }
                 setComments(data.comments)
             } catch (e) {
                 console.log(e);
@@ -87,6 +83,27 @@ const usePost = (usenavigate) => {
                 }
             }
 
+        },
+        getInfoLikesPost: async (handlerError, id_post, actionReverse, actionSuccess) => {
+            try {
+                const resp = await resource(`/api/v1/post/${id_post}/likes`, undefined, 'GET')
+                const data = await resp.json()
+                if (!resp.ok) {
+                    actionReverse()
+                    handlerError([data.message])
+                }
+                console.log(data.likesPost);
+                actionSuccess(data.likesPost)
+            } catch (e) {
+                console.log(e);
+                if (e instanceof PermissionInvalid) {
+                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
+                        handlerError([e.message])
+                        return
+                    }
+                    logout()
+                }
+            }
         },
         sendComment: async (handlerError, id_post, text) => {
             try {
@@ -112,13 +129,71 @@ const usePost = (usenavigate) => {
         sendLike: async (handlerError, id_post, actionReverse) => {
             try {
                 const tkn = window.sessionStorage.getItem('tkn')
-                const resp = await resource(`/api/v1/post/like/${id_post}`, undefined, 'PUT', tkn)
-
+                const resp = await resource(`/api/v1/post/${id_post}/like`, undefined, 'PUT', tkn)
                 const data = await resp.json()
                 if (!resp.ok) {
                     actionReverse()
                 }
-
+            } catch (e) {
+                console.log(e);
+                if (e instanceof PermissionInvalid) {
+                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
+                        handlerError([e.message])
+                        return
+                    }
+                    logout()
+                }
+            }
+        },
+        reportPost: async (handlerError) => {
+            try {
+                //TODO backend mauricio
+                const tkn = window.sessionStorage.getItem('tkn')
+                const resp = await resource(`/api/v1/post/`, undefined, 'PUT', tkn)
+                const data = await resp.json()
+                if (!resp.ok) {
+                    handlerError([data.message])
+                }
+            } catch (e) {
+                console.log(e);
+                if (e instanceof PermissionInvalid) {
+                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
+                        handlerError([e.message])
+                        return
+                    }
+                    logout()
+                }
+            }
+        },
+        modifyPost: async (handlerError, id_post, dataUpdate, actionRevert, actionSuccess) => {
+            try {
+                const resp = await resource(`/api/v1/post/${id_post}`, dataUpdate, 'PATCH')
+                if (!resp.ok) {
+                    actionRevert()
+                    const data = await resp.json()
+                    handlerError([data.message])
+                }
+                actionSuccess()
+            } catch (e) {
+                console.log(e);
+                if (e instanceof PermissionInvalid) {
+                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
+                        handlerError([e.message])
+                        return
+                    }
+                    logout()
+                }
+            }
+        },
+        deletePost: async (handlerError, id_post, actionRevert, actionSuccess) => {
+            try {
+                const resp = await resource(`/api/v1/post/${id_post}`, undefined, 'DELETE')
+                if (!resp.ok) {
+                    const data = await resp.json()
+                    actionRevert()
+                    handlerError([data.message])
+                }
+                actionSuccess()
             } catch (e) {
                 console.log(e);
                 if (e instanceof PermissionInvalid) {
@@ -130,7 +205,8 @@ const usePost = (usenavigate) => {
                 }
             }
         }
+
+
     })
 }
-
 export default usePost

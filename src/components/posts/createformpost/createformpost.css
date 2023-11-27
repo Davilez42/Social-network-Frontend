@@ -3,9 +3,11 @@
     display: flex;
     left: 0;
     right: 0;
-    top: 190px;
-    margin: 0 auto;
+    top: 0;
+    bottom: 0;
+    margin: auto auto;
     width: 40%;
+    height: min-content;
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
@@ -113,7 +115,12 @@
 
     .container-form-create-post {
 
-        width: 100%;
+        width: 90%;
+        left: 0;
+        right: 0;
+        top: 20%;
+
+        margin: 0 auto;
 
     }
 }

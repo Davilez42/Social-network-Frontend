@@ -4,7 +4,8 @@ import usePost from "../../../hooks/usePost";
 import { PiArrowLeftBold } from "react-icons/pi";
 import { BiNavigation } from "react-icons/bi";
 import { UserContext } from "../../../context/userContext.jsx";
-import { BiCommentDetail } from "react-icons/bi";
+import { FaRegComment } from "react-icons/fa";
+
 import formatDate from "../../../helpers/formatDate.js";
 // eslint-disable-next-line react/prop-types
 export default function ViewComments({ id_post, count_comments }) {
@@ -34,11 +35,11 @@ export default function ViewComments({ id_post, count_comments }) {
   };
   return (
     <>
-      <BiCommentDetail
+      <FaRegComment
         onClick={() => {
           setSate_view(true);
         }}
-        size={30}
+        size={22}
       />
       <span>{countComments}</span>
 

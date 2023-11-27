@@ -7,15 +7,19 @@ import { useContext } from "react";
 import { UserContext } from "../../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { PiArrowLeftBold } from "react-icons/pi";
-
+import { useSelector } from "react-redux";
+import { decryptDate } from "../../../helpers/encrypt";
 // eslint-disable-next-line react/prop-types
 export default function CreateFormPosts({ actionClose }) {
   const usenavigate = useNavigate();
+  const { url_avatar } = decryptDate(
+    useSelector((state) => state.user.userInfo)
+  );
   const { sendPost } = usePost(usenavigate);
   const [urlPreviewMedia, setUrlPreviewMedia] = useState([]);
   const [text, setText] = useState("");
   const [stateContainerPost, setStateContainerPost] = useState("none"); //variable bandera para desplegar vista de preview
-  const { setInfo, reload, setReload, url_avatar } = useContext(UserContext);
+  const { setInfo } = useContext(UserContext);
   const [mediaFiles, setMediaFiles] = useState([]);
   const [canSend, setCanSend] = useState(true);
 
@@ -24,7 +28,6 @@ export default function CreateFormPosts({ actionClose }) {
     setCanSend(true);
     setUrlPreviewMedia([]);
     setText("");
-    setReload(!reload);
     setStateContainerPost("none");
     actionClose(false);
   };
@@ -32,6 +35,7 @@ export default function CreateFormPosts({ actionClose }) {
   const handlerSendPost = () => {
     if ((text.trim() !== "" || mediaFiles.length !== 0) && canSend) {
       setCanSend(false);
+      console.log(text, mediaFiles);
       sendPost(setInfo, text, mediaFiles, clearForm);
     } else {
       actionClose(false);

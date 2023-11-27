@@ -1,13 +1,17 @@
 .container-main {
-    background-color: #f6f6f8;
+    background-color: #ffffff;
     display: flex;
     height: 100vh;
-    gap: 130px;
+    position: relative;
     flex-direction: row;
-    overflow-y: scroll;
+    overflow-y: none;
 }
 
-
+.container-navBar-left {
+    display: flex;
+    background-color: aqua;
+    width: 20%;
+}
 
 .container_filter {
     position: absolute;
@@ -56,8 +60,13 @@
     scrollbar-width: thin;
 }
 
+.box_laoder {
+    height: 200px;
+    display: flex;
+    align-items: center;
+}
+
 .loader {
-    margin-top: 100px;
     width: 48px;
     height: 48px;
     border: 5px solid #4e4e4e;
@@ -173,5 +182,9 @@
     .container-main {
         flex-direction: column;
         gap: 0;
+    }
+
+    .container-navBar-left {
+        width: 100%;
     }
 }

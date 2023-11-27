@@ -1,0 +1,45 @@
+.box-options-post {
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    top: 20vh;
+    left: 0;
+    right: 0;
+    width: 400px;
+    height: min-content;
+    margin: 0 auto;
+    border-radius: 40px;
+    flex-direction: column;
+    padding: 10px 0;
+    align-items: center;
+    gap: 16px;
+}
+
+.hr_option_post {
+    margin: 0;
+    height: 1px;
+    width: 100%;
+    background-color: rgb(219, 219, 219);
+}
+
+.item_option_post {
+    font-size: 17px;
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+}
+
+.item_denunciar {
+    color: red;
+}
+
+.box_back {
+    width: 80%;
+}
+
+
+@media (max-width: 600px) {
+    .box-options-post {
+        width: 90%;
+    }
+}

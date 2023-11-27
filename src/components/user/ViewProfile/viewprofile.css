@@ -1,10 +1,11 @@
 .container_view_profile {
-    width: 60%;
+    width: 100%;
     display: flex;
     margin-top: 20px;
     flex-direction: column;
     gap: 25px;
-    height: 90vh;
+    overflow-y: scroll;
+    height: 100vh;
 }
 
 .info_perfil {
@@ -63,12 +64,13 @@
 .container_data_user {
     background-color: rgb(255, 255, 255);
     width: 70%;
-    border-radius: 5px;
+
     display: flex;
     flex-direction: row;
     align-items: center;
     align-self: center;
     gap: 20px;
+    border-bottom: 1px solid rgb(236, 236, 236);
 }
 
 .container_info {
@@ -101,10 +103,9 @@
     align-self: center;
     display: flex;
     justify-content: center;
-    width: 78%;
+    width: 70%;
+    background-color: rgb(255, 255, 255);
 }
-
-
 
 .box_info_perfil_private {
     background-color: rgb(255, 255, 255);

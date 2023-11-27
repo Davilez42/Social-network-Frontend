@@ -1,44 +1,50 @@
 .container-feed-main {
-    width: 40%;
+    width: 80%;
+    display: flex;
+
+}
+
+.container-feed-posts {
+    width: 70%;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    margin-top: 20px;
+    justify-content: center;
     overflow-y: scroll;
     overflow-x: hidden;
-    min-height: 70vh;
-    max-height: 87vh;
-
+    height: 100vh;
     scrollbar-color: rgba(165, 165, 165, 0.5) rgba(241, 241, 241, 0);
     scrollbar-width: thin;
+    outline: 1px solid rgb(231, 231, 231);
 }
 
-.container-feed-side {
-    display: flex;
-    background-color: aqua;
-    width: 28%;
+.container-feed-friends {
+    width: 30%;
+    margin-left: 20px
+}
+
+.search-icon-feed-main {
+    padding: 20px;
+    position: absolute;
+    cursor: pointer;
 }
 
 
-
-@media (max-width: 1000px) {
-    .container-feed-main {
-        width: 55%;
-    }
-}
-
-@media (max-width: 990px) {
-    .container-feed-side {
-        width: 40%;
-    }
-
-}
 
 @media (max-width: 600px) {
 
-    .container-feed-main,
-    .container-feed-side {
+    .container-feed-main {
         margin-top: 0;
+        flex-wrap: wrap-reverse;
+        width: 100%;
+    }
+
+    .container-feed-friends {
+        margin-left: 0px
+    }
+
+    .container-feed-posts,
+    .container-feed-friends {
         width: 100%;
     }
 }

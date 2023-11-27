@@ -7,7 +7,6 @@
 }
 
 #request_container {
-    top: 14%;
     border-color: rgb(228, 228, 228);
     height: 500px;
     cursor: default;
@@ -58,4 +57,17 @@
 
 .button_option_request:hover {
     background-color: rgb(163, 163, 163);
+}
+
+@media (max-width: 600px) {
+    #request_container {
+        top: 0%;
+        border-radius: 0;
+        height: 100vh;
+        border: none;
+    }
+
+    .container_button_option_request {
+        flex-wrap: wrap;
+    }
 }

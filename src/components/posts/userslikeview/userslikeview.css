@@ -1,0 +1,23 @@
+#userlikesInfo_container {
+    width: 25%;
+    height: min-content;
+}
+
+.user-list {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+
+@media (width<600px) {
+    #userlikesInfo_container {
+        width: 100%;
+        margin: 0;
+        height: 100vh;
+    }
+
+    .user-list {
+        height: 80vh;
+        overflow-y: scroll;
+    }
+}
