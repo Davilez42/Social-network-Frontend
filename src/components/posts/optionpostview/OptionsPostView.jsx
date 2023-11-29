@@ -11,6 +11,8 @@ import {
 import { decryptDate } from "../../../helpers/encrypt";
 import usePost from "../../../hooks/usePost";
 import { UserContext } from "../../../context/userContext";
+import FormReportView from "./FormReportView";
+
 export default function OptionsPostView({ post }) {
   const dispatch = useDispatch();
   const { deletePost, modifyPost } = usePost();
@@ -19,7 +21,7 @@ export default function OptionsPostView({ post }) {
     useSelector((state) => state.user.userInfo)
   );
   const [options_view, setOptions_View] = useState(false);
-
+  const [formReportView, setReportView] = useState(false);
   const handlerDeletePost = () => {
     deletePost(
       setInfo,
@@ -71,7 +73,15 @@ export default function OptionsPostView({ post }) {
               />
             </div>
             <hr className="hr_option_post" />
-            <div className="item_option_post item_denunciar">Denunciar</div>
+            <div
+              className="item_option_post item_denunciar"
+              onClick={() => {
+                setReportView(true);
+                setOptions_View(false);
+              }}
+            >
+              Denunciar
+            </div>
 
             {post.id_author === id_user ? (
               <>
@@ -100,6 +110,20 @@ export default function OptionsPostView({ post }) {
               <></>
             )}
           </div>
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {formReportView ? (
+        <div className="container_filter">
+          <FormReportView
+            actionSend={() => {
+              setOptions_View(false);
+              setReportView(false);
+            }}
+            id_post={post.id_post}
+          />
         </div>
       ) : (
         <></>

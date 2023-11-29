@@ -145,15 +145,15 @@ const usePost = (usenavigate) => {
                 }
             }
         },
-        reportPost: async (handlerError) => {
+        reportPost: async (handlerError, id_post, reason, type_report, actionSucces) => {
             try {
-                //TODO backend mauricio
-                const tkn = window.sessionStorage.getItem('tkn')
-                const resp = await resource(`/api/v1/post/`, undefined, 'PUT', tkn)
-                const data = await resp.json()
+                const resp = await resource(`/api/v1/post/${id_post}/report`, { type_report, reason }, 'PUT')
                 if (!resp.ok) {
+                    const data = await resp.json()
                     handlerError([data.message])
+                    return;
                 }
+                actionSucces()
             } catch (e) {
                 console.log(e);
                 if (e instanceof PermissionInvalid) {

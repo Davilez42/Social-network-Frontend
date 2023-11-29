@@ -7,6 +7,7 @@ import { UserContext } from "../../../context/userContext.jsx";
 import { FaRegComment } from "react-icons/fa";
 
 import formatDate from "../../../helpers/formatDate.js";
+import { NavLink } from "react-router-dom";
 // eslint-disable-next-line react/prop-types
 export default function ViewComments({ id_post, count_comments }) {
   const { getCommentsPost, sendComment } = usePost();
@@ -67,13 +68,16 @@ export default function ViewComments({ id_post, count_comments }) {
                   }
                   return comments.map((comment, ind) => (
                     <div key={ind} className="card_comment">
-                      <div className="container_avatar_owner">
+                      <NavLink
+                        className="container_avatar_owner"
+                        to={`/home/profile/view/${comment.id_user}`}
+                      >
                         <img
                           src={comment.url_avatar}
                           className="avatar avatar_comment_owner"
                           alt=""
                         />
-                      </div>
+                      </NavLink>
                       <div className="metadata">
                         <div className="box_username">
                           {" "}

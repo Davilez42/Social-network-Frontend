@@ -46,7 +46,7 @@ export default function ViewProfile({ mode_foreign = false }) {
   const [activate_view_friends, setActivate_view_friend] = useState(false);
   const [sendRequest, setSendRequest] = useState(true);
   //Contexto del usuario
-  const [refresh, setRefresh] = useState(false);
+  //const [refresh, setRefresh] = useState(false);
 
   const {
     friends,
@@ -94,12 +94,12 @@ export default function ViewProfile({ mode_foreign = false }) {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id_user, refresh, mode_foreign]);
+  }, [id_user, mode_foreign, id_user_view]);
 
   const handlerActionSelectFriend = (id_user) => {
     navigate(`/home/profile/view/${id_user}`);
     setActivate_view_friend(false);
-    setRefresh(!refresh);
+    //setRefresh(!refresh);
   };
 
   const handlerDeleteFriend = (id_relation) => {
