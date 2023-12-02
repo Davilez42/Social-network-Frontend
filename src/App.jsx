@@ -9,12 +9,14 @@ import EditFormProfile from "./components/user/EditFormProfile/EditFormProfile";
 import ProtectedRoute from "./components/utils/ProtectedRoute";
 import RestorePassword from "./components/auth/restorePassword/RestorePassword";
 import CreateNewPasswordReset from "./components/auth/createNewPasswordReset/CreateNewPasswordReset";
+import Help from "./pages/Help";
 import Home from "./pages/Home";
 import FeedMain from "./components/feed/viewMain/FeedMain";
 import ViewProfile from "./components/user/ViewProfile/ViewProfile";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ViewConfiguration from "./components/user/viewConfiguration/ViewConfiguration";
 import Index from "./pages/Index";
+import Center from "./components/help/Center";
 const routes = createBrowserRouter([
   {
     path: "",
@@ -85,6 +87,11 @@ const routes = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: "/help",
+        element: <Help />,
+        children: [{ path: "center", element: <Center /> }],
       },
     ],
   },

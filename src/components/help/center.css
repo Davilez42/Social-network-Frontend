@@ -1,0 +1,27 @@
+.container_center {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.container_center h1 {
+    color: #333;
+    text-align: center;
+}
+
+.container_center p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.container_center a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.container_center a:hover {
+    text-decoration: underline;
+}

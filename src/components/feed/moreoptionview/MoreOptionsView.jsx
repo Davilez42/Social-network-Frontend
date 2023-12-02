@@ -29,17 +29,14 @@ export default function MoreOptionsView({ actionClose }) {
             >
               <PiArrowLeftBold size={30} />
             </div>
-            <NavLink className="item_list_main item_more_option">
-              <span className="box_icon">
-                <GoSponsorTiers className="icon" size={25} />
-              </span>
-              <p>Ayuda</p>
-            </NavLink>
-            <NavLink className="item_list_main item_more_option">
+            <NavLink
+              className="item_list_main item_more_option"
+              to={"/help/center"}
+            >
               <span className="box_icon">
                 <GoUnverified className="icon" size={25} />
               </span>
-              <p>Acerca de nosotros</p>
+              <p>Ayuda</p>
             </NavLink>
 
             <div className="item_list_main item_more_option">
