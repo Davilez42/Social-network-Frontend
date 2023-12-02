@@ -18,12 +18,14 @@ import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt";
 import { UserContext } from "../../../context/userContext";
 import solic from "../../../assets/solic.png";
+
+// eslint-disable-next-line react/prop-types
 export default function NavBarSide({ setNavBarSide }) {
   const { username, url_avatar, id_user, friends } = decryptDate(
     useSelector((state) => state.user.userInfo)
   );
 
-  const { setReload, reload } = useContext(UserContext);
+  const { setInfo, setReload, reload } = useContext(UserContext);
 
   const [request_friends_view, setRequests_view_friends] = useState(false);
   // eslint-disable-next-line no-unused-vars
@@ -141,9 +143,10 @@ export default function NavBarSide({ setNavBarSide }) {
           <p>Solicitudes</p>
         </div>
 
-        <NavLink
+        <div
           className="item_list_main"
           onClick={() => {
+            setInfo(["Esta funcion se encuentra en desarrollo"]);
             if (canNavbarSideOccult) setNavBarSide(false);
           }}
         >
@@ -151,7 +154,7 @@ export default function NavBarSide({ setNavBarSide }) {
             <GoPaperAirplane className="icon" size={25} />
           </span>{" "}
           <p>Mensajes</p>
-        </NavLink>
+        </div>
 
         <div
           className="item_list_main"

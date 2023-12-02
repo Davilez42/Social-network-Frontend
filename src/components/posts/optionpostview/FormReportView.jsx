@@ -1,9 +1,11 @@
 import { useState } from "react";
 import usePost from "../../../hooks/usePost.js";
-import "./formreportview.css";
 import { UserContext } from "../../../context/userContext.jsx";
 import { useContext } from "react";
+import { PiArrowLeftBold } from "react-icons/pi";
+import "./formreportview.css";
 
+// eslint-disable-next-line react/prop-types
 export default function FormReportView({ actionSend, id_post }) {
   const { setInfo } = useContext(UserContext);
   const { reportPost } = usePost();
@@ -23,6 +25,15 @@ export default function FormReportView({ actionSend, id_post }) {
 
   return (
     <div className="container_form_report">
+      <div className="box_back_form_report">
+        <PiArrowLeftBold
+          className="back_feed_main"
+          onClick={() => {
+            actionSend();
+          }}
+          size={30}
+        />
+      </div>
       <div className="form_container_type_report">
         <div
           className="item_type_report"

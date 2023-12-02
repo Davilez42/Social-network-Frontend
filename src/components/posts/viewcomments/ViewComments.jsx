@@ -5,13 +5,18 @@ import { PiArrowLeftBold } from "react-icons/pi";
 import { BiNavigation } from "react-icons/bi";
 import { UserContext } from "../../../context/userContext.jsx";
 import { FaRegComment } from "react-icons/fa";
-
+import { useSelector } from "react-redux";
+import { decryptDate } from "../../../helpers/encrypt";
 import formatDate from "../../../helpers/formatDate.js";
 import { NavLink } from "react-router-dom";
+
 // eslint-disable-next-line react/prop-types
 export default function ViewComments({ id_post, count_comments }) {
+  const { id_user, username, url_avatar } = decryptDate(
+    useSelector((state) => state.user.userInfo)
+  );
   const { getCommentsPost, sendComment } = usePost();
-  const { username, url_avatar, setInfo, id_user } = useContext(UserContext);
+  const { setInfo } = useContext(UserContext);
   const [comments, setComments] = useState();
   const [countComments, setCountComments] = useState(parseInt(count_comments));
   const [state_view, setSate_view] = useState(false);

@@ -11,7 +11,7 @@ export default function InputSearch({ actionClose, actionSearch }) {
         <input
           type="text"
           id="input_search"
-          placeholder="Buscar..."
+          placeholder="Busca algo..."
           value={searchQuery}
           d
           onChange={(e) => {

@@ -28,6 +28,10 @@
 
 }
 
+.search-icon {
+    cursor: pointer;
+}
+
 @keyframes deploy_search_box {
     0% {
         width: 0px;

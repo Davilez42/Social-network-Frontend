@@ -3,7 +3,7 @@ import "./moreoptionsview.css";
 import {
   GoSignOut,
   GoGear,
-  GoUnread,
+  GoBug,
   GoUnverified,
   GoSponsorTiers,
 } from "react-icons/go";
@@ -41,12 +41,13 @@ export default function MoreOptionsView({ actionClose }) {
               </span>
               <p>Acerca de nosotros</p>
             </NavLink>
-            <NavLink className="item_list_main item_more_option">
+
+            <div className="item_list_main item_more_option">
               <span className="box_icon">
-                <GoUnread className="icon" size={25} />
+                <GoBug className="icon" size={25} />
               </span>
-              <p>Contactos</p>
-            </NavLink>
+              <p>Reportar problema</p>
+            </div>
 
             <NavLink
               className="item_list_main item_more_option"
