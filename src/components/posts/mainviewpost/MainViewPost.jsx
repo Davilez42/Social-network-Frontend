@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import "./mainviewposts.css";
 import { GoBookmark } from "react-icons/go";
-import ViewComments from "../viewcomments/ViewComments.jsx";
+import CommentsViewMain from "../commentsviewmain/CommentsViewMain.jsx";
 import { useNavigate } from "react-router-dom";
 import ButtonLike from "../buttonlike/ButtonLike.jsx";
 import OptionsPostView from "../optionpostview/OptionsPostView.jsx";
@@ -93,7 +93,7 @@ export default function MainViewPost({
                 <ButtonLike likes_post={post.likes} id_post={post.id_post} />
               </div>
               <div className="option">
-                <ViewComments
+                <CommentsViewMain
                   id_post={post.id_post}
                   count_comments={post.countcomments}
                 />

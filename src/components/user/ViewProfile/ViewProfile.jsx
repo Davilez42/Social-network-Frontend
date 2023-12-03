@@ -92,7 +92,6 @@ export default function ViewProfile({ mode_foreign = false }) {
     } else {
       setPosts_view(userPosts.filter((p) => p.post_visibility));
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id_user, mode_foreign, id_user_view]);
 

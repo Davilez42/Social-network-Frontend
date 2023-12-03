@@ -12,6 +12,7 @@ import { decryptDate } from "../../../helpers/encrypt";
 import usePost from "../../../hooks/usePost";
 import { UserContext } from "../../../context/userContext";
 import FormReportView from "./FormReportView";
+import PostPreviewView from "../postpreview/PostPreviewView";
 
 export default function OptionsPostView({ post }) {
   const dispatch = useDispatch();
@@ -22,6 +23,8 @@ export default function OptionsPostView({ post }) {
   );
   const [options_view, setOptions_View] = useState(false);
   const [formReportView, setReportView] = useState(false);
+  const [posteditview, setPosteditview] = useState(false);
+
   const handlerDeletePost = () => {
     deletePost(
       setInfo,
@@ -95,7 +98,17 @@ export default function OptionsPostView({ post }) {
                   Archivar
                 </div>
                 <hr className="hr_option_post" />
-                <div className="item_option_post">Editar</div>
+
+                <div
+                  className="item_option_post"
+                  onClick={() => {
+                    setOptions_View(false);
+                    setPosteditview(true);
+                  }}
+                >
+                  Editar
+                </div>
+
                 <hr className="hr_option_post" />
                 <div
                   className="item_option_post"
@@ -125,6 +138,19 @@ export default function OptionsPostView({ post }) {
             id_post={post.id_post}
           />
         </div>
+      ) : (
+        <></>
+      )}
+
+      {posteditview ? (
+        <PostPreviewView
+          post={post}
+          modeEdit={true}
+          actionClose={() => {
+            setOptions_View(true);
+            setPosteditview(false);
+          }}
+        />
       ) : (
         <></>
       )}

@@ -73,10 +73,22 @@ export const userSlice = createSlice({
             console.log(aux.friends);
             state.userInfo = encryptDate(JSON.stringify(aux))
         }
+        , updateDescriptionPost: (state, action) => {
+            const aux = decryptDate(state.userInfo)
+            aux.userPosts = aux.userPosts?.map(post => {
+                if (post.id_post === action.payload.id_post) {
+                    const p = post
+                    p.text = action.payload.text;
+                    return p
+                }
+                return post
+            })
+            state.userInfo = encryptDate(JSON.stringify(aux))
+        }
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { setUser, deleteUserPost, archiveUserPost, setUserPosts, updateUserInfoLocal, deleteRequestUserLocal, deleteRelationFriendLocal, setRequestUserLocal } = userSlice.actions
+export const { setUser, deleteUserPost, updateDescriptionPost, archiveUserPost, setUserPosts, updateUserInfoLocal, deleteRequestUserLocal, deleteRelationFriendLocal, setRequestUserLocal } = userSlice.actions
 
 export default userSlice.reducer
