@@ -81,7 +81,9 @@
     background-color: rgb(255, 255, 255);
 
     gap: 10px;
-    min-height: 500px;
+    height: 500px;
+    min-height: 100px;
+    max-height: 500px;
     margin-top: 20px;
     overflow-x: hidden;
 }
