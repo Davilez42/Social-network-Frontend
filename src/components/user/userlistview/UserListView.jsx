@@ -35,9 +35,9 @@ export default function UserListView({ users, actionSelectUser }) {
                     onClick={() => {
                       alert("Esta funcion se encuentra en desarollo");
                     }}
-                    className="button_option_friend"
+                    className={`button_option_friend `}
                   >
-                    Eliminar amigo
+                    Eliminar
                   </div>
                 );
               }
@@ -46,9 +46,9 @@ export default function UserListView({ users, actionSelectUser }) {
                   onClick={() => {
                     alert("Esta funcion se encuentra en desarollo");
                   }}
-                  className="button_option_friend"
+                  className={`button_option_friend `}
                 >
-                  Añadir amigo
+                  Añadir
                 </div>
               ) : (
                 <></>

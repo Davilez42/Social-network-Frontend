@@ -44,11 +44,12 @@
     text-decoration: none;
     min-width: 120px;
     max-width: min-content;
+    padding: 0 5px;
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(235, 235, 235);
+    background-color: #efefef;
     transition: all .2s;
     cursor: pointer;
 }

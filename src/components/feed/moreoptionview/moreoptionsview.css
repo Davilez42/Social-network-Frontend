@@ -2,21 +2,21 @@
     position: absolute;
     width: 370px;
     border-radius: 20px;
-    height: 400px;
+    height: 320px;
     left: 0;
     right: 0;
     top: 200px;
     margin: 0 auto;
     background-color: rgb(255, 255, 255);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
 }
 
 .more_options_nav {
     display: flex;
     width: 80%;
+    height: min-content;
     gap: 10px;
     flex-direction: column;
     align-items: center;
@@ -27,6 +27,11 @@
     border-radius: 14px;
     width: 90%;
     transition: all .2s;
+}
+
+.icon_back_more_options {
+    width: 95%;
+    height: min-content;
 }
 
 

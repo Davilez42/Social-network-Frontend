@@ -15,7 +15,7 @@ export function UserContextProvider(props) {
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    const data = window.localStorage.getItem("persist:wtff");
+    /*     const data = window.localStorage.getItem("persist:wtff");
     if (!data) {
       getInfoUser(setInfo, undefined, (user) => {
         dispatch(setUser(user));
@@ -25,11 +25,11 @@ export function UserContextProvider(props) {
     const dd = JSON.parse(data);
     const user = JSON.parse(dd.user);
 
-    if (Object.keys(user.userInfo).length === 0) {
-      getInfoUser(setInfo, undefined, (user) => {
-        dispatch(setUser(user));
-      });
-    }
+    if (Object.keys(user.userInfo).length === 0) { */
+    getInfoUser(setInfo, undefined, (user) => {
+      dispatch(setUser(user));
+    });
+    /* } */
   }, [reload]);
 
   return (

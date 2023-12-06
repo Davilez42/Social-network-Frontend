@@ -3,11 +3,10 @@
     flex-direction: row;
     align-items: center;
     gap: 20px;
-    width: 90%;
+    width: 95%;
     text-decoration: none;
     padding: 6px;
     color: black;
-    border-bottom: 1px solid rgb(238, 238, 238);
 }
 
 .avatar_user_list {

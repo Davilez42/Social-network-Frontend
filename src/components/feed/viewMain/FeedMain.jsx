@@ -8,8 +8,13 @@ import { UserContext } from "../../../context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import InputSearch from "../inputsearch/InputSearch.jsx";
+import UserListView from "../../user/userlistview/UserListView.jsx";
+import { useSelector } from "react-redux";
+import { decryptDate } from "../../../helpers/encrypt.js";
 
 export default function FeedMain() {
+  const { friends } = decryptDate(useSelector((state) => state.user.userInfo));
+
   const [posts, setPosts] = useState([]);
   const [morePosts, seGetMorePosts] = useState(false);
   const [getPostsFedd, setGetPostsFeed] = useState(true);
@@ -94,6 +99,11 @@ export default function FeedMain() {
 
         <div className="container-feed-friends">
           <ViewFriendsSide />
+
+          <div className="container_feed-users-recommended">
+            <p>Personas que quizas conozcas </p>
+            <UserListView users={friends.slice(0, 5)} />
+          </div>
         </div>
       </div>
     </>

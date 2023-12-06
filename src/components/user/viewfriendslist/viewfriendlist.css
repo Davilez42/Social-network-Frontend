@@ -3,7 +3,7 @@
   position: absolute;
   border: 1px solid rgb(241, 241, 241);
   border-radius: 6px;
-  width: 35%;
+  width: 25%;
   left: 0;
   right: 0;
   top: 0;
@@ -52,7 +52,7 @@
 
 .title_container {
   width: 90%;
-  color: rgb(156, 156, 156);
+  color: rgb(117, 117, 117);
 }
 
 .friend-list {

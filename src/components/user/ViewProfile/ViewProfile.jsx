@@ -196,7 +196,7 @@ export default function ViewProfile({ mode_foreign = false }) {
                           }}
                           className="button_option_friend"
                         >
-                          Eliminar amigo
+                          Eliminar
                         </div>
                       );
                     }
@@ -220,7 +220,7 @@ export default function ViewProfile({ mode_foreign = false }) {
                           }}
                           className="button_option_friend"
                         >
-                          Aceptar solicitud
+                          Aceptar
                         </div>
                       );
                     }
@@ -242,7 +242,7 @@ export default function ViewProfile({ mode_foreign = false }) {
                       }}
                       className="button_option_friend"
                     >
-                      Añadir amigo
+                      Añadir
                     </div>
                   );
                 }
