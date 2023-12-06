@@ -101,8 +101,8 @@ export default function FeedMain() {
           <ViewFriendsSide />
 
           <div className="container_feed-users-recommended">
-            <p>Personas que quizas conozcas </p>
-            <UserListView users={friends.slice(0, 5)} />
+            <p>Personas que quizas conozcas</p>
+            <UserListView users={friends?.slice(0, 5)} />
           </div>
         </div>
       </div>

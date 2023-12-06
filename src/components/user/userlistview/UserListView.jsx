@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt";
 import "./userlistview.css";
 
-export default function UserListView({ users, actionSelectUser }) {
+export default function UserListView({ users = [], actionSelectUser }) {
   const { friends, id_user } = decryptDate(
     useSelector((state) => state.user.userInfo)
   );
