@@ -138,7 +138,7 @@ export default function useUser(usenavigate) {
         updateUserInfo: async (handlerError, data_to_update, type, actionSuccess) => {
             try {
                 const query = type ? `?data=${type}` : ''
-                const resp = await resource(`/api/v1/user/data_update/${query}`, { csrftoken, ...data_to_update }, 'PATCH')
+                const resp = await resource({ route: `/api/v1/user/data_update/${query}`, body: data_to_update, tkn: csrftoken, method: 'PATCH' })
                 const data = await resp.json()
                 if (!resp.ok) {
                     handlerError([data.message])

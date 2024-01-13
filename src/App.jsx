@@ -100,7 +100,7 @@ function App() {
   return (
     <>
       <CookiesProvider defaultSetOptions={{ path: "/" }}>
-        <GoogleOAuthProvider clientId="850844004503-ij5nnakoum3lr6tnetu1up7ost42pqi6.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="82745131280-ob282ooidap231baesdi58e01nib93q3.apps.googleusercontent.com">
           <RouterProvider router={routes} />
         </GoogleOAuthProvider>
       </CookiesProvider>
