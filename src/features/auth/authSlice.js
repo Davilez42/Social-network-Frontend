@@ -3,15 +3,19 @@ import { encryptDate } from '../../helpers/encrypt'
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        userAuth: ''
+        userAuth: {
+            session: false,
+            csrftoken: ''
+        },
+
     },
     reducers: {
         setAuth: (state, action) => {
-            state.userAuth = encryptDate(action.payload.toString())
+            const { session, csrftoken } = action.payload
+            state.userAuth = encryptDate(JSON.stringify({ session, csrftoken }))
         }
-
     }
 })
 // Action creators are generated for each case reducer function
-export const { setAuth } = authSlice.actions
+export const { setAuth, setCsrftkn } = authSlice.actions
 export default authSlice.reducer

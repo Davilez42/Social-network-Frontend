@@ -1,13 +1,15 @@
 /* eslint-disable no-unused-vars */
 import resource from "../services/source";
-import { useCookies } from 'react-cookie';
 import PermissionInvalid from '../exceptions/PermissionInvalid';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "../features/auth/authSlice";
+import { decryptDate } from "../helpers/encrypt";
 
 const usePost = (usenavigate) => {
 
     const dispatch = useDispatch()
+    const { csrftoken } = decryptDate(useSelector(state => state.auth.userAuth))
+
     const logout = () => {
         dispatch(setAuth(false))
         usenavigate('/login')
@@ -20,7 +22,11 @@ const usePost = (usenavigate) => {
                 for (let key in optionsQuery) {
                     query.push(`${key}=${optionsQuery[key]}`)
                 }
-                const resp = await resource(`/api/v1/post/${query.length >= 0 ? '?' + query.join('&') : ''}`, undefined, 'GET')
+                const resp = await resource({
+                    route: `/api/v1/post/${query.length >= 0 ? '?' + query.join('&') : ''}`,
+                    method: 'GET',
+                    tkn: csrftoken
+                })
                 const data = await resp.json()
                 if (!resp.ok) {
                     return handlerError([data.message])
@@ -40,7 +46,7 @@ const usePost = (usenavigate) => {
                 for (const file of files) {
                     formData.append('media', file)
                 }
-                const resp = await resource('/api/v1/post/', undefined, 'PUT', undefined, formData)
+                const resp = await resource({ route: '/api/v1/post/', method: 'PUT', formData, tkn: csrftoken })
                 if (!resp.ok) {
                     const data = await resp.json()
                     handlerError([data.message])
@@ -66,7 +72,7 @@ const usePost = (usenavigate) => {
         getCommentsPost: async (handlerError, id_post, setComments) => {
 
             try {
-                const resp = await resource(`/api/v1/comment/getComments/${id_post}`, undefined, 'GET')
+                const resp = await resource({ route: `/api/v1/comment/getComments/${id_post}`, method: 'GET', tkn: csrftoken })
                 const data = await resp.json()
                 if (!resp.ok) {
                     handlerError(['No pudimos cargar los comentarios de este post'])
@@ -86,13 +92,12 @@ const usePost = (usenavigate) => {
         },
         getInfoLikesPost: async (handlerError, id_post, actionReverse, actionSuccess) => {
             try {
-                const resp = await resource(`/api/v1/post/${id_post}/likes`, undefined, 'GET')
+                const resp = await resource({ route: `/api/v1/post/${id_post}/likes`, method: 'GET', tkn: csrftoken })
                 const data = await resp.json()
                 if (!resp.ok) {
                     actionReverse()
                     handlerError([data.message])
                 }
-                console.log(data.likesPost);
                 actionSuccess(data.likesPost)
             } catch (e) {
                 console.log(e);
@@ -107,8 +112,7 @@ const usePost = (usenavigate) => {
         },
         sendComment: async (handlerError, id_post, text) => {
             try {
-                const tkn = window.sessionStorage.getItem('tkn')
-                const resp = await resource(`/api/v1/comment/createComment/${id_post}`, { text }, 'POST', tkn)
+                const resp = await resource({ route: `/api/v1/comment/createComment/${id_post}`, body: { text }, tkn: csrftoken })
 
                 const data = await resp.json()
                 if (!resp.ok) {
@@ -128,8 +132,8 @@ const usePost = (usenavigate) => {
         },
         sendLike: async (handlerError, id_post, actionReverse) => {
             try {
-                const tkn = window.sessionStorage.getItem('tkn')
-                const resp = await resource(`/api/v1/post/${id_post}/like`, undefined, 'PUT', tkn)
+
+                const resp = await resource({ route: `/api/v1/post/${id_post}/like`, method: 'PUT', tkn: csrftoken })
                 const data = await resp.json()
                 if (!resp.ok) {
                     actionReverse()
@@ -147,7 +151,7 @@ const usePost = (usenavigate) => {
         },
         reportPost: async (handlerError, id_post, reason, type_report, actionSucces) => {
             try {
-                const resp = await resource(`/api/v1/post/${id_post}/report`, { type_report, reason }, 'PUT')
+                const resp = await resource({ route: `/api/v1/post/${id_post}/report`, body: { type_report, reason }, method: 'PUT', tkn: csrftoken })
                 if (!resp.ok) {
                     const data = await resp.json()
                     handlerError([data.message])
@@ -167,7 +171,7 @@ const usePost = (usenavigate) => {
         },
         modifyPost: async (handlerError, id_post, dataUpdate, actionRevert, actionSuccess) => {
             try {
-                const resp = await resource(`/api/v1/post/${id_post}`, dataUpdate, 'PATCH')
+                const resp = await resource({ route: `/api/v1/post/${id_post}`, body: dataUpdate, method: 'PATCH', tkn: csrftoken })
                 if (!resp.ok) {
                     actionRevert()
                     const data = await resp.json()
@@ -187,7 +191,7 @@ const usePost = (usenavigate) => {
         },
         deletePost: async (handlerError, id_post, actionRevert, actionSuccess) => {
             try {
-                const resp = await resource(`/api/v1/post/${id_post}`, undefined, 'DELETE')
+                const resp = await resource({ route: `/api/v1/post/${id_post}`, method: 'DELETE', tkn: csrftoken })
                 if (!resp.ok) {
                     const data = await resp.json()
                     actionRevert()

@@ -4,7 +4,7 @@ import { UserContext } from "../../../context/userContext";
 import useUser from "../../../hooks/useUser";
 import { updateUserInfoLocal } from "../../../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useNavigate } from "react-router-dom";
 import {
   FaRegEyeSlash,
   FaRegBell,
@@ -13,6 +13,7 @@ import {
   FaToggleOn,
 } from "react-icons/fa";
 import "./viewconfiguration.css";
+import { setAuth } from "../../../features/auth/authSlice";
 
 export default function ViewConfiguration() {
   const { view_private } = useSelector((state) => state.user.userInfo);
@@ -25,8 +26,11 @@ export default function ViewConfiguration() {
   const [confi_view_private_edit, setConfPrivate] = useState();
   const [confi_notif_edit, setConfNotifications] = useState();
   const [confi_requests_edit, setConfRequests] = useState();
+  const [box_confirm_delete_account, set_box_confirm_delete_account] =
+    useState(false);
 
-  const { updateUserInfo } = useUser();
+  const { updateUserInfo, deleteAccount } = useUser();
+  const navigate = useNavigate();
 
   const actionUpdateInfoLocal = () => {
     //actualizo la informacion en redux
@@ -39,6 +43,13 @@ export default function ViewConfiguration() {
     }
   };
 
+  const handlerDeleteAccount = () => {
+    deleteAccount(setInfo, () => {
+      dispatch(setAuth({ session: false, csrftoken: " " }));
+      navigate("/login");
+    });
+  };
+  console.log("renderiza");
   useEffect(() => {
     setConfPrivate(view_private);
   }, []);
@@ -118,7 +129,37 @@ export default function ViewConfiguration() {
           </div>
         </div>
 
-        <div className="delete_account_text">Eliminar cuenta</div>
+        <div
+          className="delete_account_text"
+          onClick={() => {
+            set_box_confirm_delete_account(!box_confirm_delete_account);
+          }}
+        >
+          {(() => {
+            if (box_confirm_delete_account) {
+              return (
+                <div className="container_filter">
+                  <div className="box_confirm_deleteaccount ">
+                    <div className="text_inf">
+                      Estas seguro que deseas eliminar tu cuenta ? tus datos
+                      personales y fotos seran eliminados en 30 dias, durante
+                      este tiempo tu cuenta permanecera desabilitdad. Si deseas
+                      volver a activar tu cuenta debes de volver a iniciar
+                      sesion.
+                    </div>
+                    <div
+                      className="button button_confirm_dlt_acc"
+                      onClick={handlerDeleteAccount}
+                    >
+                      continuar
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+          })()}
+          Eliminar cuenta
+        </div>
       </div>
     </>
   );

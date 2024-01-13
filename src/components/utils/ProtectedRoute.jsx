@@ -4,10 +4,11 @@ import { Navigate, Outlet } from "react-router-dom";
 import { UserContextProvider } from "../../context/userContext.jsx";
 import { decryptDate } from "../../helpers/encrypt.js";
 export default function ProtectedRoute() {
-  const userAuth = decryptDate(useSelector((state) => state.auth.userAuth));
+  const { session } = decryptDate(useSelector((state) => state.auth.userAuth));
+
   useEffect(() => {}, []);
 
-  if (!userAuth) {
+  if (!session) {
     return <Navigate to="/login" replace />;
   }
   return (

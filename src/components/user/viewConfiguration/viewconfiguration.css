@@ -1,5 +1,5 @@
 .container_configs {
-    border: 1px solid rgb(231, 231, 231);
+    border: 1px solid rgb(247, 247, 247);
     background-color: rgb(255, 255, 255);
     width: 35%;
     border-radius: 10px;
@@ -7,6 +7,7 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 40px;
+
     padding-bottom: 20px;
 }
 
@@ -57,7 +58,37 @@
 
 .delete_account_text {
     font-size: 17px;
+    cursor: pointer;
     color: rgb(255, 137, 137);
+}
+
+.delete_account_text:hover {
+    font-size: 17px;
+    cursor: pointer;
+    color: rgb(247, 117, 117);
+}
+
+.box_confirm_deleteaccount {
+    position: absolute;
+
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    color: rgb(94, 94, 94);
+    left: 200px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto auto;
+    text-align: justify;
+    padding: 30px 20px 0 20px;
+    width: 35%;
+    height: 25%;
+}
+
+.button_confirm_dlt_acc {
+    width: 140px;
+    margin-top: 30px;
 }
 
 

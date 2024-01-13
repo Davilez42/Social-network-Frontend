@@ -19,7 +19,7 @@ import Index from "./pages/Index";
 import Center from "./components/help/Center";
 const routes = createBrowserRouter([
   {
-    path: "",
+    path: "/",
     element: <Index />,
     children: [
       {

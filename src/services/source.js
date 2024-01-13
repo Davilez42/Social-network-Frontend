@@ -1,16 +1,16 @@
 
 import AuthenticationRequired from "../exceptions/authenticationRequired"
 import PermissionInvalid from "../exceptions/PermissionInvalid"
-const resource = async (route, body, method = 'POST', tkn, formData) => {
+const resource = async ({ route, body, method, formData, tkn }) => {
     const url = import.meta.env.VITE_API
     const contenttype = body ? { "Content-type": "application/json" } : null
     const resp = await fetch(url + route, {
-        method,
+        method: method || 'POST',
         mode: 'cors',
         credentials: 'include',
         headers: {
             ...contenttype,
-            "auth": `Bearer token:${tkn} `
+            authorization: `Bearer ${tkn}`
         },
         body: body ? JSON.stringify(body) : formData
     })

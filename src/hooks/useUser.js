@@ -2,10 +2,12 @@
 import resource from "../services/source";
 import PermissionInvalid from "../exceptions/PermissionInvalid";
 import AuthenticationRequired from "../exceptions/authenticationRequired";
-import { useDispatch } from "react-redux";
-import { setAuth } from "../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuth, setCsrftkn } from "../features/auth/authSlice";
+import { decryptDate } from "../helpers/encrypt";
 export default function useUser(usenavigate) {
     const dispatch = useDispatch()
+    const { csrftoken } = decryptDate(useSelector(state => state.auth.userAuth))
     const logout = () => {
         dispatch(setAuth(false))
         usenavigate('/login')
@@ -14,8 +16,10 @@ export default function useUser(usenavigate) {
         registerUser: async (handlerError, username, password, fullname, date_born, email, phone_number) => {
             try {
 
-                const resp = await resource('/api/v1/auth/signup', {
-                    username, password, fullname, date_born, email, phone_number
+                const resp = await resource({
+                    route: '/api/v1/auth/signup', body: {
+                        username, password, fullname, date_born, email, phone_number
+                    }
                 })
                 const data = await resp.json()
                 if (!resp.ok) {
@@ -31,13 +35,14 @@ export default function useUser(usenavigate) {
         },
         confirmVerifyCode: async (handlerError, id_user, code_verify, actionClear) => {
             try {
-                const resp = await resource(`/api/v1/auth/signup/confirmEmail/${id_user}`, { entered_code: code_verify })
+                const resp = await resource({ route: `/api/v1/auth/signup/confirmEmail/${id_user}`, body: { entered_code: code_verify } })
                 const data = await resp.json()
                 // console.log(data);
                 if (!resp.ok) {
                     handlerError([data.message])
                     return
                 }
+                dispatch(setCsrftkn(data.csrfToken))
                 usenavigate(`/home/feed`)
             } catch (e) {
                 handlerError([e.message])
@@ -50,7 +55,7 @@ export default function useUser(usenavigate) {
         getInfoUser: async (handlerError, id_user, setUser) => {
             try {
                 const query = id_user ? `?foreign_view=${id_user}` : ''
-                const resp = await resource(`/api/v1/user/getInfo/${query}`, undefined, 'POST')
+                const resp = await resource({ route: `/api/v1/user/getInfo/${query}`, tkn: csrftoken })
                 const data = await resp.json()
                 if (resp.ok) {
                     setUser(data)
@@ -65,7 +70,7 @@ export default function useUser(usenavigate) {
         },
         userLogin: async (handlerError, user, password) => {
             try {
-                const resp = await resource(`/api/v1/auth/sign`, { user, password })
+                const resp = await resource({ route: `/api/v1/auth/sign`, body: { user, password } })
                 const data = await resp.json()
                 if (!resp.ok) {
                     console.log(data);
@@ -73,11 +78,10 @@ export default function useUser(usenavigate) {
                     return
                 }
                 if (data?.status === 'PENDING_TO_VERIFIED') {
-                    usenavigate(`/confirmEmail/${data.data.id_user}/${data.data.fullname.split(' ')[0]}`)
+                    usenavigate({ route: `/confirmEmail/${data.data.id_user}/${data.data.fullname.split(' ')[0]}` })
                     return
                 }
-                window.localStorage.setItem('sessionId', parseInt(10000000 + Math.random() * 10000000))
-                dispatch(setAuth(true))
+                dispatch(setAuth({ session: true, csrftoken: data.csrftoken }))
                 usenavigate(`/home/feed`)
 
             } catch (e) {
@@ -85,23 +89,24 @@ export default function useUser(usenavigate) {
             }
         }, userLoginWithGoogle: async (handlerError, credentials) => {
             try {
-                const resp = await resource(`/api/v1/auth/sign_google_platform`, { credentials })
+                const resp = await resource({ route: `/api/v1/auth/sign_google_platform`, body: { credentials } })
                 const data = await resp.json()
                 if (!resp.ok) {
                     // console.log(data);
                     handlerError([data.message])
                     return
                 }
-                dispatch(setAuth(true))
+                dispatch(setAuth({ session: true, csrftoken: data.csrftoken }))
                 usenavigate(`/home/feed`)
 
             } catch (e) {
+                console.log(e);
                 handlerError([e.message])
             }
         },
         sendEmail: async (handlerError, id_user, email, type) => {
             try {
-                const resp = await resource(`/api/v1/auth/sendEmail/?type=${type}`, { id_user, email })
+                const resp = await resource({ route: `/api/v1/auth/sendEmail/?type=${type}`, body: { id_user, email } })
                 const data = await resp.json()
                 if (!resp.ok) {
                     handlerError([data.message])
@@ -112,7 +117,7 @@ export default function useUser(usenavigate) {
         },
         sendRequestFriend: async (handlerError, id_user, actionRevert, actionSuccess) => {
             try {
-                const resp = await resource(`/api/v1/user/SendFriendReq/${id_user}`, undefined, 'POST')
+                const resp = await resource(`/api/v1/user/SendFriendReq/${id_user}`, { csrftoken }, 'POST')
                 const data = await resp.json()
                 if (!resp.ok) {
                     actionRevert()
@@ -130,7 +135,7 @@ export default function useUser(usenavigate) {
         updateUserInfo: async (handlerError, data_to_update, type, actionSuccess) => {
             try {
                 const query = type ? `?data=${type}` : ''
-                const resp = await resource(`/api/v1/user/data_update/${query}`, data_to_update, 'PATCH')
+                const resp = await resource(`/api/v1/user/data_update/${query}`, { csrftoken, ...data_to_update }, 'PATCH')
                 const data = await resp.json()
                 if (!resp.ok) {
                     handlerError([data.message])
@@ -146,8 +151,8 @@ export default function useUser(usenavigate) {
         updatePassword: async (handlerError, old_password, new_password) => {
             try {
                 console.log(old_password, new_password);
-                const tkn = window.sessionStorage.getItem("tkn");
-                const resp = await resource(`/api/v1/user/password_update`, { old_password, new_password }, 'POST', tkn)
+
+                const resp = await resource({ route: `/api/v1/user/password_update`, tkn: csrftoken, body: { old_password, new_password } })
                 const data = await resp.json()
                 if (!resp.ok) {
                     handlerError([data.message])
@@ -161,11 +166,10 @@ export default function useUser(usenavigate) {
         },
         updateAvatarUser: async (handlerError, file, actionRevert, actionSuccess) => {
             try {
-                const tkn = window.sessionStorage.getItem("tkn");
                 const formData = new FormData()
                 formData.append('avatar_file', file)
 
-                const resp = await resource(`/api/v1/user/avatar_update`, undefined, 'PATCH', tkn, formData)
+                const resp = await resource({ route: `/api/v1/user/avatar_update`, tkn: csrftoken, method: 'PATCH', formData })
                 if (resp.status !== 204) {
                     const data = await resp.json()
                     console.log('pasa');
@@ -182,7 +186,7 @@ export default function useUser(usenavigate) {
         restorePassword: async (handlerError, accesToken, password) => {
             try {
                 console.log(accesToken, password);
-                const resp = await resource(`/api/v1/user/restore_password`, { password }, 'POST', accesToken)
+                const resp = await resource({ route: `/api/v1/user/restore_password`, body: { password }, tkn: accesToken })
                 const data = await resp.json()
                 if (!resp.ok) {
                     handlerError([data.message])
@@ -196,7 +200,7 @@ export default function useUser(usenavigate) {
         deleteRelationFriend: async (handlerError, id_relation, actionRevert, actionSuccess, request) => {
             try {
                 const query = request ? `?type=request` : ''
-                const resp = await resource(`/api/v1/user/deleteFriend/${id_relation}/${query}`, undefined, 'DELETE')
+                const resp = await resource({ route: `/api/v1/user/deleteFriend/${id_relation}/${query}`, tkn: csrftoken, method: 'DELETE' })
                 const data = await resp.json()
                 if (!resp.ok) {
                     actionRevert()
@@ -209,16 +213,33 @@ export default function useUser(usenavigate) {
             }
         },
 
+        deleteAccount: async (handlerError, callback) => {
+            try {
+                const resp = await resource({ route: '/api/v1/user/deleteAccount', method: 'DELETE', tkn: csrftoken })
+                const data = await resp.json()
+                if (resp.ok) {
+                    callback()
+                } else {
+                    handlerError([data.message])
+                }
+
+            } catch (e) {
+                console.log(e);
+                if (e instanceof PermissionInvalid) return logout()
+            }
+        }
+        ,
+
         logout: async () => {
             try {
-                const resp = await resource(`/api/v1/auth/logout`, undefined, 'DELETE')
+                const resp = await resource({ route: `/api/v1/auth/logout`, method: 'DELETE' })
                 const data = await resp.json()
                 if (!resp.ok) {
                     console.log(data);
                     return
                 }
             } catch (e) {
-                console.log(e);
+                //console.log(e);
             }
         }
 
