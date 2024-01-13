@@ -23,7 +23,7 @@ const routes = createBrowserRouter([
     element: <Index />,
     children: [
       {
-        path: "/",
+        path: "",
         element: <Forms />,
         children: [
           {

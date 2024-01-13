@@ -7,7 +7,10 @@ import { decryptDate } from "../helpers/encrypt";
 export default function Index() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { session } = decryptDate(useSelector((state) => state.auth.userAuth));
+  //console.log(useSelector((state) => state.auth.userAuth));
+  const userAuth = useSelector((state) => state.auth.userAuth);
+  const { session } =
+    typeof userAuth === "string" ? decryptDate(userAuth) : userAuth;
 
   useEffect(() => {
     const handler = (path) => {

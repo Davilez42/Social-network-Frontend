@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { encryptDate } from '../../helpers/encrypt'
+import { encryptDate, } from '../../helpers/encrypt'
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {

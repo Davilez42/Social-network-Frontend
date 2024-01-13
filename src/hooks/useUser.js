@@ -7,7 +7,10 @@ import { setAuth, setCsrftkn } from "../features/auth/authSlice";
 import { decryptDate } from "../helpers/encrypt";
 export default function useUser(usenavigate) {
     const dispatch = useDispatch()
-    const { csrftoken } = decryptDate(useSelector(state => state.auth.userAuth))
+    const userAuth = useSelector((state) => state.auth.userAuth);
+    const { csrftoken } =
+        typeof userAuth === "string" ? decryptDate(userAuth) : userAuth;
+
     const logout = () => {
         dispatch(setAuth(false))
         usenavigate('/login')
