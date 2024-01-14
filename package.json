@@ -1,5 +1,6 @@
 {
   "name": "snapwire.client",
+  "homepage": "https://snapwire.onrender.com/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
