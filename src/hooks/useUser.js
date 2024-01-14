@@ -84,7 +84,7 @@ export default function useUser(usenavigate) {
                     usenavigate({ route: `/confirmEmail/${data.data.id_user}/${data.data.fullname.split(' ')[0]}` })
                     return
                 }
-                dispatch(setAuth({ session: true, csrftoken: data.csrftoken }))
+                dispatch(setAuth({ session: true, csrftoken: data.data.csrftoken }))
                 usenavigate(`/home/feed`)
 
             } catch (e) {
