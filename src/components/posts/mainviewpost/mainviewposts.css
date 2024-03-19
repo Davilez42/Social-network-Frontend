@@ -53,6 +53,7 @@
     display: flex;
     overflow-y: hidden;
     overflow-x: auto;
+    scrollbar-width: thin;
 }
 
 .image_media,

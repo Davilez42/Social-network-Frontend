@@ -17,11 +17,11 @@ import logo2 from "../../../assets/logo2.png";
 import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt";
 import { UserContext } from "../../../context/userContext";
-import solic from "../../../assets/solic.png";
+import { GoBookmark } from "react-icons/go";
 
 // eslint-disable-next-line react/prop-types
 export default function NavBarSide({ setNavBarSide }) {
-  const { username, url_avatar, id_user, friends } = decryptDate(
+  const { username, avatar, requests } = decryptDate(
     useSelector((state) => state.user.userInfo)
   );
 
@@ -43,9 +43,7 @@ export default function NavBarSide({ setNavBarSide }) {
     <div className="container-navbar-side">
       {request_friends_view ? (
         <RequestToFriendsView
-          requests_pending={friends?.filter(
-            (f) => f.friend_state === "pending" && f.user_requesting !== id_user
-          )}
+          requests_pending={requests}
           actionCloseAction={setRequests_view_friends}
         />
       ) : (
@@ -65,21 +63,20 @@ export default function NavBarSide({ setNavBarSide }) {
         </NavLink>
       </div>
 
-      <div
-        className="container_side_avatar"
-        onClick={() => {
-          if (canNavbarSideOccult) setNavBarSide(false);
-        }}
-      >
-        <NavLink to="/home/profile/view">
-          <img src={url_avatar} className="avatar loading" alt="" />
-        </NavLink>
-        <div className="container_alias">
-          <p className="title_username">{username}</p>
-        </div>
-      </div>
-
       <nav className="list-items-main">
+        <div
+          className="container_side_avatar"
+          onClick={() => {
+            if (canNavbarSideOccult) setNavBarSide(false);
+          }}
+        >
+          <NavLink to="/home/profile/view">
+            <img src={avatar?.url} className="avatar loading" alt="" />
+          </NavLink>
+          <div className="container_alias">
+            <p className="title_username">{username}</p>
+          </div>
+        </div>
         <NavLink
           to="/home/feed"
           className="item_list_main"
@@ -89,9 +86,9 @@ export default function NavBarSide({ setNavBarSide }) {
         >
           {" "}
           <span className="box_icon">
-            <GoHomeFill className="icon" size={25} />
+            <GoHomeFill className="icon" size={24} />
           </span>{" "}
-          <p>Inicio</p>
+          Inicio
         </NavLink>
 
         <NavLink
@@ -103,10 +100,21 @@ export default function NavBarSide({ setNavBarSide }) {
         >
           {" "}
           <span className="box_icon">
-            <GoPerson className="icon" size={25} />
+            <GoPerson className="icon" size={24} />
           </span>{" "}
-          <p>Perfil</p>
+          Perfil
         </NavLink>
+        <div
+          className="item_list_main item-requests"
+          onClick={() => {
+            setRequests_view_friends(!request_friends_view);
+          }}
+        >
+          <span className="box_icon">
+            <GoBookmark size={22} className="icon" />
+          </span>
+          guardados
+        </div>
 
         <div
           className="item_list_main"
@@ -115,32 +123,26 @@ export default function NavBarSide({ setNavBarSide }) {
           }}
         >
           <span className="box_icon">
-            <GoPlusCircle className="icon " size={25} />
+            <GoPlusCircle className="icon " size={21} />
           </span>
-          <p>Crear publicacion</p>
+          Crear publicacion
         </div>
 
         <div
-          className="item_list_main"
+          className="item_list_main item-requests"
           onClick={() => {
             setRequests_view_friends(!request_friends_view);
           }}
         >
           <span className="box_icon">
-            {friends?.filter(
-              (f) =>
-                f.friend_state === "pending" && f.user_requesting !== id_user
-            ).length !== 0 ? (
-              <img
-                src={solic}
-                className="icon notificacion_active_request"
-                size={25}
-              />
-            ) : (
-              <GoPeople size={25} className="icon" />
-            )}
+            <GoPeople size={22} className="icon" />
           </span>
-          <p>Solicitudes</p>
+          {requests?.length !== 0 ? (
+            <div className="notificaction-count">{requests?.length}k</div>
+          ) : (
+            <></>
+          )}
+          Solicitudes
         </div>
 
         <div
@@ -151,21 +153,26 @@ export default function NavBarSide({ setNavBarSide }) {
           }}
         >
           <span className="box_icon">
-            <GoPaperAirplane className="icon" size={25} />
+            <GoPaperAirplane className="icon" size={22} />
           </span>{" "}
-          <p>Mensajes</p>
+          {requests?.length !== 0 ? (
+            <div className="notificaction-count">{2}k</div>
+          ) : (
+            <></>
+          )}
+          Mensajes
         </div>
 
         <div
-          className="item_list_main"
+          className="item_list_main item-more"
           onClick={() => {
             setMore_options_view(!more_options_view);
           }}
         >
           <span className="box_icon">
-            <GoListUnordered className="icon " size={27} />
+            <GoListUnordered className="icon " size={22} />
           </span>
-          <p>Mas</p>
+          Mas
         </div>
       </nav>
 

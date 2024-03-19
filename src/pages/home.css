@@ -9,7 +9,6 @@
 
 .container-navBar-left {
     display: flex;
-    background-color: aqua;
     width: 20%;
 }
 
@@ -19,7 +18,9 @@
     left: 0;
     right: 0;
     top: 0;
-    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     backdrop-filter: brightness(20%);
 }
 

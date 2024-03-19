@@ -30,21 +30,23 @@
 
 .box_user_bio {
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: 600;
     font-size: 13px;
 }
 
+
+
 .button_edit_profile,
-.button_option_friend {
+.button_option_user {
     color: rgb(46, 46, 46);
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 400;
     font-size: 14px;
     border-radius: 5px;
     text-decoration: none;
-    min-width: 120px;
-    max-width: min-content;
-    padding: 0 5px;
+    min-width: min-content;
+    text-wrap: wrap;
+    padding-left: 15px;
+    padding-right: 15px;
     height: 30px;
     display: flex;
     justify-content: center;
@@ -54,7 +56,7 @@
     cursor: pointer;
 }
 
-.button_option_friend {
+.button_option_user {
     float: right;
 }
 
@@ -91,13 +93,31 @@
 .title_fullname {
     font-size: 20px;
     font-weight: 900;
-    width: 40%;
+    max-width: 250px;
+    overflow-x: hidden;
+    text-wrap: nowrap;
+    float: left;
 }
 
 .box_fullname {
+    width: 90%;
+}
+
+.block-buttons-acp-rec {
     display: flex;
-    flex-direction: row;
-    gap: 30px;
+    gap: 10px;
+    width: 100px;
+    padding-left: 20px;
+}
+
+.icon-check {
+    float: left;
+    padding-left: 15px;
+    height: 100%;
+}
+
+.btn-option-user-profile {
+    float: right
 }
 
 .container_self_posts {

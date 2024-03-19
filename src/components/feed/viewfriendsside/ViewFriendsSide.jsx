@@ -11,25 +11,23 @@ export default function ViewFriendsSide() {
       <div className="container-view-friends">
         <p className=" title_navbar_side ">Amigos</p>
         <div className="container_friends">
-          {friends
-            ?.filter((f) => f.friend_state === "accepted")
-            .map((friend, i) => (
-              <div
-                key={i}
-                id_user={friend.user[0]}
-                className="card_friend"
-                onClick={() => {
-                  usernavigate(`/home/profile/view/${friend.user[0]}`);
-                }}
-              >
-                <img
-                  className="avatar avatar_friend"
-                  src={friend.user[2]}
-                  alt=""
-                />
-                <p className="name_friend">{friend.user[1]}</p>
-              </div>
-            ))}
+          {friends?.map((friend, i) => (
+            <div
+              key={i}
+              id={friend.user._id}
+              className="card_friend"
+              onClick={() => {
+                usernavigate(`/home/profile/view/${friend.user._id}`);
+              }}
+            >
+              <img
+                className="avatar avatar_friend"
+                src={friend.user.avatar.url}
+                alt=""
+              />
+              <p className="name_friend">{friend.user.username}</p>
+            </div>
+          ))}
         </div>
       </div>
     </>

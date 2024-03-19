@@ -3,28 +3,61 @@ import { NavLink } from "react-router-dom";
 import useUser from "../../../hooks/useUser";
 import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../../features/auth/authSlice";
 function Login() {
-  const [correoElectronico, setCorreoElectronico] = useState("");
+  const [email, setEmail] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [message, setMessage] = useState("");
   const usenavigate = useNavigate();
   const { userLogin, userLoginWithGoogle } = useUser(usenavigate);
+  const dispatch = useDispatch();
 
   const handlerLogin = () => {
-    if (correoElectronico.trim() !== "" && contrasena.trim() !== "") {
-      userLogin(setMessage, correoElectronico, contrasena);
+    if (email.trim() !== "" && contrasena.trim() !== "") {
+      userLogin(email, contrasena, (error, data) => {
+        if (error) {
+          if (error.code === 103) {
+            return setMessage(`El usuario no existe`);
+          }
+          if (error.code === 101) {
+            return setMessage(`Contraseña incorrecta`);
+          }
+        }
+        if (data?.state === "PENDING_TO_VERIFIED") {
+          return usenavigate(
+            `/confirmEmail/${data.data.id_user}/${
+              data.data.fullname.split(" ")[0]
+            }`
+          );
+        }
+        dispatch(
+          setAuth({
+            session: true,
+            csrftoken: data.data.csrftoken,
+            id_user: data.data.id_user,
+          })
+        );
+        window.localStorage.setItem("id_user", data.data.id_user);
+        usenavigate(`/home/feed`);
+      });
     }
   };
 
   const handlerSignWithGoogleSuccess = (credentials) => {
-    userLoginWithGoogle(setMessage, credentials);
+    userLoginWithGoogle(credentials, (error, data) => {
+      if (error) {
+        return setMessage(error);
+      }
+      dispatch(setAuth({ session: true, csrftoken: data.csrftoken }));
+    });
   };
   const handlerSignWithGoogleError = (error) => {
     setMessage("Error al iniciar con google");
   };
 
   useEffect(() => {
-    if (contrasena && correoElectronico) {
+    if (contrasena && email) {
       document.getElementById("button_login").style =
         "background-color:#1399f3;";
     } else {
@@ -45,8 +78,13 @@ function Login() {
         required
         className="input-field"
         placeholder="Correo electrónico o usuario"
-        value={correoElectronico}
-        onChange={(e) => setCorreoElectronico(e.target.value)}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handlerLogin();
+          }
+        }}
       />
 
       <input
@@ -57,6 +95,11 @@ function Login() {
         placeholder="Contraseña"
         value={contrasena}
         onChange={(e) => setContrasena(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handlerLogin();
+          }
+        }}
       />
       <div className="info-text">{message}</div>
       <GoogleLogin

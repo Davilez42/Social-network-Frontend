@@ -25,7 +25,7 @@ export default function MoreOptionsView({ actionClose }) {
                 actionClose(false);
               }}
             >
-              <PiArrowLeftBold size={30} />
+              <PiArrowLeftBold size={24} />
             </div>
             <nav className="more_options_nav">
               <NavLink

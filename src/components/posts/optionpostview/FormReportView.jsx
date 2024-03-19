@@ -31,7 +31,7 @@ export default function FormReportView({ actionSend, id_post }) {
           onClick={() => {
             actionSend();
           }}
-          size={30}
+          size={25}
         />
       </div>
       <div className="form_container_type_report">

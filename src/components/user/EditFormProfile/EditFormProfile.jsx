@@ -11,15 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserInfoLocal } from "../../../features/user/userSlice";
 
 export default function EditFormProfile() {
-  const {
-    username,
-    user_bio,
-    url_avatar,
-    date_born,
-    fullname,
-    email,
-    phone_number,
-  } = decryptDate(useSelector((state) => state.user.userInfo));
+  const { username, bio, avatar, date_born, fullname, email, phone_number } =
+    decryptDate(useSelector((state) => state.user.userInfo));
   const dispatch = useDispatch();
   //estados del propio componente
   const [username_edit, setUsername_edit] = useState("");
@@ -39,7 +32,7 @@ export default function EditFormProfile() {
   const [stateUpdatePassword, setStateUpdatePassword] = useState("gray");
 
   const [objectParams, setParams] = useState({});
-  const [avatar, setAvatar] = useState({});
+  const [avatar_, setAvatar] = useState({});
   const usenavigate = useNavigate();
 
   const { updateUserInfo, updatePassword, updateAvatarUser } =
@@ -47,9 +40,12 @@ export default function EditFormProfile() {
 
   const handlerSendData = () => {
     setParams({});
-    console.log(date_born_edit);
     if (Object.keys(objectParams).length !== 0) {
-      updateUserInfo(setInfo, objectParams, undefined, () => {
+      updateUserInfo(objectParams, (err) => {
+        if (err) {
+          return setInfo([err.message]);
+        }
+        setInfo(["Se actualizado tu informacion"]);
         dispatch(updateUserInfoLocal(objectParams));
       });
     }
@@ -57,48 +53,46 @@ export default function EditFormProfile() {
 
   const handlerSendChangedPassword = () => {
     if (oldPassword.trim() !== "" && newPassword !== "") {
-      updatePassword(setInfo, oldPassword, newPassword);
+      updatePassword(oldPassword, newPassword, (err) => {
+        if (err) {
+          return setInfo([err.message]);
+        }
+        setInfo(["Tu contraseña ha sido actualizada"]);
+        usenavigate(`/home/profile/edit`);
+      });
     }
   };
 
   const handlerUpdateAvatarUser = () => {
-    if (avatar instanceof File) {
-      updateAvatarUser(
-        setInfo,
-        avatar,
-        () => {},
-        () => {
-          dispatch(updateUserInfoLocal({ url_avatar: url_avatar_edit }));
+    if (avatar_ instanceof File) {
+      updateAvatarUser(avatar_, (err) => {
+        if (err) {
+          return setInfo([err.message]);
         }
-      );
+        avatar.url = url_avatar_edit;
+        dispatch(updateUserInfoLocal({ avatar }));
+        setInfo(["Avatar cambiado"]);
+      });
     }
   };
 
   useEffect(() => {
     setUsername_edit(username);
-    setUser_bio_edit(user_bio);
+    setUser_bio_edit(bio);
     setFullname_edit(fullname);
     setEmail_edit(email);
-    setUrl_avatar_edit(url_avatar);
+    setUrl_avatar_edit(avatar.url);
     setDate_born_edit(date_born.split("T")[0]);
     setUsername_edit(username);
     setPhone_number_edit(phone_number);
-  }, [
-    username,
-    user_bio,
-    url_avatar,
-    date_born,
-    fullname,
-    email,
-    phone_number,
-  ]);
+  }, [username, bio, avatar.url, date_born, fullname, email, phone_number]);
 
   return (
     <>
       <div className="form-edit-profile">
         <div className="header_edit_form">
           <NavLink className="back" to="/home/profile/view" replace>
-            <PiArrowLeftBold size={30} />
+            <PiArrowLeftBold size={24} />
           </NavLink>
 
           <h1>Editar perfil</h1>
@@ -150,7 +144,7 @@ export default function EditFormProfile() {
                   setStateUpdateInfo("#4298f5");
                   setUser_bio_edit(event.target.value);
                   const aux = objectParams;
-                  aux.user_bio = event.target.value;
+                  aux.bio = event.target.value;
                   setParams(aux);
                 }}
               >
@@ -213,6 +207,7 @@ export default function EditFormProfile() {
             <div className="container-input-width-label">
               <label htmlFor="input_username">Nombre de usuario</label>
               <input
+                disabled
                 id="input_username"
                 type="nickname"
                 className="input-field"

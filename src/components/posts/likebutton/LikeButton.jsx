@@ -7,39 +7,38 @@ import { useContext } from "react";
 import usePost from "../../../hooks/usePost";
 import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt";
+import "./likebutton.css";
+import LikesModal from "../likesmodal/LikesModal";
 
-import UsersLikeView from "../userslikeview/UsersLikeView";
-
-export default function ButtonLike({ id_post, likes_post }) {
-  const { id_user } = decryptDate(useSelector((state) => state.user.userInfo));
+export default function LikeButton({ id_post, likes }) {
+  const { _id } = decryptDate(useSelector((state) => state.user.userInfo));
   const { setInfo } = useContext(UserContext);
   const [state_button, setState_button] = useState(false);
   const [usersLikeView, setUsersLikeView] = useState(false);
 
   const { sendLike } = usePost();
-  const [state_likes, setState_Like] = useState();
-
-  const actionReverse = () => {
-    setState_button(false);
-  };
+  const [state_likes, setState_Like] = useState(likes.length);
 
   const handlerLike = (id_post) => {
-    sendLike(setInfo, id_post, actionReverse);
+    sendLike((err) => {
+      if (err) {
+        setState_button(false);
+        return setInfo([err.message]);
+      }
+    }, id_post);
   };
 
   useEffect(() => {
-    // console.log(likes_post, id_user);
-    setState_Like(likes_post.filter((d) => d !== null).length);
-    if (likes_post.includes(parseInt(id_user))) {
+    if (likes.some((l) => l.user === _id)) {
       setState_button(true);
     }
-  }, [id_user]);
+  }, [_id]);
 
   return (
     <>
       {state_button ? (
         <FaHeart
-          className="liked"
+          className="like"
           key={503}
           onClick={() => {
             setState_button(false);
@@ -51,6 +50,7 @@ export default function ButtonLike({ id_post, likes_post }) {
         />
       ) : (
         <FaRegHeart
+          className="like"
           key={504}
           onClick={() => {
             setState_Like(state_likes + 1);
@@ -68,7 +68,12 @@ export default function ButtonLike({ id_post, likes_post }) {
         {state_likes}
       </span>
       {usersLikeView ? (
-        <UsersLikeView id_post={id_post} actionCloseAction={setUsersLikeView} />
+        <LikesModal
+          id_post={id_post}
+          closeView={() => {
+            setUsersLikeView(false);
+          }}
+        />
       ) : (
         <></>
       )}

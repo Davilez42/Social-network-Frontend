@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import "./confirmverifiedcode.css";
 import { useState, useEffect } from "react";
-
 import useUser from "../../../hooks/useUser";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../../features/auth/authSlice";
 
 export default function ConfirmVerifiedCode() {
   const { id_user, name } = useParams();
@@ -13,6 +14,7 @@ export default function ConfirmVerifiedCode() {
   const [code4, setCode4] = useState("");
   const [message, setMessage] = useState("");
   const usenavigate = useNavigate();
+  const dispatch = useDispatch();
   const { confirmVerifyCode, sendEmail } = useUser(usenavigate);
 
   const clearInputs = () => {
@@ -28,15 +30,39 @@ export default function ConfirmVerifiedCode() {
       return;
     }
     confirmVerifyCode(
-      setMessage,
+      (err, data) => {
+        if (err) {
+          return setMessage(err.message);
+        }
+        clearInputs();
+        dispatch(
+          setAuth({
+            session: true,
+            csrftoken: data.data.csrftoken,
+            id_user: data.data.id_user,
+          })
+        );
+        window.localStorage.setItem("id_user", data.data.id_user);
+        usenavigate(`/home/feed`);
+        usenavigate(`/home/feed`);
+      },
       id_user,
-      code1 + code2 + code3 + code4,
-      clearInputs
+      code1 + code2 + code3 + code4
     );
   };
 
   const handlerSendEmail = () => {
-    sendEmail(setMessage, parseInt(id_user), undefined, "verifyAccount");
+    setMessage("");
+    sendEmail(
+      (err) => {
+        if (err) {
+          return setMessage(err.message);
+        }
+      },
+      id_user,
+      undefined,
+      "verifyAccount"
+    );
   };
 
   useEffect(() => {

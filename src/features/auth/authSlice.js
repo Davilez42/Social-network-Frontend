@@ -5,14 +5,15 @@ export const authSlice = createSlice({
     initialState: {
         userAuth: {
             session: false,
-            csrftoken: ''
+            csrftoken: '',
+            id_user: ''
         },
 
     },
     reducers: {
         setAuth: (state, action) => {
-            const { session, csrftoken } = action.payload
-            state.userAuth = encryptDate(JSON.stringify({ session, csrftoken }))
+            const { session, csrftoken, id_user } = action.payload
+            state.userAuth = encryptDate(JSON.stringify({ session, csrftoken, id_user }))
         }
     }
 })

@@ -1,12 +1,9 @@
 #userlikesInfo_container {
-    width: 25%;
-    height: min-content;
+    width: 30%;
+    height: 400px;
 }
 
-.user-list {
-    height: 300px;
-    overflow-y: scroll;
-}
+
 
 
 @media (width<600px) {

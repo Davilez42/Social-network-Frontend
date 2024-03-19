@@ -17,6 +17,7 @@ export default function InputSearch({ actionClose, actionSearch }) {
           onChange={(e) => {
             setSearchQuery(e.target.value);
           }}
+          required
           className="input-field"
         />
         <div

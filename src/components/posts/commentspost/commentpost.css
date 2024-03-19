@@ -1,0 +1,108 @@
+.block-comments {
+    width: 100%;
+    display: flex;
+    min-height: 300px;
+    height: max-content;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+
+.header_comments {
+    width: 90%;
+    color: rgb(104, 104, 104);
+    text-align: center;
+    margin-top: 10px;
+    height: 6%;
+}
+
+
+.info_message {
+    color: rgb(122, 122, 122);
+}
+
+
+.container_comments {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    gap: 10px;
+    height: 500px;
+    min-height: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+}
+
+
+.card_comment {
+    display: flex;
+    width: 100%;
+    min-height: min-content;
+    border: 1px solid rgb(243, 243, 243);
+
+}
+
+.container_avatar_owner {
+    width: 20%;
+    display: flex;
+    height: min-content;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar_comment_owner {
+    height: 50px;
+    width: 50px;
+    margin: 0;
+    object-fit: cover;
+}
+
+
+.metadata {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    height: min-content;
+    max-height: 160px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.box_username {
+    color: rgb(17, 17, 17);
+    width: 100%;
+}
+
+.comment {
+    display: flex;
+    overflow-wrap: break-word;
+    color: rgb(87, 87, 87);
+    flex-direction: column;
+    margin-top: 2px;
+}
+
+.time_comment {
+    color: rgb(122, 122, 122);
+}
+
+
+.input_comment {
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 100px;
+    width: 400px;
+}
+
+
+.cotainer_input_comment {
+
+    width: 90%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    align-items: center;
+}

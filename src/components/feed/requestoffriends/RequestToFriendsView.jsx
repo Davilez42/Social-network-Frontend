@@ -3,41 +3,49 @@ import { PiArrowLeftBold } from "react-icons/pi";
 import "./requestofriendsview.css";
 import useUser from "../../../hooks/useUser";
 import { UserContext } from "../../../context/userContext";
-import { decryptDate } from "../../../helpers/encrypt";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useContext, useState } from "react";
-import { updateUserInfoLocal } from "../../../features/user/userSlice";
+import {
+  setFriendLocal,
+  deleteRequestUserLocal,
+} from "../../../features/user/userSlice";
 
 const RequestToFriendsView = ({ requests_pending = [], actionCloseAction }) => {
   const [requestsFriend, setRequestsFriend] = useState(requests_pending);
-  const { friends } = decryptDate(useSelector((state) => state.user.userInfo));
+  // const { friends } = decryptDate(useSelector((state) => state.user.userInfo));
   const { setInfo } = useContext(UserContext);
   const dispatch = useDispatch();
 
-  const { sendRequestFriend } = useUser();
+  const { sendRequestFriend, deleteRelation } = useUser();
 
   const handlerAcceptRequest = (request_user) => {
-    sendRequestFriend(
-      setInfo,
-      request_user.user[0],
-      () => {},
-      () => {
-        setRequestsFriend(
-          //elimino de la vista de solicitudes
-          requestsFriend.filter((r) => r.user[0] !== request_user.user[0])
-        );
-        dispatch(
-          updateUserInfoLocal({
-            friends: friends.map((r) => {
-              const aux = r;
-              if (r.user[0] === request_user.user[0]) {
-                aux.friend_state = "accepted";
-              }
-              return aux;
-            }),
-          })
-        );
+    sendRequestFriend((err, data) => {
+      if (err) {
+        return setInfo([err]);
       }
+      dispatch(
+        setFriendLocal({
+          _id: data.id_relation,
+          user: request_user.user,
+        })
+      );
+      setRequestsFriend(
+        requestsFriend.filter((r) => r._id !== request_user._id)
+      );
+    }, request_user.user._id);
+  };
+
+  const handlerDeleteRequest = (id_request) => {
+    deleteRelation(
+      (err) => {
+        if (err) {
+          return setInfo([err]);
+        }
+        setRequestsFriend(requestsFriend.filter((r) => r._id !== id_request));
+        dispatch(deleteRequestUserLocal(id_request));
+      },
+      id_request,
+      true
     );
   };
 
@@ -64,30 +72,32 @@ const RequestToFriendsView = ({ requests_pending = [], actionCloseAction }) => {
                   className="card_user_list"
                   key={index}
                   onClick={() => {
-                    actionSelectFriend(request_user.user[0]);
+                    actionSelectFriend(request_user.user._id);
                   }}
                 >
                   <img
                     className="avatar_user_list"
-                    src={request_user.user[2]}
+                    src={request_user.user.avatar.url}
                     alt=""
                   />
-                  <span className="card_name_user">{request_user.user[1]}</span>
+                  <span className="card_name_user">
+                    {request_user.user.username}
+                  </span>
 
                   <div className="container_button_option_request">
                     <div
                       onClick={() => {
                         handlerAcceptRequest(request_user);
                       }}
-                      className="button_option_friend button_option_request"
+                      className="button_option_user button_option_request"
                     >
                       Aceptar
                     </div>
                     <div
                       onClick={() => {
-                        alert("Esta funcion se encuentra en desarollo");
+                        handlerDeleteRequest(request_user._id);
                       }}
-                      className="button_option_friend button_option_request"
+                      className="button_option_user button_option_request"
                     >
                       Rechazar
                     </div>

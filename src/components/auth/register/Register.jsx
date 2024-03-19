@@ -22,9 +22,28 @@ export default function Register() {
       fechaNacimiento.trim() !== "" &&
       correoElectronico.trim() !== ""
     ) {
-      console.log("ENVIA DATOS");
       registerUser(
-        setMessage,
+        (err, data) => {
+          if (err) {
+            if (err.code === 105) {
+              return setMessage(err.message);
+            }
+            if (err.type === "INCORRECT_EMAIL_FORMAT") {
+              return setMessage("El correo electronico no es valido");
+            }
+            if (err.type === "INCORRECT_PASSWORD_FORMAT") {
+              return setMessage("la contraseña no es valida");
+            }
+            if (err.type === "INCORRECT_PHONE_NUMBER_FORMAT") {
+              return setMessage("El numero de celualar no es valido");
+            }
+            return setMessage(err.message);
+          }
+
+          usenavigate(
+            `/confirmEmail/${data.data.id_user}/${fullname.split(" ")[0]}`
+          );
+        },
         nombreUsuario,
         contrasena,
         fullname,
@@ -114,7 +133,7 @@ export default function Register() {
         required
         type="password"
         className="input-field"
-        placeholder="Contraseña *"
+        placeholder="Contraseña  minimo 6 caracteres *"
         value={contrasena}
         onChange={(e) => setContrasena(e.target.value)}
       />

@@ -40,37 +40,25 @@ export const userSlice = createSlice({
             }
             state.userInfo = encryptDate(JSON.stringify(aux))
         },
-        deleteRelationFriendLocal: (state, action) => {
+        deleteFriendLocal: (state, action) => {
             const aux = decryptDate(state.userInfo)
-            aux.friends = aux.friends.filter(f => f.id_relation !== action.payload)
+            aux.friends = aux.friends.filter(f => f._id !== action.payload)
+            state.userInfo = encryptDate(JSON.stringify(aux))
+        },
+        setFriendLocal: (state, action) => {
+            const aux = decryptDate(state.userInfo)
+            aux.friends.push(action.payload)
             state.userInfo = encryptDate(JSON.stringify(aux))
         },
         deleteRequestUserLocal: (state, action) => {
-            console.log(action.payload);
             const aux = decryptDate(state.userInfo)
-            aux.friends = aux.friends.filter(f => parseInt(f.user[0]) !== parseInt(action.payload))
-            console.log(aux.friends);
+            aux.requests = aux.requests.filter(r => r._id !== action.payload)
+            aux.my_requests_sent = aux.my_requests_sent.filter(r => r._id !== action.payload)
             state.userInfo = encryptDate(JSON.stringify(aux))
         },
         setRequestUserLocal: (state, action) => {
             const aux = decryptDate(state.userInfo)
-
-            const user_found = aux.friends.some(f => f.user[0] === parseInt(action.payload[0]) && f.friend_state === 'pending')
-            if (user_found) {
-                aux.friends.map(f => {
-                    if (f.user[0] === parseInt(action.payload[0])) {
-                        f.friend_state = 'accepted'
-                    }
-                })
-            } else {
-                aux.friends = [...aux.friends, {
-                    id_relation: 23123,
-                    friend_state: "pending",
-                    user_requesting: aux.id_user,
-                    user: action.payload,
-                },]
-            }
-            console.log(aux.friends);
+            aux.my_requests_sent.push(action.payload)
             state.userInfo = encryptDate(JSON.stringify(aux))
         }
         , updateDescriptionPost: (state, action) => {
@@ -89,6 +77,6 @@ export const userSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setUser, deleteUserPost, updateDescriptionPost, archiveUserPost, setUserPosts, updateUserInfoLocal, deleteRequestUserLocal, deleteRelationFriendLocal, setRequestUserLocal } = userSlice.actions
+export const { setUser, setFriendLocal, deleteUserPost, updateDescriptionPost, archiveUserPost, setUserPosts, updateUserInfoLocal, deleteRequestUserLocal, deleteFriendLocal, setRequestUserLocal } = userSlice.actions
 
 export default userSlice.reducer

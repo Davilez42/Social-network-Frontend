@@ -8,7 +8,7 @@ import { decryptDate } from "../helpers/encrypt";
 const usePost = (usenavigate) => {
 
     const dispatch = useDispatch()
-    const { csrftoken } = decryptDate(useSelector(state => state.auth.userAuth))
+    const { csrftoken, id_user } = decryptDate(useSelector(state => state.auth.userAuth))
 
     const logout = () => {
         dispatch(setAuth(false))
@@ -16,7 +16,7 @@ const usePost = (usenavigate) => {
     }
 
     return ({
-        getPosts: async (handlerError, setPosts, optionsQuery) => {
+        getPosts: async (callback, optionsQuery) => {
             try {
                 let query = []
                 for (let key in optionsQuery) {
@@ -29,184 +29,123 @@ const usePost = (usenavigate) => {
                 })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    return handlerError([data.message])
+                    return callback(data.error)
                 }
-                //console.log(data.posts);
-                setPosts(data.posts)
+                callback(undefined, data)
 
             } catch (e) {
-                console.log(e);
-                if (e instanceof PermissionInvalid) return logout()
+                callback(e)
             }
         },
-        sendPost: async (handlerError, text, files, actionClear) => {
+        sendPost: async (callback, text, files) => {
             try {
                 const formData = new FormData();
                 formData.append('text', text)
                 for (const file of files) {
                     formData.append('media', file)
                 }
-                const resp = await resource({ route: '/api/v1/post/', method: 'PUT', formData, tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${id_user}`, method: 'PUT', formData, tkn: csrftoken })
                 if (!resp.ok) {
                     const data = await resp.json()
-                    handlerError([data.message])
-                    return
+                    return callback(data.error)
                 }
                 usenavigate('/home/feed')
-                handlerError(['¡Listo! Tu publicación se ha cargado correctamente.'])
+                callback()
 
             } catch (e) {
-                if (e instanceof PermissionInvalid) {
-                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
-                        handlerError([e.message])
-                        return
-                    }
-                    logout()
-                }
-
-            } finally {
-                actionClear()
+                return callback(e)
             }
         }
         ,
-        getCommentsPost: async (handlerError, id_post, setComments) => {
+        getCommentsPost: async (callback, id_post) => {
 
             try {
-                const resp = await resource({ route: `/api/v1/comment/getComments/${id_post}`, method: 'GET', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${id_post}/comments`, method: 'GET', tkn: csrftoken })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    handlerError(['No pudimos cargar los comentarios de este post'])
+                    return callback(data.error)
                 }
-                setComments(data.comments)
+                callback(undefined, data)
             } catch (e) {
-                console.log(e);
-                if (e instanceof PermissionInvalid) {
-                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
-                        handlerError([e.message])
-                        return
-                    }
-                    logout()
-                }
+
+                return callback(e)
             }
 
         },
-        getInfoLikesPost: async (handlerError, id_post, actionReverse, actionSuccess) => {
+        getLikesPost: async (callback, id_post) => {
             try {
                 const resp = await resource({ route: `/api/v1/post/${id_post}/likes`, method: 'GET', tkn: csrftoken })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    actionReverse()
-                    handlerError([data.message])
+                    return callback(data.error)
                 }
-                actionSuccess(data.likesPost)
+                callback(undefined, data)
             } catch (e) {
-                console.log(e);
-                if (e instanceof PermissionInvalid) {
-                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
-                        handlerError([e.message])
-                        return
-                    }
-                    logout()
-                }
+                return callback(e)
             }
         },
-        sendComment: async (handlerError, id_post, text) => {
+        createComment: async (callback, id_post, text) => {
             try {
-                const resp = await resource({ route: `/api/v1/comment/createComment/${id_post}`, body: { text }, tkn: csrftoken })
-
+                const resp = await resource({ route: `/api/v1/post/${id_post}/commentby/${id_user}`, body: { text }, tkn: csrftoken, method: 'PUT' })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    console.log(data);
+                    return callback(data.error)
                 }
-
+                callback(undefined, data)
             } catch (e) {
-                console.log(e);
-                if (e instanceof PermissionInvalid) {
-                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
-                        handlerError([e.message])
-                        return
-                    }
-                    logout()
-                }
+
+                return callback(e)
             }
         },
-        sendLike: async (handlerError, id_post, actionReverse) => {
+        sendLike: async (callback, id_post) => {
             try {
 
-                const resp = await resource({ route: `/api/v1/post/${id_post}/like`, method: 'PUT', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${id_post}/likeby/${id_user}`, method: 'PUT', tkn: csrftoken })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    actionReverse()
+                    return callback(data.error)
                 }
+                callback()
             } catch (e) {
-                console.log(e);
-                if (e instanceof PermissionInvalid) {
-                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
-                        handlerError([e.message])
-                        return
-                    }
-                    logout()
-                }
+
+                return callback(e)
             }
         },
-        reportPost: async (handlerError, id_post, reason, type_report, actionSucces) => {
+        reportPost: async (callback, id_post, reason, type_report, actionSucces) => {
             try {
                 const resp = await resource({ route: `/api/v1/post/${id_post}/report`, body: { type_report, reason }, method: 'PUT', tkn: csrftoken })
                 if (!resp.ok) {
                     const data = await resp.json()
-                    handlerError([data.message])
-                    return;
+                    return callback(data.error)
                 }
-                actionSucces()
+                callback()
             } catch (e) {
-                console.log(e);
-                if (e instanceof PermissionInvalid) {
-                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
-                        handlerError([e.message])
-                        return
-                    }
-                    logout()
-                }
+                callback(e)
             }
         },
-        modifyPost: async (handlerError, id_post, dataUpdate, actionRevert, actionSuccess) => {
+        modifyPost: async (callback, id_post, dataUpdate) => {
             try {
                 const resp = await resource({ route: `/api/v1/post/${id_post}`, body: dataUpdate, method: 'PATCH', tkn: csrftoken })
                 if (!resp.ok) {
-                    actionRevert()
+
                     const data = await resp.json()
-                    handlerError([data.message])
+                    return callback(data.error)
                 }
-                actionSuccess()
+                callback()
             } catch (e) {
-                console.log(e);
-                if (e instanceof PermissionInvalid) {
-                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
-                        handlerError([e.message])
-                        return
-                    }
-                    logout()
-                }
+                callback(e)
             }
         },
-        deletePost: async (handlerError, id_post, actionRevert, actionSuccess) => {
+        deletePost: async (callback, id_post) => {
             try {
                 const resp = await resource({ route: `/api/v1/post/${id_post}`, method: 'DELETE', tkn: csrftoken })
                 if (!resp.ok) {
                     const data = await resp.json()
-                    actionRevert()
-                    handlerError([data.message])
+                    return callback(data.error)
                 }
-                actionSuccess()
+                callback()
             } catch (e) {
-                console.log(e);
-                if (e instanceof PermissionInvalid) {
-                    if (e.code === 'ACCOUNT_BANNED' || e.code === 'INSUFFICIENT_PERMITS') {
-                        handlerError([e.message])
-                        return
-                    }
-                    logout()
-                }
+                callback(e)
             }
         }
 

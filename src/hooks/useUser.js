@@ -2,23 +2,19 @@
 import resource from "../services/source";
 import PermissionInvalid from "../exceptions/PermissionInvalid";
 import AuthenticationRequired from "../exceptions/authenticationRequired";
-import { useDispatch, useSelector } from "react-redux";
-import { setAuth, setCsrftkn } from "../features/auth/authSlice";
 import { decryptDate } from "../helpers/encrypt";
+import { useSelector } from "react-redux";
 export default function useUser(usenavigate) {
-    const dispatch = useDispatch()
     const userAuth = useSelector((state) => state.auth.userAuth);
-    const { csrftoken } =
+    const { csrftoken, id_user } =
         typeof userAuth === "string" ? decryptDate(userAuth) : userAuth;
 
     const logout = () => {
-        dispatch(setAuth(false))
         usenavigate('/login')
     }
     return {
-        registerUser: async (handlerError, username, password, fullname, date_born, email, phone_number) => {
+        registerUser: async (callback, username, password, fullname, date_born, email, phone_number) => {
             try {
-
                 const resp = await resource({
                     route: '/api/v1/auth/signup', body: {
                         username, password, fullname, date_born, email, phone_number
@@ -26,209 +22,181 @@ export default function useUser(usenavigate) {
                 })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    handlerError(data.message)
+                    callback(data.error)
                     return
                 }
-                usenavigate(`/confirmEmail/${data.id_user}/${fullname.split(' ')[0]}`)
-
+                callback(undefined, data)
             } catch (e) {
-                handlerError([e.message])
-
+                callback(e)
             }
         },
-        confirmVerifyCode: async (handlerError, id_user, code_verify, actionClear) => {
+        confirmVerifyCode: async (callback, id_user, code_verify) => {
             try {
-                const resp = await resource({ route: `/api/v1/auth/signup/confirmEmail/${id_user}`, body: { entered_code: code_verify } })
+                const resp = await resource({ route: `/api/v1/auth/confirmEmail/${id_user}`, body: { entered_code: code_verify } })
                 const data = await resp.json()
-                // console.log(data);
                 if (!resp.ok) {
-                    handlerError([data.message])
-                    return
+                    return callback(data.error)
                 }
-                dispatch(setCsrftkn(data.csrfToken))
-                usenavigate(`/home/feed`)
+                callback(undefined, data)
             } catch (e) {
-                handlerError([e.message])
+                callback(e)
             }
-            finally {
-                actionClear()
-            }
+
         }
         ,
-        getInfoUser: async (handlerError, id_user, setUser) => {
+        getInfoUser: async (id_user, callback) => {
             try {
-                const query = id_user ? `?foreign_view=${id_user}` : ''
-                const resp = await resource({ route: `/api/v1/user/getInfo/${query}`, tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/user/${id_user}`, tkn: csrftoken, method: 'GET' })
                 const data = await resp.json()
-                if (resp.ok) {
-                    setUser(data)
 
-                } else {
-                    handlerError([data.message])
+                if (!resp.ok) {
+                    return callback(data.error)
                 }
+                callback(undefined, data)
             } catch (e) {
                 if (e instanceof AuthenticationRequired || e instanceof PermissionInvalid) return logout()
-                handlerError([e.message])
+                callback(e)
             }
         },
-        userLogin: async (handlerError, user, password) => {
+        userLogin: async (user, password, callback) => {
             try {
-                const resp = await resource({ route: `/api/v1/auth/sign`, body: { user, password } })
+                const resp = await resource({ route: `/api/v1/auth`, body: { user, password } })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    console.log(data);
-                    handlerError([data.message])
-                    return
+                    return callback(data.error)
                 }
-                if (data?.status === 'PENDING_TO_VERIFIED') {
-                    usenavigate({ route: `/confirmEmail/${data.data.id_user}/${data.data.fullname.split(' ')[0]}` })
-                    return
-                }
-                dispatch(setAuth({ session: true, csrftoken: data.data.csrftoken }))
-                usenavigate(`/home/feed`)
-
+                callback(undefined, data)
             } catch (e) {
-                handlerError([e.message])
+                callback(e)
             }
-        }, userLoginWithGoogle: async (handlerError, credentials) => {
+        }, userLoginWithGoogle: async (credentials, callback) => {
             try {
                 const resp = await resource({ route: `/api/v1/auth/sign_google_platform`, body: { credentials } })
                 const data = await resp.json()
                 if (!resp.ok) {
                     // console.log(data);
-                    handlerError([data.message])
+                    callback(data.error)
                     return
                 }
-                dispatch(setAuth({ session: true, csrftoken: data.csrftoken }))
-                usenavigate(`/home/feed`)
-
+                callback(undefined, data)
             } catch (e) {
-                console.log(e);
-                handlerError([e.message])
+                callback(e)
             }
         },
-        sendEmail: async (handlerError, id_user, email, type) => {
+        sendEmail: async (callback, id_user, email, type) => {
             try {
-                const resp = await resource({ route: `/api/v1/auth/sendEmail/?type=${type}`, body: { id_user, email } })
+                const resp = await resource({ route: `/api/v1/email/sendEmail?type=${type}`, body: { id_user, email } })
+
+                if (resp.status !== 204) {
+                    const data = await resp.json()
+                    callback(data.error)
+                }
+                callback()
+            } catch (e) {
+                callback(e)
+            }
+        },
+        sendRequestFriend: async (callback, to_user) => {
+            try {
+                const resp = await resource({ route: `/api/v1/user/${id_user}/sendRequest/${to_user}`, tkn: csrftoken, method: 'POST' })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    handlerError([data.message])
+                    callback(data.error)
                 }
+                callback(undefined, data)
             } catch (e) {
-                handlerError([e.message])
-            }
-        },
-        sendRequestFriend: async (handlerError, id_user, actionRevert, actionSuccess) => {
-            try {
-                const resp = await resource(`/api/v1/user/SendFriendReq/${id_user}`, { csrftoken }, 'POST')
-                const data = await resp.json()
-                if (!resp.ok) {
-                    actionRevert()
-                    console.log(data);
-                    handlerError([data.message])
-                    return
-                }
-                actionSuccess()
-
-            } catch (e) {
-                if (e instanceof PermissionInvalid) return logout()
+                callback(e)
             }
         },
 
-        updateUserInfo: async (handlerError, data_to_update, type, actionSuccess) => {
+        updateUserInfo: async (data_to_update, callback, type) => {
             try {
                 const query = type ? `?data=${type}` : ''
-                const resp = await resource({ route: `/api/v1/user/data_update/${query}`, body: data_to_update, tkn: csrftoken, method: 'PATCH' })
+                const resp = await resource({ route: `/api/v1/user/${id_user}/${query}`, body: data_to_update, tkn: csrftoken, method: 'PATCH' })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    handlerError([data.message])
+                    callback(data.error)
                     return
                 }
-
-                handlerError(['Se han actualizado tus datos'])
-                actionSuccess()
+                callback()
             } catch (e) {
-                if (e instanceof PermissionInvalid) return logout()
+                callback(e)
             }
         },
-        updatePassword: async (handlerError, old_password, new_password) => {
+        updatePassword: async (old_password, new_password, callback) => {
             try {
                 console.log(old_password, new_password);
 
-                const resp = await resource({ route: `/api/v1/user/password_update`, tkn: csrftoken, body: { old_password, new_password } })
+                const resp = await resource({ route: `/api/v1/user/${id_user}/password`, tkn: csrftoken, body: { old_password, new_password } })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    handlerError([data.message])
-                    return
+                    return callback(data.error)
+
                 }
-                handlerError(['Se ha actualizado tu contraseña'])
-                usenavigate(`/home/profile/edit`)
+                callback()
+
             } catch (e) {
-                if (e instanceof PermissionInvalid) return logout()
+                callback(e)
             }
         },
-        updateAvatarUser: async (handlerError, file, actionRevert, actionSuccess) => {
+        updateAvatarUser: async (file, callback) => {
             try {
                 const formData = new FormData()
-                formData.append('avatar_file', file)
+                formData.append('avatar', file)
 
-                const resp = await resource({ route: `/api/v1/user/avatar_update`, tkn: csrftoken, method: 'PATCH', formData })
+                const resp = await resource({ route: `/api/v1/user/${id_user}/avatar`, tkn: csrftoken, method: 'PATCH', formData })
                 if (resp.status !== 204) {
                     const data = await resp.json()
-                    console.log('pasa');
-                    handlerError([data.message])
+
+                    callback(data.error.message)
                     return
                 }
-                actionSuccess()
-                handlerError(['Se ha actualizado tu avatar'])
+                callback()
             } catch (e) {
-                console.log(e);
-                if (e instanceof PermissionInvalid) return logout()
+                callback(e)
             }
         },
-        restorePassword: async (handlerError, accesToken, password) => {
+        restorePassword: async (callback, password) => {
             try {
-                console.log(accesToken, password);
-                const resp = await resource({ route: `/api/v1/user/restore_password`, body: { password }, tkn: accesToken })
+
+                const resp = await resource({ route: `/api/v1/user/restore_password`, body: { password }, tkn: csrftoken })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    handlerError([data.message])
+                    callback(data.error)
                     return
                 }
                 usenavigate('/login')
             } catch (e) {
-                if (e instanceof PermissionInvalid) return logout()
+                callback(e)
             }
         },
-        deleteRelationFriend: async (handlerError, id_relation, actionRevert, actionSuccess, request) => {
+        deleteRelation: async (callback, id_relation, request) => {
             try {
                 const query = request ? `?type=request` : ''
-                const resp = await resource({ route: `/api/v1/user/deleteFriend/${id_relation}/${query}`, tkn: csrftoken, method: 'DELETE' })
-                const data = await resp.json()
-                if (!resp.ok) {
-                    actionRevert()
-                    handlerError([data.message])
-                    return
+                const resp = await resource({ route: `/api/v1/user/${id_user}/relation/${id_relation}${query}`, tkn: csrftoken, method: 'DELETE' })
+
+                if (resp.status !== 204) {
+                    const data = await resp.json()
+                    return callback(data.error)
                 }
-                actionSuccess()
+                callback()
             } catch (e) {
-                if (e instanceof PermissionInvalid) return logout()
+                callback(e)
             }
         },
 
-        deleteAccount: async (handlerError, callback) => {
+        deleteAccount: async (callback) => {
             try {
                 const resp = await resource({ route: '/api/v1/user/deleteAccount', method: 'DELETE', tkn: csrftoken })
                 const data = await resp.json()
-                if (resp.ok) {
-                    callback()
-                } else {
-                    handlerError([data.message])
-                }
+                if (!resp.ok) {
+
+                    return callback(data.error)
+                } callback()
 
             } catch (e) {
-                console.log(e);
-                if (e instanceof PermissionInvalid) return logout()
+                callback(e)
+
             }
         }
         ,
@@ -242,7 +210,7 @@ export default function useUser(usenavigate) {
                     return
                 }
             } catch (e) {
-                //console.log(e);
+                console.log(e);
             }
         }
 

@@ -3,18 +3,17 @@
   display: flex;
   background-color: rgb(255, 255, 255);
   flex-direction: column;
-  justify-content: center;
   height: 100vh;
   font-family: 'Lato', sans-serif;
 }
 
 .container_side_avatar {
   display: flex;
-  width: 70%;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
+  width: 75%;
   flex-direction: row;
+  align-items: center;
+  gap: 20px;
+
 }
 
 
@@ -57,45 +56,70 @@
 
 
 .list-items-main {
-  margin-top: 30px;
+  margin-top: 20px;
   display: flex;
-  padding-left: 15%;
-  gap: 5px;
-  height: 70vh;
-  color: #000000;
   flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+  color: #000000;
 }
 
 
 .item_list_main {
   display: flex;
+  width: 70%;
   gap: 13px;
-  color: #2b2b2b;
   align-items: center;
+  text-wrap: nowrap;
+  color: #2b2b2b;
 }
+
+
+
+
+.item-more {
+  margin-top: 120px;
+}
+
+.notificaction-count {
+  font-size: 15px;
+  background-color: rgb(230, 230, 230);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min-content;
+  height: 19px;
+  border-radius: 5px;
+  padding-left: 4px;
+  padding-right: 4px;
+  color: rgb(48, 48, 48);
+  left: 22px;
+}
+
 
 .box_icon {
-  width: 12%;
-}
-
-.icon {
-  color: #181818;
-  transition: all .3s;
-}
-
-.icon:hover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 30px;
   height: 30px;
 }
 
+.icon {
+  color: #181818;
+  transition: all .1s;
+}
+
+.icon:hover {
+  width: 23px;
+  height: 23px;
+}
+
 .notificacion_active_request {
-  width: 34px;
+  width: 30px;
 }
 
-
-.item_list_main p {
-  width: 50%;
-}
 
 .logo_snapwire_main {
   width: 70%;

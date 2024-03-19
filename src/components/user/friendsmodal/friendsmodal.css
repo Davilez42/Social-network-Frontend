@@ -3,13 +3,13 @@
   position: absolute;
   border: 1px solid rgb(241, 241, 241);
   border-radius: 6px;
-  width: 25%;
+  width: 30%;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
   margin: auto auto;
-  height: 470px;
+  height: 420px;
   text-align: center;
   animation: open_container_friendlist;
   animation-delay: 0;
@@ -42,18 +42,7 @@
   }
 }
 
-.container_button_option {
-  width: 100%;
-}
 
-.container_button_option .button_option_friend {
-  float: right;
-}
-
-.title_container {
-  width: 90%;
-  color: rgb(117, 117, 117);
-}
 
 .friend-list {
   display: flex;

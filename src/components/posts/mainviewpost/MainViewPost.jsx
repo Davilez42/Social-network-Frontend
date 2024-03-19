@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import "./mainviewposts.css";
 import { GoBookmark } from "react-icons/go";
-import CommentsViewMain from "../commentsviewmain/CommentsViewMain.jsx";
+import CommentButton from "../commentbutton/CommentButton.jsx";
 import { useNavigate } from "react-router-dom";
-import ButtonLike from "../buttonlike/ButtonLike.jsx";
+import LikeButton from "../likebutton/LikeButton.jsx";
 import OptionsPostView from "../optionpostview/OptionsPostView.jsx";
 import { useEffect } from "react";
 
@@ -19,25 +19,25 @@ export default function MainViewPost({
     <>
       <div className="container-posts">
         {posts.map((post) => (
-          <div key={post.id_post} id={post.id_post} className="card_post">
+          <div key={post._id} id={post._id} className="card_post">
             <div className="info_owner">
               {info_author ? (
                 <>
                   <img
                     onClick={() => {
-                      usenavigate(`/home/profile/view/${post.id_author}`);
+                      usenavigate(`/home/profile/view/${post.author._id}`);
                     }}
                     loading="lazy"
                     className="avatar avatar_post_owner"
-                    src={post.url_avatar_author}
+                    src={post.author.avatar.url}
                     alt=""
                   />
                   <p
                     onClick={() => {
-                      usenavigate(`/home/profile/view/${post.id_author}`);
+                      usenavigate(`/home/profile/view/${post.author._id}`);
                     }}
                   >
-                    {post.username_author}
+                    {post.author.username}
                   </p>
                 </>
               ) : (
@@ -54,20 +54,18 @@ export default function MainViewPost({
               <div
                 className="preview_media"
                 style={
-                  post.media_links.length === 1
-                    ? { justifyContent: "center" }
-                    : {}
+                  post.media.length === 1 ? { justifyContent: "center" } : {}
                 }
               >
-                {post.media_links.map((media, ind) => {
-                  if (!media) return <div key={post.id_post}></div>;
-                  const format = media.split(".").pop().toLowerCase();
+                {post.media.map((media, ind) => {
+                  if (!media) return <div key={post._id}></div>;
+                  const format = media.url.split(".").pop().toLowerCase();
                   if (format === "mp4") {
                     return (
                       <video
                         loading="lazy"
-                        key={ind + post.id_post}
-                        src={media}
+                        key={ind + post._id}
+                        src={media.url}
                         controls
                         className="video_media"
                       />
@@ -76,26 +74,27 @@ export default function MainViewPost({
                   if (["jpeg", "jpg", "png"].includes(format)) {
                     return (
                       <img
-                        key={ind + post.id_post}
+                        key={ind + post._idt}
                         loading="lazy"
-                        src={media}
+                        src={media.url}
                         className="image_media"
                         alt=""
                       />
                     );
                   }
-                  return <div key={post.id_post}></div>;
+                  return <div key={post._id}></div>;
                 })}
               </div>
             </div>
             <div className="info_post_options">
               <div className="option">
-                <ButtonLike likes_post={post.likes} id_post={post.id_post} />
+                <LikeButton likes={post.likes} id_post={post._id} />
               </div>
               <div className="option">
-                <CommentsViewMain
-                  id_post={post.id_post}
-                  count_comments={post.countcomments}
+                <CommentButton
+                  id_post={post._id}
+                  count_comments={post.countComments}
+                  deactivate_comments={post.config.deactive_comments}
                 />
               </div>
               <div className="option option_saved_post">

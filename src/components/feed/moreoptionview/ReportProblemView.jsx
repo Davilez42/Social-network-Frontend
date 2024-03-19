@@ -10,7 +10,7 @@ export default function ReportProblemView({ actionClose }) {
             actionClose();
           }}
         >
-          <PiArrowLeftBold size={30} />
+          <PiArrowLeftBold size={24} />
         </div>
         <form
           action="/ruta-de-procesamiento-del-servidor"

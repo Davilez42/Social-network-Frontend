@@ -1,0 +1,38 @@
+.user-list {
+    width: 100%;
+    scrollbar-width: thin;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    height: 340px;
+    overflow-y: auto;
+}
+
+.container_button_option {
+    width: 100%;
+}
+
+.title_container {
+    width: 90%;
+    color: rgb(117, 117, 117);
+}
+
+.card_user_list {
+    height: 70px;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none;
+
+    color: black;
+}
+
+.avatar_user_list {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    cursor: pointer;
+}

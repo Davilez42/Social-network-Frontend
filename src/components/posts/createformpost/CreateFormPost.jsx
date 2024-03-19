@@ -12,9 +12,7 @@ import { decryptDate } from "../../../helpers/encrypt";
 // eslint-disable-next-line react/prop-types
 export default function CreateFormPosts({ actionClose }) {
   const usenavigate = useNavigate();
-  const { url_avatar } = decryptDate(
-    useSelector((state) => state.user.userInfo)
-  );
+  const { avatar } = decryptDate(useSelector((state) => state.user.userInfo));
   const { sendPost } = usePost(usenavigate);
   const [urlPreviewMedia, setUrlPreviewMedia] = useState([]);
   const [text, setText] = useState("");
@@ -35,8 +33,16 @@ export default function CreateFormPosts({ actionClose }) {
   const handlerSendPost = () => {
     if ((text.trim() !== "" || mediaFiles.length !== 0) && canSend) {
       setCanSend(false);
-      console.log(text, mediaFiles);
-      sendPost(setInfo, text, mediaFiles, clearForm);
+      sendPost(
+        (err) => {
+          if (err) {
+            return setInfo([err.message]);
+          }
+          clearForm();
+        },
+        text,
+        mediaFiles
+      );
     } else {
       actionClose(false);
       setInfo(["Debes de ingresar un texto o subir un archivo"]);
@@ -54,11 +60,11 @@ export default function CreateFormPosts({ actionClose }) {
               actionClose();
             }}
           >
-            <PiArrowLeftBold size={30} />
+            <PiArrowLeftBold size={24} />
           </div>
           <img src="" alt="" />
           <div className="container_data">
-            <img src={url_avatar} alt="" className="avatar avatar_form_post" />
+            <img src={avatar.url} alt="" className="avatar avatar_form_post" />
 
             <div className="container_inputs_form_posts">
               <input

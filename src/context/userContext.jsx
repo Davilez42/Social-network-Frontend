@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useState, useEffect } from "react";
 import useUser from "../hooks/useUser";
 import { useNavigate } from "react-router-dom";
@@ -15,19 +16,12 @@ export function UserContextProvider(props) {
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    /*     const data = window.localStorage.getItem("persist:wtff");
-    if (!data) {
-      getInfoUser(setInfo, undefined, (user) => {
-        dispatch(setUser(user));
-      });
-      return;
-    }
-    const dd = JSON.parse(data);
-    const user = JSON.parse(dd.user);
-
-    if (Object.keys(user.userInfo).length === 0) { */
-    getInfoUser(setInfo, undefined, (user) => {
-      dispatch(setUser(user));
+    const id_user = window.localStorage.getItem("id_user");
+    getInfoUser(id_user, (err, data) => {
+      if (err) {
+        return setInfo([err]);
+      }
+      dispatch(setUser(data.data.user));
     });
     /* } */
   }, [reload]);

@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { PiArrowLeftBold } from "react-icons/pi";
-import "./viewfriendlist.css";
-import UserListView from "../userlistview/UserListView";
-const ViewFriendList = ({
+import "./friendsmodal.css";
+import UserList from "../userslist/UserList";
+export default function FriendsModal({
   friends_view = [],
   actionCloseAction,
   actionSelectFriend,
-}) => {
+}) {
   return (
     <div className="container_filter">
       <div className="container_friend_list_profile">
@@ -22,7 +22,7 @@ const ViewFriendList = ({
         <p className="title_container">Amigos</p>
         <div className="friend-list-container">
           <div className="friend-list">
-            <UserListView
+            <UserList
               users={friends_view}
               actionSelectUser={actionSelectFriend}
             />
@@ -31,6 +31,4 @@ const ViewFriendList = ({
       </div>
     </div>
   );
-};
-
-export default ViewFriendList;
+}

@@ -1,52 +1,52 @@
 /* eslint-disable react/prop-types */
 import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt";
-import "./userlistview.css";
+import "./userlist.css";
 
-export default function UserListView({ users = [], actionSelectUser }) {
-  const { friends, id_user } = decryptDate(
+export default function UserList({ users = [], actionSelectUser }) {
+  const { friends, _id } = decryptDate(
     useSelector((state) => state.user.userInfo)
   );
   return (
-    <>
+    <div className="user-list">
       {users.map((friend, index) => (
         <div className="card_user_list" key={index}>
           <img
             className="avatar_user_list"
-            src={friend.user[2]}
+            src={friend.user.avatar.url}
             alt=""
             onClick={() => {
-              actionSelectUser(friend.user[0]);
+              actionSelectUser(friend.user._id);
             }}
           />
           <span
             className="card_name_user"
             onClick={() => {
-              actionSelectUser(friend.user[0]);
+              actionSelectUser(friend.user._id);
             }}
           >
-            {friend.user[1]}
+            {friend.user.username}
           </span>
           <div className="container_button_option">
             {(() => {
-              if (friends.some((f) => f.user[0] === friend.user[0])) {
+              if (friends.some((f) => f.user._id === friend.user._id)) {
                 return (
                   <div
                     onClick={() => {
                       alert("Esta funcion se encuentra en desarollo");
                     }}
-                    className={`button_option_friend `}
+                    className="button_option_user"
                   >
                     Eliminar
                   </div>
                 );
               }
-              return friend.user[0] !== id_user ? (
+              return friend.user._id !== _id ? (
                 <div
                   onClick={() => {
                     alert("Esta funcion se encuentra en desarollo");
                   }}
-                  className={`button_option_friend `}
+                  className="button_option_user"
                 >
                   Añadir
                 </div>
@@ -57,6 +57,6 @@ export default function UserListView({ users = [], actionSelectUser }) {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 }

@@ -15,44 +15,24 @@ import FormReportView from "./FormReportView";
 import PostPreviewView from "../postpreview/PostPreviewView";
 
 export default function OptionsPostView({ post }) {
-  const dispatch = useDispatch();
-  const { deletePost, modifyPost } = usePost();
-  const { setInfo, setReload, reload } = useContext(UserContext);
-  const { id_user, userPosts } = decryptDate(
-    useSelector((state) => state.user.userInfo)
-  );
+  const { deletePost } = usePost();
+  const { setInfo } = useContext(UserContext);
+  const { _id } = decryptDate(useSelector((state) => state.user.userInfo));
   const [options_view, setOptions_View] = useState(false);
   const [formReportView, setReportView] = useState(false);
   const [posteditview, setPosteditview] = useState(false);
 
   const handlerDeletePost = () => {
-    deletePost(
-      setInfo,
-      post.id_post,
-      () => {},
-      () => {
-        dispatch(deleteUserPost(post.id_post));
-        setReload(!reload);
-        console.log(userPosts);
+    deletePost((err) => {
+      if (err) {
+        return setInfo(err.message);
       }
-    );
-    setOptions_View(false);
+      setOptions_View(false);
+      setInfo(["La publicacion ha sido eliminada"]);
+    }, post._id);
   };
-  const handlerArchivePost = () => {
-    modifyPost(
-      setInfo,
-      post.id_post,
-      { post_visibility: false },
-      () => {},
-      () => {
-        setReload(!reload);
-        dispatch(archiveUserPost(post.id_post));
-      }
-    );
-    setOptions_View(false);
-  };
+  const handlerArchivePost = () => {};
 
-  useEffect(() => {}, []);
   return (
     <>
       <BiDotsHorizontalRounded
@@ -60,11 +40,16 @@ export default function OptionsPostView({ post }) {
           setOptions_View(true);
         }}
         className="list_options_post"
-        size={30}
+        size={25}
       />
 
       {options_view ? (
-        <div className="container_filter">
+        <div
+          className="container_filter"
+          onClick={() => {
+            setOptions_View(false);
+          }}
+        >
           <div className="box-options-post">
             <div className="box_back">
               <PiArrowLeftBold
@@ -72,7 +57,7 @@ export default function OptionsPostView({ post }) {
                 onClick={() => {
                   setOptions_View(false);
                 }}
-                size={30}
+                size={20}
               />
             </div>
             <hr className="hr_option_post" />
@@ -86,7 +71,7 @@ export default function OptionsPostView({ post }) {
               Denunciar
             </div>
 
-            {post.id_author === id_user ? (
+            {post.author._id === _id || post.author === _id ? (
               <>
                 <hr className="hr_option_post" />
                 <div
@@ -135,7 +120,7 @@ export default function OptionsPostView({ post }) {
               setOptions_View(false);
               setReportView(false);
             }}
-            id_post={post.id_post}
+            id_post={post._id}
           />
         </div>
       ) : (
@@ -143,14 +128,16 @@ export default function OptionsPostView({ post }) {
       )}
 
       {posteditview ? (
-        <PostPreviewView
-          post={post}
-          modeEdit={true}
-          actionClose={() => {
-            setOptions_View(true);
-            setPosteditview(false);
-          }}
-        />
+        <div className="container_filter">
+          <PostPreviewView
+            post={post}
+            modeEdit={true}
+            actionClose={() => {
+              setOptions_View(true);
+              setPosteditview(false);
+            }}
+          />
+        </div>
       ) : (
         <></>
       )}
