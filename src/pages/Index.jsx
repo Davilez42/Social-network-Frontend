@@ -26,8 +26,8 @@ export default function Index() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div>
-      <div>{<Outlet />}</div>
+    <div className="block-index">
+      {<Outlet />}
 
       <footer id="info-footer">
         © 2023 SnapWire . Todos los derechos reservados. Asegúrate de respetar

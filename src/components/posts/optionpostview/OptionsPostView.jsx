@@ -2,12 +2,9 @@
 import "./optionspostview.css";
 import { PiArrowLeftBold } from "react-icons/pi";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { useContext, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  deleteUserPost,
-  archiveUserPost,
-} from "../../../features/user/userSlice";
+import { useContext, useState } from "react";
+import { useSelector } from "react-redux";
+
 import { decryptDate } from "../../../helpers/encrypt";
 import usePost from "../../../hooks/usePost";
 import { UserContext } from "../../../context/userContext";
@@ -18,7 +15,7 @@ export default function OptionsPostView({ post }) {
   const { deletePost } = usePost();
   const { setInfo } = useContext(UserContext);
   const { _id } = decryptDate(useSelector((state) => state.user.userInfo));
-  const [options_view, setOptions_View] = useState(false);
+  const [optionsView, setOptionsView] = useState(false);
   const [formReportView, setReportView] = useState(false);
   const [posteditview, setPosteditview] = useState(false);
 
@@ -27,86 +24,85 @@ export default function OptionsPostView({ post }) {
       if (err) {
         return setInfo(err.message);
       }
-      setOptions_View(false);
+      setOptionsView(false);
       setInfo(["La publicacion ha sido eliminada"]);
     }, post._id);
   };
   const handlerArchivePost = () => {};
 
   return (
-    <>
+    <div className="block-options-post">
       <BiDotsHorizontalRounded
+        className="cursor-pointer"
         onClick={() => {
-          setOptions_View(true);
+          setOptionsView(true);
         }}
-        className="list_options_post"
         size={25}
       />
 
-      {options_view ? (
+      {optionsView ? (
         <div
           className="container_filter"
           onClick={() => {
-            setOptions_View(false);
+            setOptionsView(false);
           }}
         >
-          <div className="box-options-post">
-            <div className="box_back">
+          <div className="container-options-post-modal">
+            <div className="header-modal">
               <PiArrowLeftBold
-                className="back_feed_main"
+                className="header-modal__icon-back-modal"
                 onClick={() => {
-                  setOptions_View(false);
+                  setOptionsView(false);
                 }}
                 size={20}
               />
             </div>
-            <hr className="hr_option_post" />
-            <div
-              className="item_option_post item_denunciar"
-              onClick={() => {
-                setReportView(true);
-                setOptions_View(false);
-              }}
-            >
-              Denunciar
+
+            <div className="box-options-post">
+              <div
+                className="item_option_post item_denunciar"
+                onClick={() => {
+                  setReportView(true);
+                  setOptionsView(false);
+                }}
+              >
+                Denunciar
+              </div>
+
+              {post.author._id === _id || post.author === _id ? (
+                <>
+                  <div
+                    className="item_option_post"
+                    onClick={() => {
+                      handlerArchivePost();
+                    }}
+                  >
+                    Archivar
+                  </div>
+
+                  <div
+                    className="item_option_post"
+                    onClick={() => {
+                      setOptionsView(false);
+                      setPosteditview(true);
+                    }}
+                  >
+                    Editar
+                  </div>
+
+                  <div
+                    className="item_option_post"
+                    onClick={() => {
+                      handlerDeletePost();
+                    }}
+                  >
+                    Eliminar
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
-
-            {post.author._id === _id || post.author === _id ? (
-              <>
-                <hr className="hr_option_post" />
-                <div
-                  className="item_option_post"
-                  onClick={() => {
-                    handlerArchivePost();
-                  }}
-                >
-                  Archivar
-                </div>
-                <hr className="hr_option_post" />
-
-                <div
-                  className="item_option_post"
-                  onClick={() => {
-                    setOptions_View(false);
-                    setPosteditview(true);
-                  }}
-                >
-                  Editar
-                </div>
-
-                <hr className="hr_option_post" />
-                <div
-                  className="item_option_post"
-                  onClick={() => {
-                    handlerDeletePost();
-                  }}
-                >
-                  Eliminar
-                </div>
-              </>
-            ) : (
-              <></>
-            )}
           </div>
         </div>
       ) : (
@@ -117,7 +113,7 @@ export default function OptionsPostView({ post }) {
         <div className="container_filter">
           <FormReportView
             actionSend={() => {
-              setOptions_View(false);
+              setOptionsView(false);
               setReportView(false);
             }}
             id_post={post._id}
@@ -133,7 +129,7 @@ export default function OptionsPostView({ post }) {
             post={post}
             modeEdit={true}
             actionClose={() => {
-              setOptions_View(true);
+              setOptionsView(true);
               setPosteditview(false);
             }}
           />
@@ -141,6 +137,6 @@ export default function OptionsPostView({ post }) {
       ) : (
         <></>
       )}
-    </>
+    </div>
   );
 }

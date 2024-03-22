@@ -6,16 +6,13 @@ import ButtonLike from "../likebutton/LikeButton";
 import { useNavigate } from "react-router-dom";
 import usePost from "../../../hooks/usePost";
 import { UserContext } from "../../../context/userContext";
-import { useDispatch } from "react-redux";
 
-import { updateDescriptionPost } from "../../../features/user/userSlice";
 import CommentsPost from "../commentspost/CommentsPost";
 export default function PostPreviewView({
   post,
   actionClose,
   modeEdit = false,
 }) {
-  const dispatch = useDispatch();
   const usenavigate = useNavigate();
   const { setInfo } = useContext(UserContext);
   const [descriptionPost_edit, setDescriptionPost_edit] = useState("");
@@ -27,19 +24,13 @@ export default function PostPreviewView({
 
   const handlerUpdateDescription = () => {
     modifyPost(
-      setInfo,
+      (err, data) => {
+        if (err) {
+          return setInfo([err.message]);
+        }
+      },
       post.id_post,
-      { text: descriptionPost_edit },
-      () => {},
-      () => {
-        dispatch(
-          updateDescriptionPost({
-            id_post: post.id_post,
-            text: descriptionPost_edit,
-          })
-        );
-        setInfo(["Se ha modificado tu publicacion"]);
-      }
+      { text: descriptionPost_edit }
     );
   };
 

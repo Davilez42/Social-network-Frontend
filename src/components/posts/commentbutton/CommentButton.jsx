@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import "./commentbutton.css";
 import { useEffect, useState } from "react";
-
-import { FaRegComment } from "react-icons/fa";
+import { GoComment } from "react-icons/go";
 import CommentsModal from "../commentsmodal/CommentsModal";
 // eslint-disable-next-line react/prop-types
 export default function CommentButton({
@@ -11,27 +10,35 @@ export default function CommentButton({
   deactivate_comments,
 }) {
   const [countComments, setCountComments] = useState(count_comments);
-  const [viewComments, setViewComments] = useState(false);
+  const [commentsModal, setCommentsModal] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {});
 
   return (
     <>
-      <FaRegComment
-        onClick={() => {
-          setViewComments(true);
-        }}
+      <GoComment
         size={22}
+        className="cursor-pointer"
+        onClick={() => {
+          setCommentsModal(true);
+        }}
       />
-      <span>{countComments}</span>
+      <span
+        className="counter cursor-pointer"
+        onClick={() => {
+          setCommentsModal(true);
+        }}
+      >
+        {countComments}
+      </span>
 
-      {viewComments ? (
+      {commentsModal ? (
         <CommentsModal
           addCountComments={() => {
             setCountComments(countComments + 1);
           }}
           closeView={() => {
-            setViewComments(false);
+            setCommentsModal(false);
           }}
           deactivate_comments={deactivate_comments}
           id_post={id_post}

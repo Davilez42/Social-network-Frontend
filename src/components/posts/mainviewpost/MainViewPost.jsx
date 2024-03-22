@@ -6,114 +6,134 @@ import { useNavigate } from "react-router-dom";
 import LikeButton from "../likebutton/LikeButton.jsx";
 import OptionsPostView from "../optionpostview/OptionsPostView.jsx";
 import { useEffect } from "react";
+import formatDate from "../../../helpers/formatDate.js";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 // eslint-disable-next-line react/prop-types
 export default function MainViewPost({
   posts,
-  info_author = true,
-  loader = false,
+  avatar_author = true,
+  activeReload,
 }) {
   const usenavigate = useNavigate();
   useEffect(() => {}, []);
   return (
     <>
       <div className="container-posts">
-        {posts.map((post) => (
-          <div key={post._id} id={post._id} className="card_post">
-            <div className="info_owner">
-              {info_author ? (
-                <>
-                  <img
-                    onClick={() => {
-                      usenavigate(`/home/profile/view/${post.author._id}`);
-                    }}
-                    loading="lazy"
-                    className="avatar avatar_post_owner"
-                    src={post.author.avatar.url}
-                    alt=""
-                  />
+        {(() => {
+          if (!posts) return <></>;
+
+          return posts.map((post, i) => (
+            <div key={i} id={post._id} className="card_post">
+              <div className="info_owner">
+                <div className="block-user">
+                  {avatar_author ? (
+                    <img
+                      onClick={() => {
+                        usenavigate(
+                          `/home/profile/view/${
+                            (post.author[0] || post.author)?._id
+                          }`
+                        );
+                      }}
+                      loading="lazy"
+                      className="avatar avatar_post_owner"
+                      src={(post.author[0] || post.author)?.avatar.url}
+                      alt=""
+                    />
+                  ) : (
+                    <></>
+                  )}
                   <p
+                    className="text-username cursor-pointer"
                     onClick={() => {
-                      usenavigate(`/home/profile/view/${post.author._id}`);
+                      usenavigate(`/home/profile/view/${post.author?._id}`);
                     }}
                   >
-                    {post.author.username}
+                    {(post.author[0] || post.author)?.username}{" "}
                   </p>
-                </>
-              ) : (
-                <></>
-              )}
-              <OptionsPostView post={post} />
-            </div>
+                  {(post.author[0] || post.author)?.verified ? (
+                    <AiFillCheckCircle size={15} color="green" />
+                  ) : (
+                    <></>
+                  )}
+                  <div className="text_time">{formatDate(post.createdAt)}</div>
+                </div>
 
-            <div className="description_post">
-              <p>{post.text}</p>
-            </div>
+                <OptionsPostView post={post} />
+              </div>
 
-            <div className="container_media_post">
-              <div
-                className="preview_media"
-                style={
-                  post.media.length === 1 ? { justifyContent: "center" } : {}
-                }
-              >
-                {post.media.map((media, ind) => {
-                  if (!media) return <div key={post._id}></div>;
-                  const format = media.url.split(".").pop().toLowerCase();
-                  if (format === "mp4") {
-                    return (
-                      <video
-                        loading="lazy"
-                        key={ind + post._id}
-                        src={media.url}
-                        controls
-                        className="video_media"
-                      />
-                    );
+              <div className="description_post">
+                <p>{post.text}</p>
+              </div>
+
+              <div className="container_media_post">
+                <div
+                  className="preview_media"
+                  style={
+                    post.media.length === 1 ? { justifyContent: "center" } : {}
                   }
-                  if (["jpeg", "jpg", "png"].includes(format)) {
-                    return (
-                      <img
-                        key={ind + post._idt}
-                        loading="lazy"
-                        src={media.url}
-                        className="image_media"
-                        alt=""
-                      />
-                    );
-                  }
-                  return <div key={post._id}></div>;
-                })}
+                >
+                  {post.media.map((media, ind) => {
+                    if (!media) return <div key={post._id}></div>;
+                    const format = media.url.split(".").pop().toLowerCase();
+                    if (format === "mp4") {
+                      return (
+                        <video
+                          loading="lazy"
+                          key={ind + post._id}
+                          src={media.url}
+                          controls
+                          className="video_media"
+                        />
+                      );
+                    }
+                    if (["jpeg", "jpg", "png"].includes(format)) {
+                      return (
+                        <img
+                          key={ind + post._idt}
+                          loading="lazy"
+                          src={media.url}
+                          className="image_media"
+                          alt=""
+                        />
+                      );
+                    }
+                    return <div key={post._id}></div>;
+                  })}
+                </div>
+              </div>
+              <div className="info_post_options">
+                <div className="option">
+                  <LikeButton
+                    countLikes={Math.floor(Math.random() * 1000000)}
+                    likedbyme={post.likedbyme}
+                    id_post={post._id}
+                  />
+                </div>
+                <div className="option">
+                  <CommentButton
+                    id_post={post._id}
+                    count_comments={post.countComments}
+                    deactivate_comments={post.config.deactive_comments}
+                  />
+                </div>
+                <div className="option option_saved_post">
+                  <GoBookmark size={25} />
+                </div>
               </div>
             </div>
-            <div className="info_post_options">
-              <div className="option">
-                <LikeButton likes={post.likes} id_post={post._id} />
-              </div>
-              <div className="option">
-                <CommentButton
-                  id_post={post._id}
-                  count_comments={post.countComments}
-                  deactivate_comments={post.config.deactive_comments}
-                />
-              </div>
-              <div className="option option_saved_post">
-                <GoBookmark size={25} />
-              </div>
+          ));
+        })()}
+        <div className="box_info_end_posts">
+          {activeReload || !posts ? (
+            <div className="box_loader">
+              <span className="loader"></span>
             </div>
-          </div>
-        ))}
-        {loader ? (
-          <div className="box_laoder">
-            <span className="loader"></span>
-          </div>
-        ) : posts ? (
-          <div className="box_info_end_posts">
-            No hay mas publicaciones para mostrar
-          </div>
-        ) : (
-          <></>
-        )}
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
     </>
   );

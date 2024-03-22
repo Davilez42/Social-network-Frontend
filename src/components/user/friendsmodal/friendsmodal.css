@@ -1,27 +1,22 @@
 .container_friend_list_profile {
   background-color: rgb(255, 255, 255);
   position: absolute;
-  border: 1px solid rgb(241, 241, 241);
   border-radius: 6px;
-  width: 30%;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto auto;
-  height: 420px;
-  text-align: center;
+  left: 50%;
+  top: 50%;
+  width: 24%;
+  transform: translate(-50%, -50%);
   animation: open_container_friendlist;
   animation-delay: 0;
   animation-duration: .1s;
 }
 
+
+
 @keyframes open_container_friendlist {
   0% {
     filter: brightness(10%);
     overflow: hidden;
-    width: 600px;
-    height: 600px;
   }
 
   50% {
@@ -38,19 +33,17 @@
 
   100% {
     filter: brightness(100%);
-    overflow: none;
   }
 }
 
 
 
 .friend-list {
+  width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 20px;
-  overflow-y: auto;
-  height: 410px;
+  justify-content: center;
+  height: 310px;
   background-color: #ffffff;
 }
 

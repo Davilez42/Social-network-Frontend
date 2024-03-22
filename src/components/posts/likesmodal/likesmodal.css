@@ -1,13 +1,18 @@
-#userlikesInfo_container {
-    width: 30%;
-    height: 400px;
+#container-info-likes {
+    width: 26%;
+    height: 354px;
+}
+
+.friend-list-container {
+    height: 310px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
-
-
 @media (width<600px) {
-    #userlikesInfo_container {
+    #container-info-likes {
         width: 100%;
         margin: 0;
         height: 100vh;

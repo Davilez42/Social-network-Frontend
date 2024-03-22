@@ -199,7 +199,30 @@ export default function useUser(usenavigate) {
 
             }
         }
-        ,
+        , getFriends: async (callback, id_user) => {
+            try {
+                const resp = await resource({ route: `/api/v1/user/${id_user}/friends`, method: 'GET', tkn: csrftoken })
+                const data = await resp.json()
+                if (!resp.ok) {
+                    return callback(data.error)
+                }
+                callback(undefined, data)
+            } catch (e) {
+                callback(e)
+            }
+        },
+        getRequests: async (callback, id_user) => {
+            try {
+                const resp = await resource({ route: `/api/v1/user/${id_user}/requests`, method: 'GET', tkn: csrftoken })
+                const data = await resp.json()
+                if (!resp.ok) {
+                    return callback(data.error)
+                }
+                callback(undefined, data)
+            } catch (e) {
+                callback(e)
+            }
+        },
 
         logout: async () => {
             try {

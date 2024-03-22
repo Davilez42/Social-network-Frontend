@@ -21,25 +21,31 @@ export default function LikesModal({ id_post, closeView }) {
   return (
     <div className="container_filter">
       <div
-        id="userlikesInfo_container"
-        className="container_friend_list_profile"
+        id="container-info-likes"
+        className=" container_friend_list_profile "
       >
-        <div
-          className="back"
-          onClick={() => {
-            closeView();
-          }}
-        >
-          <PiArrowLeftBold size={24} />
+        <div className="header-modal">
+          <PiArrowLeftBold
+            className="header-modal__icon-back-modal"
+            onClick={closeView}
+            size={24}
+          />
+          <div className="header-modal__box-tittle">
+            <p>Likes</p>
+          </div>
         </div>
 
-        <p className="title_container">Likes</p>
-        <div className="friend-list-container ">
+        <div className="friend-list-container">
           {users ? (
             users.length !== 0 ? (
-              <UserList users={users} actionSelectUser={() => {}} />
+              <UserList
+                users={users.map((u) => {
+                  return { user: u };
+                })}
+                closeView={closeView}
+              />
             ) : (
-              <div>Esta publicacion no tiene likes</div>
+              <p className="text-has-not">Esta publicacion no tiene likes</p>
             )
           ) : (
             <span className="loader"></span>

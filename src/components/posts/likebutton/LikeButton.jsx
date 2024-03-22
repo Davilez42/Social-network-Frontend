@@ -1,47 +1,43 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { IoMdHeartEmpty } from "react-icons/io";
+import { RiHeartFill } from "react-icons/ri";
 import { UserContext } from "../../../context/userContext";
 import { useContext } from "react";
-
 import usePost from "../../../hooks/usePost";
 import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt";
-import "./likebutton.css";
 import LikesModal from "../likesmodal/LikesModal";
+import numberFormat from "../../../helpers/numberFormat";
 
-export default function LikeButton({ id_post, likes }) {
+export default function LikeButton({ id_post, likedbyme, countLikes }) {
   const { _id } = decryptDate(useSelector((state) => state.user.userInfo));
   const { setInfo } = useContext(UserContext);
-  const [state_button, setState_button] = useState(false);
+  const [iconlikeActive, setIconlikeActive] = useState(likedbyme);
   const [usersLikeView, setUsersLikeView] = useState(false);
 
   const { sendLike } = usePost();
-  const [state_likes, setState_Like] = useState(likes.length);
+  const [state_likes, setState_Like] = useState(countLikes);
 
   const handlerLike = (id_post) => {
     sendLike((err) => {
       if (err) {
-        setState_button(false);
+        setIconlikeActive(false);
         return setInfo([err.message]);
       }
     }, id_post);
   };
 
-  useEffect(() => {
-    if (likes.some((l) => l.user === _id)) {
-      setState_button(true);
-    }
-  }, [_id]);
+  useEffect(() => {}, [_id]);
 
   return (
     <>
-      {state_button ? (
-        <FaHeart
-          className="like"
+      {iconlikeActive ? (
+        <RiHeartFill
+          className="cursor-pointer"
           key={503}
           onClick={() => {
-            setState_button(false);
+            setIconlikeActive(false);
             setState_Like(state_likes - 1);
             handlerLike(id_post);
           }}
@@ -49,12 +45,12 @@ export default function LikeButton({ id_post, likes }) {
           size={24}
         />
       ) : (
-        <FaRegHeart
-          className="like"
+        <IoMdHeartEmpty
+          className="cursor-pointer"
           key={504}
           onClick={() => {
             setState_Like(state_likes + 1);
-            setState_button(true);
+            setIconlikeActive(true);
             handlerLike(id_post);
           }}
           size={24}
@@ -65,7 +61,9 @@ export default function LikeButton({ id_post, likes }) {
           setUsersLikeView(true);
         }}
       >
-        {state_likes}
+        <div className="counter cursor-pointer">
+          {numberFormat(state_likes)}
+        </div>
       </span>
       {usersLikeView ? (
         <LikesModal

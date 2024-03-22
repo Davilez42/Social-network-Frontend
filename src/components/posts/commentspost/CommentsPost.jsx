@@ -64,10 +64,10 @@ export default function CommentsPost({
         {(() => {
           if (comments) {
             if (deactivate_comments) {
-              return <p className="info_message">Comentarios desactivados</p>;
+              return <p className="text-has-not">Comentarios desactivados</p>;
             }
             if (comments.length === 0) {
-              return <p className="info_message">Todavia no hay comentarios</p>;
+              return <p className="text-has-not">Todavia no hay comentarios</p>;
             }
             return comments.map((comment, i) => (
               <div key={i} className="card_comment">
@@ -77,15 +77,15 @@ export default function CommentsPost({
                 >
                   <img
                     src={comment.user.avatar.url}
-                    className="avatar avatar_comment_owner"
+                    className="avatar loading"
                     alt=""
                   />
                 </NavLink>
                 <div className="metadata">
                   <div className="box_username">
-                    {" "}
-                    @{comment.user.username}{" "}
-                    <span className="time_comment">
+                    {comment.user.username}
+                    {"  "}
+                    <span className="text_time">
                       {formatDate(comment.createdAt)}
                     </span>
                   </div>

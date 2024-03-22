@@ -27,12 +27,6 @@
     object-fit: cover;
 }
 
-.box_back {
-    width: 95%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-}
 
 .container_data_post {
     width: 93%;

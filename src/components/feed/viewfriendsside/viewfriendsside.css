@@ -3,23 +3,21 @@
     width: 90%;
     flex-wrap: wrap;
     height: 17vh;
-    gap: 5px;
 }
 
-.container-view-friends p {
-    margin: 0;
-}
+
 
 .avatar_friend {
-    width: 60px;
-    margin: 0;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     border: none;
 }
 
 .title_navbar_side {
     color: rgb(122, 122, 122);
     width: 100%;
+    margin: 0;
+    font-size: 13px;
     text-align: center;
 }
 
@@ -27,9 +25,7 @@
     width: 100%;
     gap: 20px;
     display: flex;
-    padding-left: 25px;
-    overflow-y: hidden;
-    overflow-x: scroll;
+    overflow-x: auto;
     /*Estilos estándar experimentales (Principalmente Firefox)*/
     scrollbar-color: rgba(226, 226, 226, 0.5) rgba(0, 0, 0, 0);
     scrollbar-width: thin;
@@ -38,14 +34,18 @@
 
 .card_friend {
     display: flex;
-    width: 110px;
+    width: 65px;
     text-align: center;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    gap: 6px;
 }
+
 
 .name_friend {
     font-size: 13px;
+    margin: 0;
 }
 
 @media (max-width: 600px) {

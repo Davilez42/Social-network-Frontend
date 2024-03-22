@@ -21,12 +21,6 @@
     text-align: center;
 }
 
-.back {
-    color: black;
-    position: relative;
-    float: left;
-}
-
 .form-edit-profile input {
     border: 1px solid rgb(206, 206, 206);
 }
@@ -174,10 +168,7 @@ hr {
     }
 }
 
-.back {
-    padding-top: 10px;
-    padding-left: 10px;
-}
+
 
 @media (max-width: 1102px) {
     .container-avatar {

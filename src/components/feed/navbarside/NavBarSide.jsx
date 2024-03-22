@@ -7,7 +7,7 @@ import {
   GoPlusCircle,
   GoListUnordered,
 } from "react-icons/go";
-
+import { SiHomebridge } from "react-icons/si";
 import "./navbarside.css";
 import { NavLink } from "react-router-dom";
 import RequestToFriendsView from "../requestoffriends/RequestToFriendsView";
@@ -21,7 +21,7 @@ import { GoBookmark } from "react-icons/go";
 
 // eslint-disable-next-line react/prop-types
 export default function NavBarSide({ setNavBarSide }) {
-  const { username, avatar, requests } = decryptDate(
+  const { username, avatar, _id } = decryptDate(
     useSelector((state) => state.user.userInfo)
   );
 
@@ -43,8 +43,10 @@ export default function NavBarSide({ setNavBarSide }) {
     <div className="container-navbar-side">
       {request_friends_view ? (
         <RequestToFriendsView
-          requests_pending={requests}
-          actionCloseAction={setRequests_view_friends}
+          id_user={_id}
+          closeView={() => {
+            setRequests_view_friends();
+          }}
         />
       ) : (
         <></>
@@ -86,7 +88,7 @@ export default function NavBarSide({ setNavBarSide }) {
         >
           {" "}
           <span className="box_icon">
-            <GoHomeFill className="icon" size={24} />
+            <SiHomebridge className="icon" size={24} />
           </span>{" "}
           Inicio
         </NavLink>
@@ -137,11 +139,7 @@ export default function NavBarSide({ setNavBarSide }) {
           <span className="box_icon">
             <GoPeople size={22} className="icon" />
           </span>
-          {requests?.length !== 0 ? (
-            <div className="notificaction-count">{requests?.length}k</div>
-          ) : (
-            <></>
-          )}
+          <div className="notificaction-count">{2}k</div>
           Solicitudes
         </div>
 
@@ -155,11 +153,7 @@ export default function NavBarSide({ setNavBarSide }) {
           <span className="box_icon">
             <GoPaperAirplane className="icon" size={22} />
           </span>{" "}
-          {requests?.length !== 0 ? (
-            <div className="notificaction-count">{2}k</div>
-          ) : (
-            <></>
-          )}
+          <div className="notificaction-count">{2}k</div>
           Mensajes
         </div>
 

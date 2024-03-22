@@ -8,52 +8,52 @@ import { UserContext } from "../../../context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import InputSearch from "../inputsearch/InputSearch.jsx";
-import UserList from "../../user/userslist/UserList.jsx";
 import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt.js";
 
 export default function FeedMain() {
-  const { friends } = decryptDate(useSelector((state) => state.user.userInfo));
+  const { _id } = decryptDate(useSelector((state) => state.user.userInfo));
 
-  const [posts, setPosts] = useState([]);
-  const [morePosts, seGetMorePosts] = useState(false);
-  const [getPostsFedd, setGetPostsFeed] = useState(true);
-
+  const [posts, setPosts] = useState();
+  const [reload, setReload] = useState(true);
+  const [cursor, setCursor] = useState();
   const [inputSearchView, setViewInputSearch] = useState(false);
 
   const navigate = useNavigate();
-  const { setInfo, reload, setReload } = useContext(UserContext);
-  const [loader, setLoader] = useState(false);
+  const { setInfo } = useContext(UserContext);
   const { getPosts } = usePost(navigate);
 
-  useEffect(() => {
-    if (getPostsFedd || reload) {
-      setLoader(true);
+  const getPostsHandler = (query) => {
+    const querys_requests = {};
+    if (query) {
+      setCursor(1);
+      querys_requests[`query`] = query;
+    }
+    if (cursor) {
+      querys_requests[`cursor`] = cursor;
+    }
+
+    getPosts((err, data) => {
+      if (err) {
+        return setInfo([err.message]);
+      }
       setReload(false);
-      setPosts([]);
-      setGetPostsFeed(false);
-      getPosts((err, data) => {
-        if (err) {
-          return setInfo([err]);
-        }
-        setPosts(data.data.posts);
-        setLoader(false);
-      });
+      setCursor(data.data.cursor);
+
+      if (query || !posts) {
+        return setPosts(data.data.posts);
+      }
+      if (posts?.length > 0) {
+        return setPosts([...posts, ...data.data.posts]);
+      }
+    }, querys_requests);
+  };
+
+  useEffect(() => {
+    if (reload) {
+      getPostsHandler();
     }
-    if (morePosts) {
-      setLoader(true);
-      getPosts(
-        setInfo,
-        (new_posts) => {
-          setPosts([...posts, ...new_posts]);
-          setLoader(false);
-        },
-        {
-          cursorIdPost: posts[posts.length - 1].id_post,
-        }
-      );
-      seGetMorePosts(false);
-    }
+
     document
       .querySelector(".container-feed-posts")
       .addEventListener("scroll", (event) => {
@@ -63,16 +63,14 @@ export default function FeedMain() {
           100;
         //console.log(parseInt(percentageScroll));
         if (parseInt(percentageScroll) === 100) {
-          //console.log("entra");
-          //seGetMorePosts(true);
+          setReload(true);
         }
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload, morePosts]);
+  }, [reload]);
 
-  const handlerSerch = (querySearch) => {
-    setPosts([]);
-    getPosts(setInfo, setPosts, { querySearch });
+  const handlerSerch = (query) => {
+    getPostsHandler(query);
   };
 
   return (
@@ -86,7 +84,6 @@ export default function FeedMain() {
         >
           <FaSearch size={20} />
         </div>
-
         {inputSearchView ? (
           <InputSearch
             actionClose={setViewInputSearch}
@@ -95,18 +92,11 @@ export default function FeedMain() {
         ) : (
           <></>
         )}
-
         <div className="container-feed-posts">
-          <MainViewPost posts={posts} loader={loader} />
+          <MainViewPost posts={posts} activeReload={reload} />
         </div>
-
         <div className="container-feed-friends">
-          <ViewFriendsSide />
-
-          <div className="container_feed-users-recommended">
-            <p>Personas que quizas conozcas</p>
-            <UserList users={friends?.slice(0, 5)} />
-          </div>
+          <ViewFriendsSide id_user={_id} />
         </div>
       </div>
     </>

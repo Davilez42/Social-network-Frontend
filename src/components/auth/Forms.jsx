@@ -4,13 +4,9 @@ import logo from "../../assets/type10.png";
 import "./forms.css";
 export default function Forms() {
   return (
-    <>
-      <div className="container-forms">
-        <div className="mainform">
-          <img className="logo_snapwire" src={logo} alt="" />
-          {<Outlet />}
-        </div>
-      </div>
-    </>
+    <div className="mainform">
+      <img className="logo_snapwire" src={logo} alt="" />
+      {<Outlet />}
+    </div>
   );
 }

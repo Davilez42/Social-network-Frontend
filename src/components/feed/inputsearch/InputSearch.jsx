@@ -17,6 +17,12 @@ export default function InputSearch({ actionClose, actionSearch }) {
           onChange={(e) => {
             setSearchQuery(e.target.value);
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              actionClose(false);
+              actionSearch(searchQuery);
+            }
+          }}
           required
           className="input-field"
         />

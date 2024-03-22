@@ -1,23 +1,18 @@
 /* eslint-disable no-unused-vars */
 import resource from "../services/source";
-import PermissionInvalid from '../exceptions/PermissionInvalid';
-import { useDispatch, useSelector } from "react-redux";
-import { setAuth } from "../features/auth/authSlice";
+import { useSelector } from "react-redux";
 import { decryptDate } from "../helpers/encrypt";
 
-const usePost = (usenavigate) => {
+const usePost = () => {
 
-    const dispatch = useDispatch()
+
     const { csrftoken, id_user } = decryptDate(useSelector(state => state.auth.userAuth))
 
-    const logout = () => {
-        dispatch(setAuth(false))
-        usenavigate('/login')
-    }
 
     return ({
         getPosts: async (callback, optionsQuery) => {
             try {
+                console.log(optionsQuery);
                 let query = []
                 for (let key in optionsQuery) {
                     query.push(`${key}=${optionsQuery[key]}`)
@@ -49,7 +44,6 @@ const usePost = (usenavigate) => {
                     const data = await resp.json()
                     return callback(data.error)
                 }
-                usenavigate('/home/feed')
                 callback()
 
             } catch (e) {

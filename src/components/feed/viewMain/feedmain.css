@@ -1,19 +1,19 @@
 .container-feed-main {
     width: 80%;
     display: flex;
-
 }
 
 .container-feed-posts {
     width: 70%;
     display: flex;
-    flex-wrap: wrap;
+    padding-top: 27px;
     gap: 20px;
     justify-content: center;
     overflow-y: scroll;
     overflow-x: hidden;
     height: 100vh;
     scrollbar-color: rgba(165, 165, 165, 0.5) rgba(241, 241, 241, 0);
+
     scrollbar-width: thin;
     outline: 1px solid rgb(231, 231, 231);
 }
@@ -32,14 +32,7 @@
     cursor: pointer;
 }
 
-.container_feed-users-recommended {
-    height: 400px;
-    width: 95%;
-}
 
-.container_feed-users-recommended p {
-    color: rgb(158, 158, 158);
-}
 
 @media (max-width: 600px) {
 
@@ -58,7 +51,5 @@
         width: 100%;
     }
 
-    .container_feed-users-recommended {
-        display: none;
-    }
+
 }
