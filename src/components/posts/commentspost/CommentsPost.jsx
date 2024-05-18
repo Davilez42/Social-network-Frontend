@@ -8,13 +8,14 @@ import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt.js";
 import { UserContext } from "../../../context/userContext.jsx";
 import { useContext } from "react";
+import { AiFillCheckCircle } from "react-icons/ai";
 import "./commentpost.css";
 export default function CommentsPost({
   id_post,
-  deactivate_comments,
+  comments_disabled,
   onCreateComment,
 }) {
-  const { _id, username, avatar } = decryptDate(
+  const { _id, username, avatar, verified } = decryptDate(
     useSelector((state) => state.user.userInfo)
   );
   const [comments, setComments] = useState();
@@ -34,7 +35,7 @@ export default function CommentsPost({
             return setInfo([err.message]);
           }
           const comment_created = data.data;
-          comment_created.user = { avatar, _id, username };
+          comment_created.user = { avatar, _id, username, verified };
           setComments([comment_created, ...comments]);
         },
         id_post,
@@ -47,7 +48,7 @@ export default function CommentsPost({
 
   useEffect(() => {
     if (!id_post) return;
-    if (!comments && !deactivate_comments) {
+    if (!comments && !comments_disabled) {
       getCommentsPost((err, data) => {
         if (err) {
           return setInfo([err]);
@@ -63,7 +64,7 @@ export default function CommentsPost({
       <div className="container_comments">
         {(() => {
           if (comments) {
-            if (deactivate_comments) {
+            if (comments_disabled) {
               return <p className="text-has-not">Comentarios desactivados</p>;
             }
             if (comments.length === 0) {
@@ -84,7 +85,12 @@ export default function CommentsPost({
                 <div className="metadata">
                   <div className="box_username">
                     {comment.user.username}
-                    {"  "}
+
+                    {comment.user.verified ? (
+                      <AiFillCheckCircle size={15} color="green" />
+                    ) : (
+                      <></>
+                    )}
                     <span className="text_time">
                       {formatDate(comment.createdAt)}
                     </span>
@@ -97,11 +103,10 @@ export default function CommentsPost({
               </div>
             ));
           }
-
           return <span className="loader"></span>;
         })()}
       </div>
-      {!deactivate_comments ? (
+      {!comments_disabled ? (
         <div className="cotainer_input_comment">
           <input
             type="text"

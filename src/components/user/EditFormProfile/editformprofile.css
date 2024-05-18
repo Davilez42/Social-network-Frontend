@@ -1,34 +1,24 @@
 .form-edit-profile {
     width: 100%;
-    height: min-content;
     display: flex;
     flex-direction: column;
-    padding-bottom: 100px;
+    height: 100vh;
     align-items: center;
     gap: 20px;
     overflow-y: scroll;
+    padding-bottom: 100px;
 }
 
 .form-edit-profile button {
-    width: 140px;
+    width: 130px;
     padding: 0;
     font-weight: 400;
     height: 25px;
 }
 
-.header_edit_form {
-    width: 100%;
-    text-align: center;
-}
-
 .form-edit-profile input {
+    font-size: 14px;
     border: 1px solid rgb(206, 206, 206);
-}
-
-.form-edit-profile h1 {
-    font-size: 20px;
-    font-weight: 900;
-    color: rgb(130, 131, 131);
 }
 
 .container-avatar {
@@ -36,8 +26,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
+    flex-direction: row;
+
 }
 
 .container-image {
@@ -46,13 +36,20 @@
     justify-content: center;
 }
 
+.header-edit-form {
+    border: none;
+    position: relative;
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+}
+
 .img-avatar {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     object-fit: cover;
-    border: 6px solid rgb(224, 224, 224);
+    border: 1px solid rgb(224, 224, 224);
     border-radius: 100px;
-    background-color: rgb(122, 122, 122);
 }
 
 .container_inputs_file {
@@ -64,10 +61,6 @@
     flex-wrap: wrap;
     justify-content: center;
 }
-
-
-
-
 
 #input_file {
     display: none;
@@ -82,8 +75,11 @@
     justify-content: center;
     align-items: center;
     color: white;
-    width: 50%;
-    font-size: 90%;
+    width: min-content;
+    text-wrap: nowrap;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 13px;
     font-weight: bold;
     transition: .3s all;
 }
@@ -96,24 +92,26 @@
     width: 60%;
     text-align: center;
     cursor: pointer;
+    font-size: 14px;
     color: rgb(7, 106, 255);
     margin: 0;
 }
 
-#button_delete_account {
-    margin-top: 90px;
-    cursor: pointer;
-    text-decoration: underline;
-    color: rgb(247, 95, 95);
-}
 
 .forms {
     display: flex;
     width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
 }
+
+.forms input,
+textarea {
+    margin-top: 5px;
+}
+
+
 
 .container-edit-password,
 .container-edit-info {
@@ -121,8 +119,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: min-content;
     gap: 20px;
 }
+
 
 
 
@@ -130,15 +130,13 @@
     width: 70%;
     display: flex;
     justify-content: center;
-    margin-bottom: 10px;
-
-
 }
 
 #input_bio {
-    margin-top: 10px;
     width: 100%;
     border-radius: 5px;
+    font-size: 14px;
+    min-height: 25px;
     resize: vertical;
     border: 1px solid rgb(221, 221, 221);
 }

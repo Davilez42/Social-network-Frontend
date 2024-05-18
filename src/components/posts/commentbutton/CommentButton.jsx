@@ -7,7 +7,7 @@ import CommentsModal from "../commentsmodal/CommentsModal";
 export default function CommentButton({
   id_post,
   count_comments,
-  deactivate_comments,
+  comments_disabled,
 }) {
   const [countComments, setCountComments] = useState(count_comments);
   const [commentsModal, setCommentsModal] = useState(false);
@@ -40,7 +40,7 @@ export default function CommentButton({
           closeView={() => {
             setCommentsModal(false);
           }}
-          deactivate_comments={deactivate_comments}
+          comments_disabled={comments_disabled}
           id_post={id_post}
         />
       ) : (

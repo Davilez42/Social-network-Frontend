@@ -21,6 +21,7 @@
 
 .description_post {
     width: 100%;
+    margin: 10px 0px;
 }
 
 .description_post p {
@@ -103,6 +104,7 @@
 @media (max-width: 1000px) {
     .container-posts {
         width: 100%;
+        height: 100vh;
     }
 
     .card_post {

@@ -6,7 +6,7 @@ export default function CommentsModal({
   id_post,
   addCountComments,
   closeView,
-  deactivate_comments,
+  comments_disabled,
 }) {
   return (
     <div className="container_filter">
@@ -24,7 +24,7 @@ export default function CommentsModal({
         <CommentsPost
           id_post={id_post}
           onCreateComment={() => addCountComments()}
-          deactivate_comments={deactivate_comments}
+          comments_disabled={comments_disabled}
         />
       </div>
     </div>

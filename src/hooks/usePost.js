@@ -4,15 +4,11 @@ import { useSelector } from "react-redux";
 import { decryptDate } from "../helpers/encrypt";
 
 const usePost = () => {
-
-
     const { csrftoken, id_user } = decryptDate(useSelector(state => state.auth.userAuth))
-
 
     return ({
         getPosts: async (callback, optionsQuery) => {
             try {
-                console.log(optionsQuery);
                 let query = []
                 for (let key in optionsQuery) {
                     query.push(`${key}=${optionsQuery[key]}`)

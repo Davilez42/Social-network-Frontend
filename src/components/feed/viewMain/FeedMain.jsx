@@ -12,25 +12,33 @@ import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt.js";
 
 export default function FeedMain() {
-  const { _id } = decryptDate(useSelector((state) => state.user.userInfo));
+  const { id_user } = decryptDate(useSelector((state) => state.user.userInfo));
 
   const [posts, setPosts] = useState();
+  const { setInfo, back_to_init, setBack_to_inite } = useContext(UserContext);
   const [reload, setReload] = useState(true);
   const [cursor, setCursor] = useState();
+  const [inQuery, setInQuery] = useState(false);
   const [inputSearchView, setViewInputSearch] = useState(false);
 
   const navigate = useNavigate();
-  const { setInfo } = useContext(UserContext);
+
   const { getPosts } = usePost(navigate);
 
   const getPostsHandler = (query) => {
-    const querys_requests = {};
+    let querys_requests = {};
     if (query) {
       setCursor(1);
+      setInQuery(true);
+      setPosts(undefined);
       querys_requests[`query`] = query;
     }
     if (cursor) {
       querys_requests[`cursor`] = cursor;
+    }
+    if (back_to_init) {
+      querys_requests = {};
+      setPosts(undefined);
     }
 
     getPosts((err, data) => {
@@ -40,7 +48,7 @@ export default function FeedMain() {
       setReload(false);
       setCursor(data.data.cursor);
 
-      if (query || !posts) {
+      if (query || !posts || back_to_init) {
         return setPosts(data.data.posts);
       }
       if (posts?.length > 0) {
@@ -50,8 +58,11 @@ export default function FeedMain() {
   };
 
   useEffect(() => {
-    if (reload) {
+    setInQuery(false);
+
+    if (reload || back_to_init) {
       getPostsHandler();
+      if (back_to_init) setBack_to_inite(false);
     }
 
     document
@@ -67,7 +78,7 @@ export default function FeedMain() {
         }
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload]);
+  }, [reload, back_to_init]);
 
   const handlerSerch = (query) => {
     getPostsHandler(query);
@@ -93,10 +104,23 @@ export default function FeedMain() {
           <></>
         )}
         <div className="container-feed-posts">
-          <MainViewPost posts={posts} activeReload={reload} />
+          {(() => {
+            if (!posts) {
+              return (
+                <div className="box_loader">
+                  <span className="loader"></span>
+                </div>
+              );
+            }
+            if (posts.length === 0 && inQuery) {
+              return <p>No hay resultados para la busqueda</p>;
+            }
+
+            return <MainViewPost posts={posts} activeReload={reload} />;
+          })()}
         </div>
         <div className="container-feed-friends">
-          <ViewFriendsSide id_user={_id} />
+          {id_user ? <ViewFriendsSide id_user={id_user} /> : <></>}
         </div>
       </div>
     </>

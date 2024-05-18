@@ -14,7 +14,7 @@ export default function ViewFriendsSide({ id_user }) {
   useEffect(() => {
     getFriends((err, data) => {
       if (err) {
-        return alert("error al traer amigos");
+        return;
       }
       if (data.data.friends.length > 0) {
         setTittle(true);
@@ -29,18 +29,18 @@ export default function ViewFriendsSide({ id_user }) {
         {friends?.map((friend, i) => (
           <div
             key={i}
-            id={friend.user._id}
+            id={friend._id}
             className="card_friend"
             onClick={() => {
-              usernavigate(`/home/profile/view/${friend.user._id}`);
+              usernavigate(`/home/profile/view/${friend._id}`);
             }}
           >
             <img
               className="avatar avatar_friend"
-              src={friend.user.avatar.url}
+              src={friend.avatar.url}
               alt=""
             />
-            <p className="name_friend">{friend.user.username}</p>
+            <p className="name_friend">{friend.username}</p>
           </div>
         ))}
       </div>

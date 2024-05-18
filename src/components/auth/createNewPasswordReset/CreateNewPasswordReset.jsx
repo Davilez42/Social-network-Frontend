@@ -15,7 +15,7 @@ function CreateNewPasswordReset() {
       confirmPassword.trim() !== "" &&
       confirmPassword === newPassword
     ) {
-      restorePassword(setMessage, accesToken, newPassword);
+      restorePassword(setMessage, newPassword, accesToken);
     } else {
       setMessage("Las contraseña no son iguales");
     }

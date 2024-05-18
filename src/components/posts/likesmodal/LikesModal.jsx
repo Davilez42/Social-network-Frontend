@@ -38,12 +38,7 @@ export default function LikesModal({ id_post, closeView }) {
         <div className="friend-list-container">
           {users ? (
             users.length !== 0 ? (
-              <UserList
-                users={users.map((u) => {
-                  return { user: u };
-                })}
-                closeView={closeView}
-              />
+              <UserList users={users} closeView={closeView} />
             ) : (
               <p className="text-has-not">Esta publicacion no tiene likes</p>
             )

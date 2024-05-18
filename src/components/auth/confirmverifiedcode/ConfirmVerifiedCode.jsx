@@ -44,7 +44,6 @@ export default function ConfirmVerifiedCode() {
         );
         window.localStorage.setItem("id_user", data.data.id_user);
         usenavigate(`/home/feed`);
-        usenavigate(`/home/feed`);
       },
       id_user,
       code1 + code2 + code3 + code4
@@ -60,7 +59,6 @@ export default function ConfirmVerifiedCode() {
         }
       },
       id_user,
-      undefined,
       "verifyAccount"
     );
   };

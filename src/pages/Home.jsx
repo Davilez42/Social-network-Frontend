@@ -28,7 +28,7 @@ export default function Home() {
           {info.map((e, i) => {
             setTimeout(() => {
               setInfo([]);
-            }, 5000);
+            }, 3000);
             return (
               <div key={i} className="box-error">
                 <div>{e}</div>

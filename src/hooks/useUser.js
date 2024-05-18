@@ -62,6 +62,7 @@ export default function useUser(usenavigate) {
             try {
                 const resp = await resource({ route: `/api/v1/auth`, body: { user, password } })
                 const data = await resp.json()
+
                 if (!resp.ok) {
                     return callback(data.error)
                 }
@@ -69,23 +70,21 @@ export default function useUser(usenavigate) {
             } catch (e) {
                 callback(e)
             }
-        }, userLoginWithGoogle: async (credentials, callback) => {
+        }, userLoginWithGoogle: async (callback, credentials,) => {
             try {
-                const resp = await resource({ route: `/api/v1/auth/sign_google_platform`, body: { credentials } })
+                const resp = await resource({ route: `/api/v1/auth/google_platform`, body: { credentials } })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    // console.log(data);
-                    callback(data.error)
-                    return
+                    return callback(data.error)
                 }
                 callback(undefined, data)
             } catch (e) {
                 callback(e)
             }
         },
-        sendEmail: async (callback, id_user, email, type) => {
+        sendEmail: async (callback, user, type) => {
             try {
-                const resp = await resource({ route: `/api/v1/email/sendEmail?type=${type}`, body: { id_user, email } })
+                const resp = await resource({ route: `/api/v1/email/sendEmail?type=${type}`, body: { user } })
 
                 if (resp.status !== 204) {
                     const data = await resp.json()
@@ -156,10 +155,10 @@ export default function useUser(usenavigate) {
                 callback(e)
             }
         },
-        restorePassword: async (callback, password) => {
+        restorePassword: async (callback, password, accesToken) => {
             try {
 
-                const resp = await resource({ route: `/api/v1/user/restore_password`, body: { password }, tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/user/restore_password`, body: { password }, tkn: accesToken })
                 const data = await resp.json()
                 if (!resp.ok) {
                     callback(data.error)

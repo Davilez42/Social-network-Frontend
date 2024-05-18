@@ -3,7 +3,6 @@ import {
   GoPeople,
   GoPerson,
   GoPaperAirplane,
-  GoHomeFill,
   GoPlusCircle,
   GoListUnordered,
 } from "react-icons/go";
@@ -12,20 +11,21 @@ import "./navbarside.css";
 import { NavLink } from "react-router-dom";
 import RequestToFriendsView from "../requestoffriends/RequestToFriendsView";
 import CreateFormPosts from "../../posts/createformpost/CreateFormPost";
-import MoreOptionsView from "../moreoptionview/MoreOptionsView";
+import MoreOptionsView from "../moreoptionsmodal/MoreOptionsView";
 import logo2 from "../../../assets/logo2.png";
 import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt";
 import { UserContext } from "../../../context/userContext";
 import { GoBookmark } from "react-icons/go";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 // eslint-disable-next-line react/prop-types
 export default function NavBarSide({ setNavBarSide }) {
-  const { username, avatar, _id } = decryptDate(
+  const { username, avatar, id_user, verified } = decryptDate(
     useSelector((state) => state.user.userInfo)
   );
 
-  const { setInfo, setReload, reload } = useContext(UserContext);
+  const { setInfo, setBack_to_inite } = useContext(UserContext);
 
   const [request_friends_view, setRequests_view_friends] = useState(false);
   // eslint-disable-next-line no-unused-vars
@@ -43,7 +43,7 @@ export default function NavBarSide({ setNavBarSide }) {
     <div className="container-navbar-side">
       {request_friends_view ? (
         <RequestToFriendsView
-          id_user={_id}
+          id_user={id_user}
           closeView={() => {
             setRequests_view_friends();
           }}
@@ -59,7 +59,7 @@ export default function NavBarSide({ setNavBarSide }) {
             alt=""
             onClick={() => {
               if (canNavbarSideOccult) setNavBarSide(false);
-              setReload(!reload);
+              setBack_to_inite(true);
             }}
           />
         </NavLink>
@@ -78,12 +78,15 @@ export default function NavBarSide({ setNavBarSide }) {
           <div className="container_alias">
             <p className="title_username">{username}</p>
           </div>
+
+          {verified ? <AiFillCheckCircle size={15} color="green" /> : <></>}
         </div>
         <NavLink
           to="/home/feed"
           className="item_list_main"
           onClick={() => {
             if (canNavbarSideOccult) setNavBarSide(false);
+            setBack_to_inite(true);
           }}
         >
           {" "}
@@ -94,7 +97,7 @@ export default function NavBarSide({ setNavBarSide }) {
         </NavLink>
 
         <NavLink
-          to="/home/profile/view/"
+          to="/home/profile/view"
           className="item_list_main"
           onClick={() => {
             if (canNavbarSideOccult) setNavBarSide(false);
@@ -139,7 +142,7 @@ export default function NavBarSide({ setNavBarSide }) {
           <span className="box_icon">
             <GoPeople size={22} className="icon" />
           </span>
-          <div className="notificaction-count">{2}k</div>
+          <div className="notificaction-count">{1}</div>
           Solicitudes
         </div>
 
@@ -153,7 +156,7 @@ export default function NavBarSide({ setNavBarSide }) {
           <span className="box_icon">
             <GoPaperAirplane className="icon" size={22} />
           </span>{" "}
-          <div className="notificaction-count">{2}k</div>
+          <div className="notificaction-count">{1}</div>
           Mensajes
         </div>
 
@@ -172,7 +175,7 @@ export default function NavBarSide({ setNavBarSide }) {
 
       {more_options_view ? (
         <MoreOptionsView
-          actionClose={() => {
+          closeModal={() => {
             if (canNavbarSideOccult) setNavBarSide(false);
             setMore_options_view(!more_options_view);
           }}

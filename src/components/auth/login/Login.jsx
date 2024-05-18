@@ -31,6 +31,7 @@ function Login() {
             }`
           );
         }
+
         dispatch(
           setAuth({
             session: true,
@@ -45,14 +46,23 @@ function Login() {
   };
 
   const handlerSignWithGoogleSuccess = (credentials) => {
-    userLoginWithGoogle(credentials, (error, data) => {
-      if (error) {
-        return setMessage(error);
+    userLoginWithGoogle((err, data) => {
+      if (err) {
+        return setMessage(err.message);
       }
-      dispatch(setAuth({ session: true, csrftoken: data.csrftoken }));
-    });
+      dispatch(
+        setAuth({
+          session: true,
+          csrftoken: data.data.csrftoken,
+          id_user: data.data.id_user,
+        })
+      );
+      window.localStorage.setItem("id_user", data.data.id_user);
+      usenavigate(`/home/feed`);
+    }, credentials);
   };
   const handlerSignWithGoogleError = (error) => {
+    console.error(error);
     setMessage("Error al iniciar con google");
   };
 

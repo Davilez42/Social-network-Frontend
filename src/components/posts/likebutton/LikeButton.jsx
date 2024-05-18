@@ -28,7 +28,7 @@ export default function LikeButton({ id_post, likedbyme, countLikes }) {
     }, id_post);
   };
 
-  useEffect(() => {}, [_id]);
+  useEffect(() => {});
 
   return (
     <>

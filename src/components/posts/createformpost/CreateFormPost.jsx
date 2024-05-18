@@ -1,96 +1,95 @@
 import { useState, useEffect } from "react";
 import "./createformpost.css";
-import { BiNavigation } from "react-icons/bi";
-import { FcPicture } from "react-icons/fc";
 import usePost from "../../../hooks/usePost";
 import { useContext } from "react";
 import { UserContext } from "../../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { PiArrowLeftBold } from "react-icons/pi";
-import { useSelector } from "react-redux";
-import { decryptDate } from "../../../helpers/encrypt";
+import { IoMdImages } from "react-icons/io";
+import { IoAddSharp } from "react-icons/io5";
+import { BsSend } from "react-icons/bs";
+import { TiDelete } from "react-icons/ti";
+
 // eslint-disable-next-line react/prop-types
 export default function CreateFormPosts({ actionClose }) {
   const usenavigate = useNavigate();
-  const { avatar } = decryptDate(useSelector((state) => state.user.userInfo));
   const { sendPost } = usePost(usenavigate);
   const [urlPreviewMedia, setUrlPreviewMedia] = useState([]);
   const [text, setText] = useState("");
-  const [stateContainerPost, setStateContainerPost] = useState("none"); //variable bandera para desplegar vista de preview
   const { setInfo } = useContext(UserContext);
   const [mediaFiles, setMediaFiles] = useState([]);
-  const [canSend, setCanSend] = useState(true);
-
-  const clearForm = () => {
-    setMediaFiles([]);
-    setCanSend(true);
-    setUrlPreviewMedia([]);
-    setText("");
-    setStateContainerPost("none");
-    actionClose(false);
-  };
-
+  const [loading, setLoading] = useState(false);
   const handlerSendPost = () => {
-    if ((text.trim() !== "" || mediaFiles.length !== 0) && canSend) {
-      setCanSend(false);
+    if (text.trim() !== "" || mediaFiles.length !== 0) {
+      setLoading(true);
       sendPost(
         (err) => {
+          setLoading(false);
           if (err) {
             return setInfo([err.message]);
           }
-          clearForm();
+          actionClose();
         },
         text,
         mediaFiles
       );
     } else {
-      actionClose(false);
-      setInfo(["Debes de ingresar un texto o subir un archivo"]);
+      setInfo(["Debes de ingresar un texto o subir una imagen"]);
     }
   };
 
-  useEffect(() => {}, [text]);
+  useEffect(() => {}, [urlPreviewMedia]);
   return (
-    <>
-      <div className="container_filter">
-        <div className="container-form-create-post">
-          <div
-            className="back icon_back_create_view"
+    <div className="container_filter">
+      <div className="container-form-create-post">
+        <div className="header-modal">
+          <PiArrowLeftBold
+            className="header-modal__icon-back-modal"
             onClick={() => {
-              actionClose();
+              actionClose(false);
             }}
-          >
-            <PiArrowLeftBold size={24} />
+            size={24}
+          />
+          <div className="header-modal__box-tittle">
+            <p>Publicar</p>
           </div>
-          <img src="" alt="" />
-          <div className="container_data">
-            <img src={avatar.url} alt="" className="avatar avatar_form_post" />
+        </div>
 
-            <div className="container_inputs_form_posts">
-              <input
-                type="text"
-                className="input-field input_text_post"
-                placeholder="Publica algo aqui...."
-                value={text}
-                onChange={(event) => {
-                  setText(event.target.value);
-                }}
-              />
-            </div>
-            <BiNavigation
-              className="butto_send_post"
-              size={30}
-              onClick={handlerSendPost}
-            />
-          </div>
+        <div className="container_data">
+          <textarea
+            type="text"
+            className="input-field input_text_post"
+            placeholder="Escribe algo aqui ..."
+            value={text}
+            onChange={(event) => {
+              setText(event.target.value);
+            }}
+          />
+        </div>
 
-          <div
-            className="container_images_posts"
-            style={{ display: stateContainerPost }}
-          >
-            {urlPreviewMedia.map((media, ind) => {
-              if (media.type === "video") {
-                return (
+        <div className="container-posts-preview">
+          <IoMdImages className="icon-images" size={200} />
+
+          {urlPreviewMedia.map((media, ind) => {
+            return (
+              <div key={ind} className="card-media-preview">
+                <div className="block-effect-preview">
+                  <TiDelete
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setMediaFiles([
+                        ...mediaFiles.slice(0, ind),
+                        ...mediaFiles.slice(ind + 1),
+                      ]);
+                      setUrlPreviewMedia([
+                        ...urlPreviewMedia.slice(0, ind),
+                        ...urlPreviewMedia.slice(ind + 1),
+                      ]);
+                    }}
+                    size={34}
+                  />
+                </div>
+                {media.type === "video" ? (
                   <video
                     loading="lazy"
                     key={ind}
@@ -98,10 +97,7 @@ export default function CreateFormPosts({ actionClose }) {
                     controls
                     className="image_post_upload"
                   />
-                );
-              }
-              if (media.type === "image") {
-                return (
+                ) : (
                   <img
                     key={ind}
                     loading="lazy"
@@ -109,46 +105,50 @@ export default function CreateFormPosts({ actionClose }) {
                     className="image_post_upload"
                     alt=""
                   />
-                );
-              }
-            })}
-          </div>
-          <div className="options_form_posts">
-            <label
-              className="label_input_file  input_file_post"
-              htmlFor="input_file"
-            >
-              <FcPicture size={30} />
-              Foto/Video
-            </label>
-            <input
-              id="input_file"
-              type="file"
-              className="input-field input-file"
-              onChange={(event) => {
-                const file = event.target.files[0];
-                //VERIFICO EL TYPO DE ARCHIVO
-                const type = file.type.split("/");
-                if (type[0] !== "image" && type[0] !== "video") {
-                  setInfo([
-                    "Solo debes de subir archivos formato imagen o video",
+                )}
+              </div>
+            );
+          })}
+          <div className="cardAdd">
+            <div className="bg-gray">
+              <label className="label-input-file" htmlFor="input_file"></label>
+              <input
+                id="input_file"
+                type="file"
+                className="input-field input-file"
+                onChange={(event) => {
+                  const file = event.target.files[0];
+                  //VERIFICO EL TYPO DE ARCHIVO
+                  const type = file.type.split("/");
+                  if (type[0] !== "image" && type[0] !== "video") {
+                    setInfo([
+                      "Solo debes de subir archivos formato imagen o video",
+                    ]);
+                    return;
+                  }
+                  setUrlPreviewMedia([
+                    ...urlPreviewMedia,
+                    {
+                      url_preview: URL.createObjectURL(file),
+                      type: type[0],
+                    },
                   ]);
-                  return;
-                }
-                setUrlPreviewMedia([
-                  ...urlPreviewMedia,
-                  {
-                    url_preview: URL.createObjectURL(file),
-                    type: type[0],
-                  },
-                ]);
-                setStateContainerPost("");
-                setMediaFiles([...mediaFiles, file]);
-              }}
-            />
+                  setMediaFiles([...mediaFiles, file]);
+                }}
+              />
+              <IoAddSharp className="icon-add" size={70} />
+            </div>
           </div>
         </div>
+        <div
+          className="button-send"
+          onClick={() => {
+            handlerSendPost();
+          }}
+        >
+          {loading ? <span className="loading2"></span> : <BsSend size={30} />}
+        </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,14 +1,10 @@
-.icon_back_request_view {
-    float: right;
-}
-
 .requests-modal {
     border-color: #e4e4e4;
     background-color: rgb(255, 255, 255);
     height: 354px;
-    width: 360px;
+    width: 365px;
     cursor: default;
-    border-radius: 5px;
+    border-radius: 15px;
     animation: open_container_requests;
     animation-delay: 0;
     animation-duration: .04s;

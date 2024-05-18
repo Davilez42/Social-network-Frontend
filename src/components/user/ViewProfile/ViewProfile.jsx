@@ -47,9 +47,10 @@ export default function ViewProfile({ mode_foreign = false }) {
 
   const [buttonDelRequest, setButtonDelRequest] = useState();
   const [buttonDelFriend, setButtonDelFriend] = useState();
+  const [buttonRejectRequest, setButtonRejectRequest] = useState();
 
   const {
-    _id,
+    id_user,
     fullname,
     username,
     bio,
@@ -60,8 +61,9 @@ export default function ViewProfile({ mode_foreign = false }) {
   } = decryptDate(useSelector((state) => state.user.userInfo));
 
   useEffect(() => {
-    if (!_id && !id_user_view) return;
-    if (id_user_view && id_user_view !== _id) {
+    setPosts_view(undefined);
+    if (!id_user && !id_user_view) return;
+    if (id_user_view && id_user_view !== id_user) {
       getInfoUser(id_user_view, (err, data) => {
         if (err) {
           return setInfo([err.message]);
@@ -69,15 +71,15 @@ export default function ViewProfile({ mode_foreign = false }) {
         setUsername_view(data.data.user.username);
         setFullname_view(data.data.user.fullname);
         setAvatar_view(data.data.user.avatar.url);
-        setUser_Bio_view(data.data.user.user_bio);
+        setUser_Bio_view(data.data.user.bio);
         setCountPosts_view(data.data.user.countPosts);
         setCountFriends_view(data.data.user.countFriends);
         setProfileView(data.data.user.user_preferences.profileView);
         setReciveRequests(data.data.user.user_preferences.receive_requests);
         setVerified_view(data.data.user.verified);
-
-        setButtonDelFriend(data.data.user.friends[0]);
-        setButtonDelRequest(data.data.user.requests[0]);
+        setButtonDelFriend(data.data.user.myFriend);
+        setButtonDelRequest(data.data.user.requestSent);
+        setButtonRejectRequest(data.data.user.requestReceived);
 
         if (data.data.user.user_preferences.profileView) {
           getPosts(
@@ -112,11 +114,11 @@ export default function ViewProfile({ mode_foreign = false }) {
         setPosts_view(data.data.posts);
       },
       {
-        user: _id,
+        user: id_user,
       }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_id, mode_foreign, id_user_view]);
+  }, [id_user, mode_foreign, id_user_view]);
 
   const handlerDeleteRelation = (id_relation, request = false) => {
     deleteRelation(
@@ -124,8 +126,10 @@ export default function ViewProfile({ mode_foreign = false }) {
         if (err) {
           return setInfo([err.message]);
         }
+        setButtonAddFriend(undefined);
         setButtonDelFriend(undefined);
         setButtonDelRequest(undefined);
+        setButtonRejectRequest(undefined);
         setButtonAddFriend(true);
       },
       id_relation,
@@ -140,7 +144,7 @@ export default function ViewProfile({ mode_foreign = false }) {
           return setInfo([err.message]);
         }
         if (data.data.id_request) {
-          setButtonDelRequest({ _id: data.data.id_request });
+          setButtonDelRequest(data.data);
         } else {
           setButtonDelFriend({ _id: data.data.id_relation });
         }
@@ -154,7 +158,7 @@ export default function ViewProfile({ mode_foreign = false }) {
     <>
       {friendsModal ? (
         <FriendsModal
-          id_user={id_user_view ? id_user_view : _id}
+          id_user={id_user_view ? id_user_view : id_user}
           closeView={() => {
             setFriendsModal(false);
           }}
@@ -183,7 +187,7 @@ export default function ViewProfile({ mode_foreign = false }) {
                 if (!reciveRequests) {
                   return <></>;
                 }
-                if (!id_user_view || id_user_view === _id) {
+                if (!id_user_view || id_user_view === id_user) {
                   return (
                     <NavLink
                       to="/home/profile/edit"
@@ -198,7 +202,7 @@ export default function ViewProfile({ mode_foreign = false }) {
                   return (
                     <div
                       onClick={() => {
-                        handlerDeleteRelation(buttonDelFriend._id);
+                        handlerDeleteRelation(buttonDelFriend.id_relation);
                       }}
                       className="button_option_user"
                     >
@@ -206,15 +210,21 @@ export default function ViewProfile({ mode_foreign = false }) {
                     </div>
                   );
                 }
-                if (buttonDelRequest) {
+                if (buttonDelRequest || buttonRejectRequest) {
                   return (
                     <div
                       onClick={() => {
-                        handlerDeleteRelation(buttonDelRequest._id, true);
+                        handlerDeleteRelation(
+                          buttonDelRequest?.id_request ||
+                            buttonRejectRequest?.id_request,
+                          true
+                        );
                       }}
                       className="button_option_user"
                     >
-                      Cancelar Solicitud
+                      {buttonDelRequest
+                        ? "Cancelar Solicitud"
+                        : " Rechazar Solicitud"}
                     </div>
                   );
                 }

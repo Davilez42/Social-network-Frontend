@@ -4,21 +4,21 @@ import "./requestofriendsview.css";
 import useUser from "../../../hooks/useUser";
 import { UserContext } from "../../../context/userContext";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RequestToFriendsView = ({ closeView, id_user }) => {
   const [requestsFriend, setRequestsFriend] = useState();
   const { setInfo } = useContext(UserContext);
   const { sendRequestFriend, deleteRelation, getRequests } = useUser();
+  const navigate = useNavigate();
 
-  const handlerAcceptRequest = (request_user) => {
+  const handlerAcceptRequest = (id_user) => {
     sendRequestFriend((err) => {
       if (err) {
         return setInfo([err]);
       }
-      setRequestsFriend(
-        requestsFriend.filter((r) => r._id !== request_user._id)
-      );
-    }, request_user.user._id);
+      setRequestsFriend(requestsFriend.filter((r) => r._id !== id_user));
+    }, id_user);
   };
 
   const handlerDeleteRequest = (id_request) => {
@@ -34,7 +34,9 @@ const RequestToFriendsView = ({ closeView, id_user }) => {
     );
   };
 
-  const actionSelectFriend = () => {};
+  const actionSelectFriend = (id_user) => {
+    navigate(`/home/profile/view/${id_user}`);
+  };
 
   useEffect(() => {
     getRequests((err, data) => {
@@ -62,28 +64,28 @@ const RequestToFriendsView = ({ closeView, id_user }) => {
           {requestsFriend ? (
             <div className="container-requests">
               {requestsFriend.map((request_user, index) => (
-                <div
-                  className="card_request"
-                  key={index}
-                  onClick={() => {
-                    actionSelectFriend(request_user.user._id);
-                  }}
-                >
-                  <div className="data-user-request">
+                <div className="card_request" key={index}>
+                  <div
+                    className="data-user-request"
+                    onClick={() => {
+                      actionSelectFriend(request_user._id);
+                      closeView();
+                    }}
+                  >
                     <img
                       className="avatar"
-                      src={request_user.user.avatar.url}
+                      src={request_user.avatar.url}
                       alt=""
                     />
                     <span className="card_name_user">
-                      {request_user.user.username}
+                      {request_user.username}
                     </span>
                   </div>
 
                   <div className="container_button_option_request">
                     <div
                       onClick={() => {
-                        handlerAcceptRequest(request_user);
+                        handlerAcceptRequest(request_user._id);
                       }}
                       className="button_option_user button_option_request"
                     >

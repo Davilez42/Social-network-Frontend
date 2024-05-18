@@ -18,8 +18,7 @@ function RestorePassword() {
       } else {
         cont = 30;
         btn.style = "background:#1399f3;";
-        setSeconds((seconds) => 30);
-        console.log("termino");
+        setSeconds(30);
         clearInterval(id);
       }
     }, 1000);
@@ -28,11 +27,11 @@ function RestorePassword() {
   const handlePassword = () => {
     if (correoElectronico.trim() !== "") {
       if (seconds === 30) {
-        sendEmail(setMessage, undefined, correoElectronico, "recoveryPassword");
+        sendEmail(setMessage, correoElectronico, "recoveryPassword");
         setjsnterval();
       }
     } else {
-      setMessage(["Por favor ingrese un correo electronico"]);
+      setMessage("Por favor ingrese un correo electronico");
     }
   };
   useEffect(() => {}, []);
@@ -42,7 +41,7 @@ function RestorePassword() {
       <div className="container-text">
         <p className="text-frase">
           ¡Porfavor ingresa tu correo electronico para enviarte el link de
-          recuperacion! 🔒 "
+          recuperacion! 🔒
         </p>
       </div>
       <div className="container-text">

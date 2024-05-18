@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import "./editformprofile.css";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
@@ -11,10 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserInfoLocal } from "../../../features/user/userSlice";
 
 export default function EditFormProfile() {
-  const { username, bio, avatar, date_born, fullname, email, phone_number } =
+  const { username, bio, avatar, dateBorn, fullname, email, phoneNumber } =
     decryptDate(useSelector((state) => state.user.userInfo));
   const dispatch = useDispatch();
-  //estados del propio componente
   const [username_edit, setUsername_edit] = useState("");
   const [user_bio_edit, setUser_bio_edit] = useState("");
   const [url_avatar_edit, setUrl_avatar_edit] = useState("");
@@ -35,8 +33,7 @@ export default function EditFormProfile() {
   const [avatar_, setAvatar] = useState({});
   const usenavigate = useNavigate();
 
-  const { updateUserInfo, updatePassword, updateAvatarUser } =
-    useUser(usenavigate);
+  const { updateUserInfo, updatePassword, updateAvatarUser } = useUser();
 
   const handlerSendData = () => {
     setParams({});
@@ -58,7 +55,6 @@ export default function EditFormProfile() {
           return setInfo([err.message]);
         }
         setInfo(["Tu contraseña ha sido actualizada"]);
-        usenavigate(`/home/profile/edit`);
       });
     }
   };
@@ -82,20 +78,28 @@ export default function EditFormProfile() {
     setFullname_edit(fullname);
     setEmail_edit(email);
     setUrl_avatar_edit(avatar.url);
-    setDate_born_edit(date_born.split("T")[0]);
+
+    console.log(dateBorn);
+    setDate_born_edit(dateBorn.split("T")[0]);
     setUsername_edit(username);
-    setPhone_number_edit(phone_number);
-  }, [username, bio, avatar.url, date_born, fullname, email, phone_number]);
+    setPhone_number_edit(phoneNumber);
+  }, [username, bio, avatar.url, dateBorn, fullname, email, phoneNumber]);
 
   return (
     <>
       <div className="form-edit-profile">
-        <div className="header_edit_form">
-          <NavLink className="back" to="/home/profile/view" replace>
-            <PiArrowLeftBold size={24} />
-          </NavLink>
+        <div className="header-edit-form">
+          <PiArrowLeftBold
+            className="header-modal__icon-back-modal"
+            onClick={() => {
+              usenavigate(`/home/profile/view`);
+            }}
+            size={24}
+          />
 
-          <h1>Editar perfil</h1>
+          <div className="header-modal__box-tittle ">
+            <p>Editar perfil</p>
+          </div>
         </div>
         <div className="container-avatar">
           <div className="container-image">

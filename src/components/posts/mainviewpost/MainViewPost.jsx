@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import formatDate from "../../../helpers/formatDate.js";
 import { AiFillCheckCircle } from "react-icons/ai";
 
-// eslint-disable-next-line react/prop-types
 export default function MainViewPost({
   posts,
   avatar_author = true,
@@ -84,6 +83,7 @@ export default function MainViewPost({
                           key={ind + post._id}
                           src={media.url}
                           controls
+                          autoFocus
                           className="video_media"
                         />
                       );
@@ -106,7 +106,7 @@ export default function MainViewPost({
               <div className="info_post_options">
                 <div className="option">
                   <LikeButton
-                    countLikes={Math.floor(Math.random() * 1000000)}
+                    countLikes={post.countLikes}
                     likedbyme={post.likedbyme}
                     id_post={post._id}
                   />
@@ -115,7 +115,7 @@ export default function MainViewPost({
                   <CommentButton
                     id_post={post._id}
                     count_comments={post.countComments}
-                    deactivate_comments={post.config.deactive_comments}
+                    comments_disabled={post.config.comments_disabled}
                   />
                 </div>
                 <div className="option option_saved_post">

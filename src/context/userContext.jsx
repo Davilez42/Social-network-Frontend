@@ -13,7 +13,7 @@ export function UserContextProvider(props) {
 
   const { getInfoUser } = useUser(navigate);
   const [info, setInfo] = useState([]);
-  const [reload, setReload] = useState(false);
+  const [back_to_init, setBack_to_inite] = useState(false);
 
   useEffect(() => {
     const id_user = window.localStorage.getItem("id_user");
@@ -23,17 +23,16 @@ export function UserContextProvider(props) {
       }
       dispatch(setUser(data.data.user));
     });
-    /* } */
-  }, [reload]);
+  }, []);
 
   return (
     <>
       <UserContext.Provider
         value={{
           info,
-          reload,
+          back_to_init,
           setInfo,
-          setReload,
+          setBack_to_inite,
         }}
       >
         {props.children}
