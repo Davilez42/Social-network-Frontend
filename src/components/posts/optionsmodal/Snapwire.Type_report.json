@@ -1,0 +1,57 @@
+[
+  {
+    "id": "664e7d6574560451b91de662",
+    "priority": 2,
+    "description": "Contenido ofensivo o inapropiado"
+  },
+  {
+    "id": "664e7d6574560451b91de663",
+    "priority": 2,
+    "description": "Contenido spam o engañoso"
+  },
+  {
+    "id": "664e7d6574560451b91de664",
+    "priority": 5,
+    "description": "Contenido que viola los derechos de autor"
+  },
+  {
+    "id": "664e7d6574560451b91de665",
+    "priority": 7,
+    "description": "Suplantación de identidad"
+  },
+  {
+    "id": "664e7d6574560451b91de666",
+    "priority": 20,
+    "description": "Contenido relacionado con el suicidio o autolesiones"
+  },
+  {
+    "id": "664e7d6574560451b91de667",
+    "priority": 6,
+    "description": "Desinformación o noticias falsas"
+  },
+  {
+    "id": "664e7d6574560451b91de668",
+    "priority": 13,
+    "description": "Contenido relacionado con drogas o sustancias peligrosas"
+  },
+  {
+    "id": "664e7d6574560451b91de669",
+    "priority": 20,
+    "description": "Acoso o intimidación"
+  },
+  {
+    "id": "664e7d6574560451b91de66a",
+    "priority": 20,
+    "description": "Contenido sexualmente explícito"
+  },
+  {
+    "id": "664e7d6574560451b91de66b",
+    "priority": 20,
+    "description": "Contenido que incita a la violencia"
+  },
+  {
+    "id": "664e7d6574560451b91de66c",
+    "priority": 15,
+    "description": "Información personal no autorizada"
+  }
+]

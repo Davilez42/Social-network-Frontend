@@ -97,3 +97,13 @@
     gap: 20px;
     align-items: center;
 }
+
+
+@media (max-width: 600px) {
+    .container_comments {
+        margin-top: 0;
+        min-height: 490px;
+    }
+
+
+}

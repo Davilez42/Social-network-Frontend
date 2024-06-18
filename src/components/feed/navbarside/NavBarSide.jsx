@@ -2,21 +2,21 @@ import { useState, useContext, useEffect } from "react";
 import {
   GoPeople,
   GoPerson,
-  GoPaperAirplane,
+  /*  GoPaperAirplane, */
   GoPlusCircle,
   GoListUnordered,
 } from "react-icons/go";
 import { SiHomebridge } from "react-icons/si";
 import "./navbarside.css";
 import { NavLink } from "react-router-dom";
-import RequestToFriendsView from "../requestoffriends/RequestToFriendsView";
+import RequestModal from "../requestsmodal/RequestsModal";
 import CreateFormPosts from "../../posts/createformpost/CreateFormPost";
 import MoreOptionsView from "../moreoptionsmodal/MoreOptionsView";
 import logo2 from "../../../assets/logo2.png";
 import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt";
 import { UserContext } from "../../../context/userContext";
-import { GoBookmark } from "react-icons/go";
+// import { GoBookmark } from "react-icons/go";
 import { AiFillCheckCircle } from "react-icons/ai";
 
 // eslint-disable-next-line react/prop-types
@@ -25,9 +25,9 @@ export default function NavBarSide({ setNavBarSide }) {
     useSelector((state) => state.user.userInfo)
   );
 
-  const { setInfo, setBack_to_inite } = useContext(UserContext);
+  const { setBack_to_inite } = useContext(UserContext);
 
-  const [request_friends_view, setRequests_view_friends] = useState(false);
+  const [request_Modal, setRequests_Modal] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [create_post_view, setCreate_post_View] = useState(false);
   const [canNavbarSideOccult, setCanNavbarSideOccult] = useState(false);
@@ -41,11 +41,11 @@ export default function NavBarSide({ setNavBarSide }) {
 
   return (
     <div className="container-navbar-side">
-      {request_friends_view ? (
-        <RequestToFriendsView
+      {request_Modal ? (
+        <RequestModal
           id_user={id_user}
           closeView={() => {
-            setRequests_view_friends();
+            setRequests_Modal();
           }}
         />
       ) : (
@@ -109,17 +109,17 @@ export default function NavBarSide({ setNavBarSide }) {
           </span>{" "}
           Perfil
         </NavLink>
-        <div
+        {/*         <div
           className="item_list_main item-requests"
           onClick={() => {
-            setRequests_view_friends(!request_friends_view);
+            setRequests_Modal(!request_Modal);
           }}
         >
           <span className="box_icon">
             <GoBookmark size={22} className="icon" />
           </span>
           guardados
-        </div>
+        </div> */}
 
         <div
           className="item_list_main"
@@ -136,17 +136,17 @@ export default function NavBarSide({ setNavBarSide }) {
         <div
           className="item_list_main item-requests"
           onClick={() => {
-            setRequests_view_friends(!request_friends_view);
+            setRequests_Modal(!request_Modal);
           }}
         >
           <span className="box_icon">
             <GoPeople size={22} className="icon" />
           </span>
-          <div className="notificaction-count">{1}</div>
+          {/* <div className="notificaction-count">{0}</div> */}
           Solicitudes
         </div>
 
-        <div
+        {/*         <div
           className="item_list_main"
           onClick={() => {
             setInfo(["Esta funcion se encuentra en desarrollo"]);
@@ -158,7 +158,7 @@ export default function NavBarSide({ setNavBarSide }) {
           </span>{" "}
           <div className="notificaction-count">{1}</div>
           Mensajes
-        </div>
+        </div> */}
 
         <div
           className="item_list_main item-more"

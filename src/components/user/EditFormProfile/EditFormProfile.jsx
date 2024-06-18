@@ -36,15 +36,14 @@ export default function EditFormProfile() {
   const { updateUserInfo, updatePassword, updateAvatarUser } = useUser();
 
   const handlerSendData = () => {
-    setParams({});
     if (Object.keys(objectParams).length !== 0) {
-      updateUserInfo(objectParams, (err) => {
+      updateUserInfo((err) => {
         if (err) {
           return setInfo([err.message]);
         }
         setInfo(["Se actualizado tu informacion"]);
         dispatch(updateUserInfoLocal(objectParams));
-      });
+      }, objectParams);
     }
   };
 
@@ -78,9 +77,7 @@ export default function EditFormProfile() {
     setFullname_edit(fullname);
     setEmail_edit(email);
     setUrl_avatar_edit(avatar.url);
-
-    console.log(dateBorn);
-    setDate_born_edit(dateBorn.split("T")[0]);
+    setDate_born_edit(dateBorn?.split("T")[0]);
     setUsername_edit(username);
     setPhone_number_edit(phoneNumber);
   }, [username, bio, avatar.url, dateBorn, fullname, email, phoneNumber]);

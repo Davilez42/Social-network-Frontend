@@ -33,11 +33,11 @@ export default function MoreOptionsView({ closeModal }) {
           />
         </div>
         <div className="container-options">
-          <div className="item_more_option">
+          {/*      <div className="item_more_option">
             <p>Ayuda</p>
-          </div>
+          </div> */}
 
-          <div
+          {/*     <div
             className="item_more_option"
             onClick={() => {
               closeModal();
@@ -45,7 +45,7 @@ export default function MoreOptionsView({ closeModal }) {
             }}
           >
             <p>Reportar problema</p>
-          </div>
+          </div> */}
 
           <div
             className="item_more_option"

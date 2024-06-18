@@ -8,15 +8,15 @@ import { useSelector } from "react-redux";
 import { decryptDate } from "../../../helpers/encrypt";
 import usePost from "../../../hooks/usePost";
 import { UserContext } from "../../../context/userContext";
-import FormReportView from "./FormReportView";
+import ReportModal from "./ReportModal";
 import PostPreviewView from "../postpreview/PostPreviewView";
 
-export default function OptionsPostView({ post }) {
+export default function OptionsPostModal({ post }) {
   const { deletePost } = usePost();
   const { setInfo } = useContext(UserContext);
-  const { _id } = decryptDate(useSelector((state) => state.user.userInfo));
+  const { id_user } = decryptDate(useSelector((state) => state.user.userInfo));
   const [optionsView, setOptionsView] = useState(false);
-  const [formReportView, setReportView] = useState(false);
+  const [reportModal, setReportModal] = useState(false);
   const [posteditview, setPosteditview] = useState(false);
 
   const handlerDeletePost = () => {
@@ -25,10 +25,8 @@ export default function OptionsPostView({ post }) {
         return setInfo(err.message);
       }
       setOptionsView(false);
-      setInfo(["La publicacion ha sido eliminada"]);
     }, post._id);
   };
-  const handlerArchivePost = () => {};
 
   return (
     <div className="block-options-post">
@@ -60,25 +58,25 @@ export default function OptionsPostView({ post }) {
 
             <div className="box-options-post">
               <div
-                className="item_option_post item_denunciar"
+                className="item_option_post item-danger"
                 onClick={() => {
-                  setReportView(true);
                   setOptionsView(false);
+                  setReportModal(true);
                 }}
               >
-                Denunciar
+                Reportar
               </div>
 
-              {post.author._id === _id || post.author === _id ? (
+              {post.author._id === id_user || post.author === id_user ? (
                 <>
-                  <div
+                  {/*          <div
                     className="item_option_post"
                     onClick={() => {
                       handlerArchivePost();
                     }}
                   >
                     Archivar
-                  </div>
+                  </div> */}
 
                   <div
                     className="item_option_post"
@@ -91,7 +89,7 @@ export default function OptionsPostView({ post }) {
                   </div>
 
                   <div
-                    className="item_option_post"
+                    className="item_option_post item-danger"
                     onClick={() => {
                       handlerDeletePost();
                     }}
@@ -109,14 +107,13 @@ export default function OptionsPostView({ post }) {
         <></>
       )}
 
-      {formReportView ? (
+      {reportModal ? (
         <div className="container_filter">
-          <FormReportView
-            actionSend={() => {
-              setOptionsView(false);
-              setReportView(false);
-            }}
+          <ReportModal
             id_post={post._id}
+            closeView={() => {
+              setReportModal(false);
+            }}
           />
         </div>
       ) : (

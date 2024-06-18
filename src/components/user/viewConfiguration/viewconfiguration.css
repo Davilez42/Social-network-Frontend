@@ -7,12 +7,12 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 40px;
-
     padding-bottom: 20px;
 }
 
 .label_config_input {
-    font-size: 14px;
+    font-size: 16px;
+
     margin-left: 20px;
 }
 
@@ -44,17 +44,7 @@
     background-color: antiquewhite;
 }
 
-.container_button {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: min-content;
-}
 
-.button_save_config {
-    margin: 20px;
-    width: 140px;
-}
 
 .delete_account_text {
     font-size: 17px;

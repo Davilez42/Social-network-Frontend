@@ -14,6 +14,7 @@ function Login() {
   const dispatch = useDispatch();
 
   const handlerLogin = () => {
+    setMessage("");
     if (email.trim() !== "" && contrasena.trim() !== "") {
       userLogin(email, contrasena, (error, data) => {
         if (error) {

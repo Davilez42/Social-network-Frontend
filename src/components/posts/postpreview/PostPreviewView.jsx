@@ -17,7 +17,7 @@ export default function PostPreviewView({
   const { setInfo } = useContext(UserContext);
   const [descriptionPost_edit, setDescriptionPost_edit] = useState("");
   const { modifyPost } = usePost();
-
+  console.log(post);
   useEffect(() => {
     setDescriptionPost_edit(post.text);
   }, []);
@@ -121,7 +121,11 @@ export default function PostPreviewView({
           )}
 
           <div className="options_post_preview">
-            <ButtonLike id_post={post._id} likes={post.likes} />
+            <ButtonLike
+              id_post={post._id}
+              countLikes={post.countLikes}
+              likedbyme={post.likedbyme}
+            />
           </div>
 
           <div className="container_comments_post_preview">

@@ -1,7 +1,10 @@
+#root {
+    height: 100vh;
+}
+
 .container-main {
     background-color: #ffffff;
     display: flex;
-    height: 100vh;
     position: relative;
     flex-direction: row;
     font-family: Verdana, Geneva, Tahoma, sans-serif;

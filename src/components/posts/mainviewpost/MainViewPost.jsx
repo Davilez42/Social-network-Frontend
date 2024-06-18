@@ -4,7 +4,7 @@ import { GoBookmark } from "react-icons/go";
 import CommentButton from "../commentbutton/CommentButton.jsx";
 import { useNavigate } from "react-router-dom";
 import LikeButton from "../likebutton/LikeButton.jsx";
-import OptionsPostView from "../optionpostview/OptionsPostView.jsx";
+import OptionsPostModal from "../optionsmodal/OptionsPostModal.jsx";
 import { useEffect } from "react";
 import formatDate from "../../../helpers/formatDate.js";
 import { AiFillCheckCircle } from "react-icons/ai";
@@ -58,8 +58,7 @@ export default function MainViewPost({
                   )}
                   <div className="text_time">{formatDate(post.createdAt)}</div>
                 </div>
-
-                <OptionsPostView post={post} />
+                <OptionsPostModal post={post} />
               </div>
 
               <div className="description_post">

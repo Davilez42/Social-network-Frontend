@@ -98,13 +98,11 @@ const routes = createBrowserRouter([
 ]);
 function App() {
   return (
-    <>
-      <CookiesProvider defaultSetOptions={{ path: "/" }}>
-        <GoogleOAuthProvider clientId="82745131280-ob282ooidap231baesdi58e01nib93q3.apps.googleusercontent.com">
-          <RouterProvider router={routes} />
-        </GoogleOAuthProvider>
-      </CookiesProvider>
-    </>
+    <CookiesProvider defaultSetOptions={{ path: "/" }}>
+      <GoogleOAuthProvider clientId="82745131280-ob282ooidap231baesdi58e01nib93q3.apps.googleusercontent.com">
+        <RouterProvider router={routes} />
+      </GoogleOAuthProvider>
+    </CookiesProvider>
   );
 }
 

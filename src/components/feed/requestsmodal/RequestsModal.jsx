@@ -6,8 +6,8 @@ import { UserContext } from "../../../context/userContext";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const RequestToFriendsView = ({ closeView, id_user }) => {
-  const [requestsFriend, setRequestsFriend] = useState();
+const RequestModal = ({ closeView, id_user }) => {
+  const [requests, setRequests] = useState();
   const { setInfo } = useContext(UserContext);
   const { sendRequestFriend, deleteRelation, getRequests } = useUser();
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const RequestToFriendsView = ({ closeView, id_user }) => {
       if (err) {
         return setInfo([err]);
       }
-      setRequestsFriend(requestsFriend.filter((r) => r._id !== id_user));
+      setRequests(requests.filter((r) => r._id !== id_user));
     }, id_user);
   };
 
@@ -27,7 +27,7 @@ const RequestToFriendsView = ({ closeView, id_user }) => {
         if (err) {
           return setInfo([err]);
         }
-        setRequestsFriend(requestsFriend.filter((r) => r._id !== id_request));
+        setRequests(requests.filter((r) => r._id !== id_request));
       },
       id_request,
       true
@@ -43,7 +43,7 @@ const RequestToFriendsView = ({ closeView, id_user }) => {
       if (err) {
         return setInfo([err.message]);
       }
-      setRequestsFriend(data.data.requests);
+      setRequests(data.data.requests);
     }, id_user);
   }, []);
 
@@ -61,47 +61,52 @@ const RequestToFriendsView = ({ closeView, id_user }) => {
           </div>
         </div>
         <div className="block-requests">
-          {requestsFriend ? (
+          {requests ? (
             <div className="container-requests">
-              {requestsFriend.map((request_user, index) => (
-                <div className="card_request" key={index}>
-                  <div
-                    className="data-user-request"
-                    onClick={() => {
-                      actionSelectFriend(request_user._id);
-                      closeView();
-                    }}
-                  >
-                    <img
-                      className="avatar"
-                      src={request_user.avatar.url}
-                      alt=""
-                    />
-                    <span className="card_name_user">
-                      {request_user.username}
-                    </span>
-                  </div>
+              {(() => {
+                if (requests.length === 0) {
+                  return <p>No tienes solicitudes</p>;
+                }
+                return requests.map((request_user, index) => (
+                  <div className="card_request" key={index}>
+                    <div
+                      className="data-user-request"
+                      onClick={() => {
+                        actionSelectFriend(request_user._id);
+                        closeView();
+                      }}
+                    >
+                      <img
+                        className="avatar"
+                        src={request_user.avatar.url}
+                        alt=""
+                      />
+                      <span className="card_name_user">
+                        {request_user.username}
+                      </span>
+                    </div>
 
-                  <div className="container_button_option_request">
-                    <div
-                      onClick={() => {
-                        handlerAcceptRequest(request_user._id);
-                      }}
-                      className="button_option_user button_option_request"
-                    >
-                      Aceptar
-                    </div>
-                    <div
-                      onClick={() => {
-                        handlerDeleteRequest(request_user._id);
-                      }}
-                      className="button_option_user button_option_request"
-                    >
-                      Rechazar
+                    <div className="container_button_option_request">
+                      <div
+                        onClick={() => {
+                          handlerAcceptRequest(request_user._id);
+                        }}
+                        className="button_option_user button_option_request"
+                      >
+                        Aceptar
+                      </div>
+                      <div
+                        onClick={() => {
+                          handlerDeleteRequest(request_user._id);
+                        }}
+                        className="button_option_user button_option_request"
+                      >
+                        Rechazar
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ));
+              })()}
             </div>
           ) : (
             <span className="loader"></span>
@@ -112,4 +117,4 @@ const RequestToFriendsView = ({ closeView, id_user }) => {
   );
 };
 
-export default RequestToFriendsView;
+export default RequestModal;

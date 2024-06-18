@@ -24,6 +24,10 @@
     cursor: pointer;
 }
 
-.item_denunciar {
+.item-danger {
     color: red;
+}
+
+.item_option_post:hover {
+    background-color: rgb(235, 235, 235);
 }

@@ -101,9 +101,9 @@ const usePost = () => {
                 return callback(e)
             }
         },
-        reportPost: async (callback, id_post, reason, type_report, actionSucces) => {
+        reportPost: async (callback, id_post, reason, type) => {
             try {
-                const resp = await resource({ route: `/api/v1/post/${id_post}/report`, body: { type_report, reason }, method: 'PUT', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${id_post}/report`, body: { code: type, reason }, method: 'POST', tkn: csrftoken })
                 if (!resp.ok) {
                     const data = await resp.json()
                     return callback(data.error)

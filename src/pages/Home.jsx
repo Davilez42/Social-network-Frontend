@@ -21,7 +21,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div>
       <HeaderMain switchNavbarSideView={switchNavbarSideView} />
       <div className="container-main">
         <div className="container-error">
@@ -51,6 +51,6 @@ export default function Home() {
         )}
         {<Outlet />}
       </div>
-    </>
+    </div>
   );
 }

@@ -5,13 +5,11 @@ import { RiHeartFill } from "react-icons/ri";
 import { UserContext } from "../../../context/userContext";
 import { useContext } from "react";
 import usePost from "../../../hooks/usePost";
-import { useSelector } from "react-redux";
-import { decryptDate } from "../../../helpers/encrypt";
+
 import LikesModal from "../likesmodal/LikesModal";
 import numberFormat from "../../../helpers/numberFormat";
 
 export default function LikeButton({ id_post, likedbyme, countLikes }) {
-  const { _id } = decryptDate(useSelector((state) => state.user.userInfo));
   const { setInfo } = useContext(UserContext);
   const [iconlikeActive, setIconlikeActive] = useState(likedbyme);
   const [usersLikeView, setUsersLikeView] = useState(false);

@@ -15,11 +15,20 @@ export const userSlice = createSlice({
                 aux[key] = action.payload[key]
             }
             state.userInfo = encryptDate(JSON.stringify(aux))
-        }
+        },
+        updatePreferences: (state, action) => {
+            const aux = decryptDate(state.userInfo)
+
+            for (let key in action.payload) {
+                aux.user_preferences[key] = action.payload[key]
+            }
+
+            state.userInfo = encryptDate(JSON.stringify(aux))
+        },
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { setUser, updateUserInfoLocal } = userSlice.actions
+export const { setUser, updateUserInfoLocal, updatePreferences } = userSlice.actions
 
 export default userSlice.reducer

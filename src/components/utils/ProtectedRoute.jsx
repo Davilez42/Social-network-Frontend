@@ -12,11 +12,8 @@ export default function ProtectedRoute() {
     return <Navigate to="/login" replace />;
   }
   return (
-    <>
-      {" "}
-      <UserContextProvider>
-        <Outlet />;
-      </UserContextProvider>
-    </>
+    <UserContextProvider>
+      <Outlet />
+    </UserContextProvider>
   );
 }

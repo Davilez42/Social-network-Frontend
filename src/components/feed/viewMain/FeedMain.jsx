@@ -85,44 +85,42 @@ export default function FeedMain() {
   };
 
   return (
-    <>
-      <div className="container-feed-main">
-        <div
-          className="search-icon-feed-main"
-          onClick={() => {
-            setViewInputSearch(!inputSearchView);
-          }}
-        >
-          <FaSearch size={20} />
-        </div>
-        {inputSearchView ? (
-          <InputSearch
-            actionClose={setViewInputSearch}
-            actionSearch={handlerSerch}
-          />
-        ) : (
-          <></>
-        )}
-        <div className="container-feed-posts">
-          {(() => {
-            if (!posts) {
-              return (
-                <div className="box_loader">
-                  <span className="loader"></span>
-                </div>
-              );
-            }
-            if (posts.length === 0 && inQuery) {
-              return <p>No hay resultados para la busqueda</p>;
-            }
-
-            return <MainViewPost posts={posts} activeReload={reload} />;
-          })()}
-        </div>
-        <div className="container-feed-friends">
-          {id_user ? <ViewFriendsSide id_user={id_user} /> : <></>}
-        </div>
+    <div className="container-feed-main">
+      <div
+        className="search-icon-feed-main"
+        onClick={() => {
+          setViewInputSearch(!inputSearchView);
+        }}
+      >
+        <FaSearch size={20} />
       </div>
-    </>
+      {inputSearchView ? (
+        <InputSearch
+          actionClose={setViewInputSearch}
+          actionSearch={handlerSerch}
+        />
+      ) : (
+        <></>
+      )}
+      <div className="container-feed-posts">
+        {(() => {
+          if (!posts) {
+            return (
+              <div className="box_loader">
+                <span className="loader"></span>
+              </div>
+            );
+          }
+          if (posts.length === 0 && inQuery) {
+            return <p>No hay resultados para la busqueda</p>;
+          }
+
+          return <MainViewPost posts={posts} activeReload={reload} />;
+        })()}
+      </div>
+      <div className="container-feed-friends">
+        {id_user ? <ViewFriendsSide id_user={id_user} /> : <></>}
+      </div>
+    </div>
   );
 }

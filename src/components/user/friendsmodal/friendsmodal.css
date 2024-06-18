@@ -1,14 +1,11 @@
-.container_friend_list_profile {
-  background-color: rgb(255, 255, 255);
-  position: absolute;
+.container_modal_user_list {
+  background-color: #ffffff;
   border-radius: 15px;
-  left: 50%;
-  top: 50%;
   width: 24%;
-  transform: translate(-50%, -50%);
   animation: open_container_friendlist;
   animation-delay: 0;
   animation-duration: .1s;
+  height: 300px;
   overflow-y: hidden;
 }
 
@@ -42,7 +39,6 @@
 .friend-list {
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
   height: 310px;
   background-color: #ffffff;
@@ -55,15 +51,14 @@
   cursor: pointer;
 }
 
+.container_modal_user_list .loader {
+  margin-top: 60px;
+}
 
 @media (max-width: 600px) {
-  .container_friend_list_profile {
+  .container_modal_user_list {
     width: 100%;
-    top: 0;
-    bottom: 0;
-    left: 0%;
-    border-radius: 0;
-    height: 100vh;
+    height: 70vh;
   }
 
   .button_option_friend {
@@ -71,7 +66,7 @@
   }
 
   .friend-list {
-    height: 100vh;
+    height: max-content;
   }
 
 }

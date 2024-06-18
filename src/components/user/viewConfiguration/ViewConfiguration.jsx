@@ -2,45 +2,53 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../../context/userContext";
 import useUser from "../../../hooks/useUser";
-import { updateUserInfoLocal } from "../../../features/user/userSlice";
+import { updatePreferences } from "../../../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   FaRegEyeSlash,
-  FaRegBell,
+  // FaRegBell,
   FaRegHandshake,
   FaToggleOff,
   FaToggleOn,
 } from "react-icons/fa";
 import "./viewconfiguration.css";
 import { setAuth } from "../../../features/auth/authSlice";
+import { decryptDate } from "../../../helpers/encrypt";
 
 export default function ViewConfiguration() {
-  const { view_private } = useSelector((state) => state.user.userInfo);
+  const { user_preferences } = decryptDate(
+    useSelector((state) => state.user.userInfo)
+  );
+  console.log(user_preferences);
   const dispatch = useDispatch();
   const { setInfo } = useContext(UserContext);
 
-  const [stateButton, setStateButton] = useState("#89caf5");
-  const [configs, setConfigs] = useState();
+  const [profilePrivateConfig, setProfilePrivateConfig] = useState(
+    user_preferences.profileView
+  );
+  const [requestConfig, setRequestsConfig] = useState(
+    user_preferences.receive_requests
+  );
 
-  const [confi_view_private_edit, setConfPrivate] = useState();
-  const [confi_notif_edit, setConfNotifications] = useState();
-  const [confi_requests_edit, setConfRequests] = useState();
   const [box_confirm_delete_account, set_box_confirm_delete_account] =
     useState(false);
 
   const { updateUserInfo, deleteAccount } = useUser();
   const navigate = useNavigate();
 
-  const actionUpdateInfoLocal = () => {
-    //actualizo la informacion en redux
-    dispatch(updateUserInfoLocal(configs));
-  };
-
-  const handlerSendConfig = () => {
-    if (configs) {
-      updateUserInfo(setInfo, configs, "config", actionUpdateInfoLocal);
-    }
+  const handlerSendConfig = (conf) => {
+    updateUserInfo(
+      (error) => {
+        if (error) {
+          return setInfo([error.message]);
+        }
+        console.log(conf);
+        dispatch(updatePreferences(conf));
+      },
+      conf,
+      "preferences"
+    );
   };
 
   const handlerDeleteAccount = () => {
@@ -49,10 +57,7 @@ export default function ViewConfiguration() {
       navigate("/login");
     });
   };
-  console.log("renderiza");
-  useEffect(() => {
-    setConfPrivate(view_private);
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -66,38 +71,31 @@ export default function ViewConfiguration() {
 
             <span
               onClick={() => {
-                const aux = configs ?? {};
-                setConfPrivate(!confi_view_private_edit);
-                aux.view_private = !confi_view_private_edit;
-                setConfigs(aux);
-                setStateButton("#4298f5");
+                handlerSendConfig({ profileView: !profilePrivateConfig });
+                setProfilePrivateConfig(!profilePrivateConfig);
               }}
             >
-              {confi_view_private_edit ? (
+              {!profilePrivateConfig ? (
                 <FaToggleOn size={32} className="input_toggle" />
               ) : (
                 <FaToggleOff size={32} className="input_toggle" />
               )}
             </span>
           </div>
-          <div className="container_input_checkbox ">
+          {/* <div className="container_input_checkbox ">
             <FaRegBell />
             <label htmlFor="visibilite_profile " className="label_config_input">
               Notificaciones
             </label>
 
-            <span
-              onClick={() => {
-                setConfNotifications(!confi_notif_edit);
-              }}
-            >
-              {confi_notif_edit ? (
+            <span onClick={() => {}}>
+              {notificationsConfig ? (
                 <FaToggleOn size={32} className="input_toggle" />
               ) : (
                 <FaToggleOff size={32} className="input_toggle" />
               )}
             </span>
-          </div>
+          </div> */}
           <div className="container_input_checkbox ">
             <FaRegHandshake />
             <label htmlFor="visibilite_profile" className="label_config_input">
@@ -106,26 +104,16 @@ export default function ViewConfiguration() {
 
             <span
               onClick={() => {
-                setConfRequests(!confi_requests_edit);
+                handlerSendConfig({ receive_requests: !requestConfig });
+                setRequestsConfig(!requestConfig);
               }}
             >
-              {confi_requests_edit ? (
+              {!requestConfig ? (
                 <FaToggleOn size={32} className="input_toggle" />
               ) : (
                 <FaToggleOff size={32} className="input_toggle" />
               )}
             </span>
-          </div>
-        </div>
-
-        <div className="container_button">
-          {" "}
-          <div
-            className="button button_save_config"
-            style={{ backgroundColor: stateButton }}
-            onClick={handlerSendConfig}
-          >
-            Guardar cambios
           </div>
         </div>
 

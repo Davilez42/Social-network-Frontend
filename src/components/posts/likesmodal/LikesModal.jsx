@@ -20,10 +20,7 @@ export default function LikesModal({ id_post, closeView }) {
 
   return (
     <div className="container_filter">
-      <div
-        id="container-info-likes"
-        className=" container_friend_list_profile "
-      >
+      <div id="container-info-likes" className="container_modal_user_list">
         <div className="header-modal">
           <PiArrowLeftBold
             className="header-modal__icon-back-modal"

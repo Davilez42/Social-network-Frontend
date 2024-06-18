@@ -77,7 +77,7 @@ export default function ViewProfile({ mode_foreign = false }) {
         setProfileView(data.data.user.user_preferences.profileView);
         setReciveRequests(data.data.user.user_preferences.receive_requests);
         setVerified_view(data.data.user.verified);
-        setButtonDelFriend(data.data.user.myFriend);
+        setButtonDelFriend(data.data.user.friend);
         setButtonDelRequest(data.data.user.requestSent);
         setButtonRejectRequest(data.data.user.requestReceived);
 
@@ -126,6 +126,9 @@ export default function ViewProfile({ mode_foreign = false }) {
         if (err) {
           return setInfo([err.message]);
         }
+        if (!request) {
+          setCountFriends_view(countFriends_view - 1);
+        }
         setButtonAddFriend(undefined);
         setButtonDelFriend(undefined);
         setButtonDelRequest(undefined);
@@ -146,7 +149,8 @@ export default function ViewProfile({ mode_foreign = false }) {
         if (data.data.id_request) {
           setButtonDelRequest(data.data);
         } else {
-          setButtonDelFriend({ _id: data.data.id_relation });
+          setCountFriends_view(countFriends_view + 1);
+          setButtonDelFriend(data.data);
         }
 
         return setInfo([err.message]);
@@ -184,7 +188,7 @@ export default function ViewProfile({ mode_foreign = false }) {
                 <></>
               )}
               {(() => {
-                if (!reciveRequests) {
+                if (!reciveRequests && !buttonDelFriend) {
                   return <></>;
                 }
                 if (!id_user_view || id_user_view === id_user) {

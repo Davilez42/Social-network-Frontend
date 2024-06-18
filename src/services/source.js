@@ -15,9 +15,6 @@ const resource = async ({ route, body, method, formData, tkn }) => {
         },
         body: body ? JSON.stringify(body) : formData
     })
-
-
-
     return resp
 }
 

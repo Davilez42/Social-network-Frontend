@@ -2,7 +2,7 @@
     display: flex;
     width: 90%;
     flex-wrap: wrap;
-    height: 17vh;
+    max-height: min-content;
 }
 
 
@@ -29,6 +29,8 @@
     /*Estilos estándar experimentales (Principalmente Firefox)*/
     scrollbar-color: rgba(226, 226, 226, 0.5) rgba(0, 0, 0, 0);
     scrollbar-width: thin;
+    margin-left: 5%;
+    max-height: 120px;
 }
 
 
@@ -54,10 +56,11 @@
         display: flex;
         flex-wrap: wrap;
         height: min-content;
+        height: 140px;
     }
 
     .container_friends {
-        width: 100%;
+        width: 95%;
 
         flex-wrap: nowrap;
         justify-content: start;

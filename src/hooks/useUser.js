@@ -108,14 +108,13 @@ export default function useUser(usenavigate) {
             }
         },
 
-        updateUserInfo: async (data_to_update, callback, type) => {
+        updateUserInfo: async (callback, dataToUpdate, type) => {
             try {
                 const query = type ? `?data=${type}` : ''
-                const resp = await resource({ route: `/api/v1/user/${id_user}/${query}`, body: data_to_update, tkn: csrftoken, method: 'PATCH' })
+                const resp = await resource({ route: `/api/v1/user/${id_user}/${query}`, body: dataToUpdate, tkn: csrftoken, method: 'PATCH' })
                 const data = await resp.json()
                 if (!resp.ok) {
-                    callback(data.error)
-                    return
+                    return callback(data.error)
                 }
                 callback()
             } catch (e) {
@@ -158,13 +157,13 @@ export default function useUser(usenavigate) {
         restorePassword: async (callback, password, accesToken) => {
             try {
 
-                const resp = await resource({ route: `/api/v1/user/restore_password`, body: { password }, tkn: accesToken })
-                const data = await resp.json()
-                if (!resp.ok) {
-                    callback(data.error)
-                    return
+                const resp = await resource({ route: `/api/v1/user/restore_pass`, body: { password }, tkn: accesToken })
+
+                if (resp.status !== 204) {
+                    const data = await resp.json()
+                    return callback(data.error)
                 }
-                usenavigate('/login')
+                callback()
             } catch (e) {
                 callback(e)
             }

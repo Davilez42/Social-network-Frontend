@@ -2,7 +2,7 @@
     border-color: #e4e4e4;
     background-color: rgb(255, 255, 255);
     height: 354px;
-    width: 365px;
+    width: 370px;
     cursor: default;
     border-radius: 15px;
     animation: open_container_requests;
@@ -50,7 +50,9 @@
     width: 30%;
 }
 
-
+.container-requests p {
+    color: #8a8a8a;
+}
 
 @keyframes open_container_requests {
     0% {
@@ -81,18 +83,13 @@
     }
 }
 
-
-
 .button_option_request:hover {
     background-color: rgb(223, 223, 223);
 }
 
 @media (max-width: 600px) {
-    #request_container {
-        top: 0%;
-        border-radius: 0;
-        height: 100vh;
-        border: none;
+    .requests-modal {
+        height: 70vh;
     }
 
     .container_button_option_request {

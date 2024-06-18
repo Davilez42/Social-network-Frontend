@@ -7,7 +7,7 @@ function CreateNewPasswordReset() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-  const { restorePassword } = useUser(navigate);
+  const { restorePassword } = useUser();
 
   const handlePassword = () => {
     if (
@@ -15,7 +15,16 @@ function CreateNewPasswordReset() {
       confirmPassword.trim() !== "" &&
       confirmPassword === newPassword
     ) {
-      restorePassword(setMessage, newPassword, accesToken);
+      restorePassword(
+        (error) => {
+          if (error) {
+            return setMessage([error.message]);
+          }
+          navigate("/login");
+        },
+        newPassword,
+        accesToken
+      );
     } else {
       setMessage("Las contraseña no son iguales");
     }
