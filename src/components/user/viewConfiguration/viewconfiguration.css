@@ -60,25 +60,39 @@
 
 .box_confirm_deleteaccount {
     position: absolute;
-
-    flex-direction: column;
+    display: flex;
     background-color: rgb(255, 255, 255);
     border-radius: 5px;
     color: rgb(94, 94, 94);
+    font-size: 13.5px;
     left: 200px;
     right: 0;
     top: 0;
     bottom: 0;
     margin: auto auto;
     text-align: justify;
+    flex-direction: column;
+    align-items: center;
     padding: 30px 20px 0 20px;
-    width: 35%;
+    width: 30%;
     height: 25%;
 }
 
-.button_confirm_dlt_acc {
+.button_confirm_delete_account {
     width: 140px;
+    background-color: rgb(218, 218, 218);
+    height: 40px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 30px;
+}
+
+.button_confirm_delete_account:hover {
+    background-color: rgb(253, 113, 113);
+    color: white;
+    transition: all 0.1s;
 }
 
 

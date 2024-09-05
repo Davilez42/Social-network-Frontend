@@ -1,22 +1,25 @@
 /* eslint-disable no-unused-vars */
 import resource from "../services/source";
 import { useSelector } from "react-redux";
-import { decryptDate } from "../helpers/encrypt";
 
 const usePost = () => {
-    const { csrftoken, id_user } = decryptDate(useSelector(state => state.auth.userAuth))
+    const { token, userId } = useSelector(state => state.auth.userAuth)
 
     return ({
         getPosts: async (callback, optionsQuery) => {
             try {
                 let query = []
                 for (let key in optionsQuery) {
+                    if (!optionsQuery[key]) {
+                        continue
+                    }
                     query.push(`${key}=${optionsQuery[key]}`)
                 }
+                console.log(query);
                 const resp = await resource({
                     route: `/api/v1/post/${query.length >= 0 ? '?' + query.join('&') : ''}`,
                     method: 'GET',
-                    tkn: csrftoken
+                    tkn: token
                 })
                 const data = await resp.json()
                 if (!resp.ok) {
@@ -35,7 +38,7 @@ const usePost = () => {
                 for (const file of files) {
                     formData.append('media', file)
                 }
-                const resp = await resource({ route: `/api/v1/post/${id_user}`, method: 'PUT', formData, tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${userId}`, method: 'PUT', formData, tkn: token })
                 if (!resp.ok) {
                     const data = await resp.json()
                     return callback(data.error)
@@ -50,7 +53,7 @@ const usePost = () => {
         getCommentsPost: async (callback, id_post) => {
 
             try {
-                const resp = await resource({ route: `/api/v1/post/${id_post}/comments`, method: 'GET', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${id_post}/comments`, method: 'GET', tkn: token })
                 const data = await resp.json()
                 if (!resp.ok) {
                     return callback(data.error)
@@ -64,7 +67,7 @@ const usePost = () => {
         },
         getLikesPost: async (callback, id_post) => {
             try {
-                const resp = await resource({ route: `/api/v1/post/${id_post}/likes`, method: 'GET', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${id_post}/likes`, method: 'GET', tkn: token })
                 const data = await resp.json()
                 if (!resp.ok) {
                     return callback(data.error)
@@ -76,7 +79,7 @@ const usePost = () => {
         },
         createComment: async (callback, id_post, text) => {
             try {
-                const resp = await resource({ route: `/api/v1/post/${id_post}/commentby/${id_user}`, body: { text }, tkn: csrftoken, method: 'PUT' })
+                const resp = await resource({ route: `/api/v1/post/${id_post}/commentby/${userId}`, body: { text }, tkn: token, method: 'PUT' })
                 const data = await resp.json()
                 if (!resp.ok) {
                     return callback(data.error)
@@ -90,7 +93,7 @@ const usePost = () => {
         sendLike: async (callback, id_post) => {
             try {
 
-                const resp = await resource({ route: `/api/v1/post/${id_post}/likeby/${id_user}`, method: 'PUT', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${id_post}/likeby/${userId}`, method: 'PUT', tkn: token })
                 const data = await resp.json()
                 if (!resp.ok) {
                     return callback(data.error)
@@ -103,7 +106,7 @@ const usePost = () => {
         },
         reportPost: async (callback, id_post, reason, type) => {
             try {
-                const resp = await resource({ route: `/api/v1/post/${id_post}/report`, body: { code: type, reason }, method: 'POST', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${id_post}/report`, body: { code: type, reason }, method: 'POST', tkn: token })
                 if (!resp.ok) {
                     const data = await resp.json()
                     return callback(data.error)
@@ -115,7 +118,7 @@ const usePost = () => {
         },
         modifyPost: async (callback, id_post, dataUpdate) => {
             try {
-                const resp = await resource({ route: `/api/v1/post/${id_post}`, body: dataUpdate, method: 'PATCH', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${id_post}`, body: dataUpdate, method: 'PATCH', tkn: token })
                 if (!resp.ok) {
 
                     const data = await resp.json()
@@ -128,7 +131,7 @@ const usePost = () => {
         },
         deletePost: async (callback, id_post) => {
             try {
-                const resp = await resource({ route: `/api/v1/post/${id_post}`, method: 'DELETE', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/post/${id_post}`, method: 'DELETE', tkn: token })
                 if (!resp.ok) {
                     const data = await resp.json()
                     return callback(data.error)
@@ -138,8 +141,6 @@ const usePost = () => {
                 callback(e)
             }
         }
-
-
     })
 }
 export default usePost

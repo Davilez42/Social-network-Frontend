@@ -1,7 +1,6 @@
-class AuthenticationRequired extends Error {
+export default class AuthenticationRequired extends Error {
     constructor() {
-        super('Inicia sesion nuevamente')
+        super('Tu sesión ha expirado. Por favor, inicia sesión de nuevo para continuar.')
         this.stack = ''
     }
 }
-export default AuthenticationRequired

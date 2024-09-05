@@ -3,9 +3,10 @@ import { PiArrowLeftBold } from "react-icons/pi";
 import UserList from "../../user/userslist/UserList.jsx";
 import { useEffect, useState } from "react";
 import usePost from "../../../hooks/usePost";
+
 import "./likesmodal.css";
 
-export default function LikesModal({ id_post, closeView }) {
+export default function LikesModal({ postId, closeView }) {
   const [users, setUsers] = useState();
   const { getLikesPost } = usePost();
 
@@ -15,7 +16,7 @@ export default function LikesModal({ id_post, closeView }) {
         return alert(err.message);
       }
       setUsers(data.data.likes);
-    }, id_post);
+    }, postId);
   }, []);
 
   return (

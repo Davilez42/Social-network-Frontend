@@ -1,14 +1,15 @@
 .mainform {
+
     display: flex;
     width: 30%;
     padding-bottom: 30px;
+    padding-top: 30px;
     flex-direction: column;
     gap: 14px;
     height: min-content;
     border-radius: 4px;
     border: 1px solid #dadada;
     align-items: center;
-    background-color: white;
 }
 
 .disabled {
@@ -99,15 +100,17 @@ label {
 
 .info-text {
     width: 60%;
+    min-height: 24px;
     color: #f8460f;
     font-size: 15px;
     text-align: center;
 }
 
 .button {
-    background-color: #89caf5;
+    background-color: #f7f7f7;
     color: rgb(255, 255, 255);
     border: 2px solid #ededed;
+    color: #464646;
     padding: 10px 0px;
     border-radius: 4px;
     cursor: pointer;
@@ -120,13 +123,32 @@ label {
     transition: background-color 0.3s, color 0.3s;
 }
 
+.loader-auth {
+    width: 15px;
+    height: 15px;
+    border: 2px solid #4e4e4e;
+    background-color: #f1f2f600;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .logo_snapwire {
     width: 50%;
 }
 
-.button:hover {
-    background-color: #4298f5;
-}
 
 .input-field::placeholder {
     color: #a3a3a3;
@@ -149,6 +171,7 @@ label {
 
 .container-text {
     width: 60%;
+    color: #4e4e4e;
 }
 
 @media (max-width: 1250px) {

@@ -1,19 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { encryptDate, } from '../../helpers/encrypt'
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         userAuth: {
             session: false,
-            csrftoken: '',
-            id_user: ''
+            token: null,
+            userId: null
         },
 
     },
     reducers: {
         setAuth: (state, action) => {
-            const { session, csrftoken, id_user } = action.payload
-            state.userAuth = encryptDate(JSON.stringify({ session, csrftoken, id_user }))
+            state.userAuth = action.payload
         }
     }
 })

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import useUser from "../../../hooks/useUser";
@@ -10,20 +11,24 @@ export default function Register() {
   const [fullname, setFullname] = useState("");
   const usenavigate = useNavigate();
   const { registerUser } = useUser(usenavigate);
-  const [telefono, SetTelefono] = useState("");
+  const [loader, setLoader] = useState(false);
+  // const [telefono, SetTelefono] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
 
   const handleRegistro = () => {
+    setMessage("");
     if (
       contrasena.trim() !== "" &&
       fullname.trim() !== "" &&
-      telefono.trim() !== "" &&
       nombreUsuario.trim() !== "" &&
       fechaNacimiento.trim() !== "" &&
       correoElectronico.trim() !== ""
     ) {
+      setLoader(true);
+
       registerUser(
         (err, data) => {
+          setLoader(false);
           if (err) {
             if (err.code === 105) {
               return setMessage(err.message);
@@ -34,22 +39,15 @@ export default function Register() {
             if (err.type === "INCORRECT_PASSWORD_FORMAT") {
               return setMessage("la contraseña no es valida");
             }
-            if (err.type === "INCORRECT_PHONE_NUMBER_FORMAT") {
-              return setMessage("El numero de celualar no es valido");
-            }
             return setMessage(err.message);
           }
-
-          usenavigate(
-            `/confirmEmail/${data.data.id_user}/${fullname.split(" ")[0]}`
-          );
+          usenavigate(`/confirmEmail/${data.data.userId}/${nombreUsuario}`);
         },
         nombreUsuario,
         contrasena,
         fullname,
         fechaNacimiento,
-        correoElectronico,
-        telefono
+        correoElectronico
       );
     }
   };
@@ -57,31 +55,27 @@ export default function Register() {
     if (
       contrasena &&
       correoElectronico &&
-      telefono &&
       nombreUsuario &&
       fullname &&
       fechaNacimiento &&
       contrasena
     ) {
       document.getElementById("button_register").style =
-        "background-color:#1399f3;";
+        "background-color:#d4d4d4;";
     } else {
       document.getElementById("button_register").style =
-        "background-color:#76c2f5;";
+        "background-color:##ededed;";
     }
   });
 
   return (
     <>
       <div className="container-text">
-        <p className="text-frase">
-          ¡La diversión comienza aquí! Únete y sé parte de algo
-          extraordinario.🎉"
-        </p>
+        <p className="text-frase">¡La diversión comienza aquí!</p>
       </div>
 
       <div className="container-text">
-        <p className="title-form-type">Register</p>
+        <p className="title-form-type">Registro</p>
       </div>
 
       <input
@@ -94,14 +88,14 @@ export default function Register() {
         onChange={(e) => setFullname(e.target.value)}
       />
 
-      <input
+      {/*       <input
         required
         type="text"
         className="input-field"
         placeholder="Telefono *"
         value={telefono}
         onChange={(e) => SetTelefono(e.target.value)}
-      />
+      /> */}
       <div className="container-input-width-label">
         <label htmlFor="input-birthday"> Fecha nacimiento</label>
         <input
@@ -140,9 +134,9 @@ export default function Register() {
 
       <div className="info-text">{message}</div>
 
-      <button id="button_register" className="button" onClick={handleRegistro}>
-        Registrarme
-      </button>
+      <div id="button_register" className="button" onClick={handleRegistro}>
+        {loader ? <div className="loader-auth"></div> : "Registrarme"}
+      </div>
 
       <div className="box-info">
         ya tienes una cuenta ?{" "}

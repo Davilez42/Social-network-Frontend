@@ -1,88 +1,71 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext } from "react";
-
 import MainViewPost from "../../posts/mainviewpost/MainViewPost";
-import "./feedmain.css";
-import ViewFriendsSide from "../viewfriendsside/ViewFriendsSide.jsx";
+// import ViewFriendsSide from "../viewfriendsside/ViewFriendsSide.jsx";
 import usePost from "../../../hooks/usePost.js";
 import { UserContext } from "../../../context/userContext.jsx";
-import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import InputSearch from "../inputsearch/InputSearch.jsx";
 import { useSelector } from "react-redux";
-import { decryptDate } from "../../../helpers/encrypt.js";
+import "./feedmain.css";
 
 export default function FeedMain() {
-  const { id_user } = decryptDate(useSelector((state) => state.user.userInfo));
-
-  const [posts, setPosts] = useState();
-  const { setInfo, back_to_init, setBack_to_inite } = useContext(UserContext);
-  const [reload, setReload] = useState(true);
-  const [cursor, setCursor] = useState();
-  const [inQuery, setInQuery] = useState(false);
+  // const { id } = useSelector((state) => state.user.userInfo);
+  const { setInfo } = useContext(UserContext);
+  const [loadMore, setLoadMore] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [cursor, setCursor] = useState(undefined);
   const [inputSearchView, setViewInputSearch] = useState(false);
+  const [posts, setPosts] = useState([]);
 
-  const navigate = useNavigate();
-
-  const { getPosts } = usePost(navigate);
+  const { getPosts } = usePost();
 
   const getPostsHandler = (query) => {
-    let querys_requests = {};
+    console.count("GetPosts");
     if (query) {
-      setCursor(1);
-      setInQuery(true);
-      setPosts(undefined);
-      querys_requests[`query`] = query;
+      setPosts([]);
     }
-    if (cursor) {
-      querys_requests[`cursor`] = cursor;
-    }
-    if (back_to_init) {
-      querys_requests = {};
-      setPosts(undefined);
-    }
+    getPosts(
+      (err, data) => {
+        setLoader(false);
+        if (err) {
+          return setInfo([err.message]);
+        }
+        setCursor(data.data.cursor);
+        setPosts([...posts, ...data.data.posts]);
+      },
+      { cursor, query }
+    );
+  };
 
-    getPosts((err, data) => {
-      if (err) {
-        return setInfo([err.message]);
-      }
-      setReload(false);
-      setCursor(data.data.cursor);
-
-      if (query || !posts || back_to_init) {
-        return setPosts(data.data.posts);
-      }
-      if (posts?.length > 0) {
-        return setPosts([...posts, ...data.data.posts]);
-      }
-    }, querys_requests);
+  const scrollHandler = (e) => {
+    const container = e.target;
+    const scrollTop = container.scrollTop;
+    const scrollHeight = container.scrollHeight;
+    const clientHeight = container.clientHeight;
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
+      console.info("scrool event");
+      setLoadMore(true);
+      setLoader(true);
+    }
   };
 
   useEffect(() => {
-    setInQuery(false);
-
-    if (reload || back_to_init) {
+    if (posts.length === 0 || loadMore) {
+      setLoadMore(false);
       getPostsHandler();
-      if (back_to_init) setBack_to_inite(false);
     }
 
     document
       .querySelector(".container-feed-posts")
-      .addEventListener("scroll", (event) => {
-        const percentageScroll =
-          (event.target.scrollTop /
-            (event.target.scrollHeight - event.target.clientHeight)) *
-          100;
-        //console.log(parseInt(percentageScroll));
-        if (parseInt(percentageScroll) === 100) {
-          setReload(true);
-        }
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload, back_to_init]);
+      ?.addEventListener("scroll", scrollHandler);
 
-  const handlerSerch = (query) => {
-    getPostsHandler(query);
-  };
+    return () => {
+      document
+        .querySelector(".container-feed-posts")
+        ?.removeEventListener("scroll", scrollHandler);
+    };
+  }, [loadMore]);
 
   return (
     <div className="container-feed-main">
@@ -97,30 +80,21 @@ export default function FeedMain() {
       {inputSearchView ? (
         <InputSearch
           actionClose={setViewInputSearch}
-          actionSearch={handlerSerch}
+          actionSearch={getPostsHandler}
         />
       ) : (
         <></>
       )}
       <div className="container-feed-posts">
-        {(() => {
-          if (!posts) {
-            return (
-              <div className="box_loader">
-                <span className="loader"></span>
-              </div>
-            );
-          }
-          if (posts.length === 0 && inQuery) {
-            return <p>No hay resultados para la busqueda</p>;
-          }
-
-          return <MainViewPost posts={posts} activeReload={reload} />;
-        })()}
+        {posts.length > 0 ? (
+          <MainViewPost posts={posts} activeReload={loader} />
+        ) : (
+          <div className="loader"></div>
+        )}
       </div>
-      <div className="container-feed-friends">
-        {id_user ? <ViewFriendsSide id_user={id_user} /> : <></>}
-      </div>
+      {/*  <div className="container-feed-friends">
+        {id ? <ViewFriendsSide userId={id} /> : <></>}
+      </div> */}
     </div>
   );
 }

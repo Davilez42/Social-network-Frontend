@@ -1,24 +1,36 @@
 /* eslint-disable no-unused-vars */
+import AuthenticationRequired from "../exceptions/AuthenticationRequired";
 import resource from "../services/source";
-import PermissionInvalid from "../exceptions/PermissionInvalid";
-import AuthenticationRequired from "../exceptions/authenticationRequired";
-import { decryptDate } from "../helpers/encrypt";
 import { useSelector } from "react-redux";
-export default function useUser(usenavigate) {
-    const userAuth = useSelector((state) => state.auth.userAuth);
-    const { csrftoken, id_user } =
-        typeof userAuth === "string" ? decryptDate(userAuth) : userAuth;
 
-    const logout = () => {
-        usenavigate('/login')
-    }
+import logout from '../helpers/logout'
+
+export default function useUser() {
+    const userAuth = useSelector((state) => state.auth.userAuth);
+    const { token, userId } = userAuth;
+
+
     return {
-        registerUser: async (callback, username, password, fullname, date_born, email, phone_number) => {
+        userLogin: async (user, password, callback) => {
+            try {
+                const resp = await resource({ route: `/api/v1/auth`, body: { user, password } })
+                const data = await resp.json()
+                if (!resp.ok) {
+                    return callback(data?.error)
+                }
+                callback(undefined, data)
+            } catch (e) {
+                callback(e)
+            }
+        },
+        registerUser: async (callback, username, password, fullname, dateBorn, email) => {
             try {
                 const resp = await resource({
-                    route: '/api/v1/auth/signup', body: {
-                        username, password, fullname, date_born, email, phone_number
-                    }
+                    route: '/api/v1/user',
+                    body: {
+                        username, password, fullname, dateBorn, email,
+                    },
+                    method: 'POST'
                 })
                 const data = await resp.json()
                 if (!resp.ok) {
@@ -30,10 +42,12 @@ export default function useUser(usenavigate) {
                 callback(e)
             }
         },
-        confirmVerifyCode: async (callback, id_user, code_verify) => {
+        confirmVerifyCode: async (callback, userId, code) => {
             try {
-                const resp = await resource({ route: `/api/v1/auth/confirmEmail/${id_user}`, body: { entered_code: code_verify } })
+                console.log(code);
+                const resp = await resource({ route: `/api/v1/auth/${userId}/code/confirm`, body: { code } })
                 const data = await resp.json()
+                console.log(data);
                 if (!resp.ok) {
                     return callback(data.error)
                 }
@@ -44,9 +58,9 @@ export default function useUser(usenavigate) {
 
         }
         ,
-        getInfoUser: async (id_user, callback) => {
+        getInfoUser: async (userId, callback) => {
             try {
-                const resp = await resource({ route: `/api/v1/user/${id_user}`, tkn: csrftoken, method: 'GET' })
+                const resp = await resource({ route: `/api/v1/user/${userId}`, tkn: token, method: 'GET' })
                 const data = await resp.json()
 
                 if (!resp.ok) {
@@ -54,20 +68,7 @@ export default function useUser(usenavigate) {
                 }
                 callback(undefined, data)
             } catch (e) {
-                if (e instanceof AuthenticationRequired || e instanceof PermissionInvalid) return logout()
-                callback(e)
-            }
-        },
-        userLogin: async (user, password, callback) => {
-            try {
-                const resp = await resource({ route: `/api/v1/auth`, body: { user, password } })
-                const data = await resp.json()
-
-                if (!resp.ok) {
-                    return callback(data.error)
-                }
-                callback(undefined, data)
-            } catch (e) {
+                if (e instanceof AuthenticationRequired) logout()
                 callback(e)
             }
         }, userLoginWithGoogle: async (callback, credentials,) => {
@@ -84,7 +85,7 @@ export default function useUser(usenavigate) {
         },
         sendEmail: async (callback, user, type) => {
             try {
-                const resp = await resource({ route: `/api/v1/email/sendEmail?type=${type}`, body: { user } })
+                const resp = await resource({ route: `/api/v1/auth/${user}/email/${type}` })
 
                 if (resp.status !== 204) {
                     const data = await resp.json()
@@ -95,69 +96,68 @@ export default function useUser(usenavigate) {
                 callback(e)
             }
         },
-        sendRequestFriend: async (callback, to_user) => {
+        sendRequest: async (callback, toUserId) => {
             try {
-                const resp = await resource({ route: `/api/v1/user/${id_user}/sendRequest/${to_user}`, tkn: csrftoken, method: 'POST' })
+                const resp = await resource({ route: `/api/v1/user/${userId}/request/${toUserId}`, tkn: token, method: 'POST' })
                 const data = await resp.json()
                 if (!resp.ok) {
                     callback(data.error)
                 }
                 callback(undefined, data)
             } catch (e) {
+                if (e instanceof AuthenticationRequired) logout()
                 callback(e)
             }
         },
 
-        updateUserInfo: async (callback, dataToUpdate, type) => {
-            try {
-                const query = type ? `?data=${type}` : ''
-                const resp = await resource({ route: `/api/v1/user/${id_user}/${query}`, body: dataToUpdate, tkn: csrftoken, method: 'PATCH' })
-                const data = await resp.json()
-                if (!resp.ok) {
-                    return callback(data.error)
+        updateUserInfo: async (callback, dataToUpdate) => {
+            let formData = undefined
+            let body = undefined
+
+            if (dataToUpdate.avatarFile) {
+                formData = new FormData()
+                const keys = Object.keys(dataToUpdate)
+                for (let i = 0; i < keys.length; i++) {
+                    formData.append(keys[i], dataToUpdate[keys[i]])
                 }
-                callback()
-            } catch (e) {
-                callback(e)
+            } else {
+                body = dataToUpdate
             }
-        },
-        updatePassword: async (old_password, new_password, callback) => {
+
             try {
-                console.log(old_password, new_password);
+                const resp = await resource({ route: `/api/v1/user/${userId}`, formData, body, tkn: token, method: 'PATCH' })
 
-                const resp = await resource({ route: `/api/v1/user/${id_user}/password`, tkn: csrftoken, body: { old_password, new_password } })
-                const data = await resp.json()
-                if (!resp.ok) {
-                    return callback(data.error)
-
-                }
-                callback()
-
-            } catch (e) {
-                callback(e)
-            }
-        },
-        updateAvatarUser: async (file, callback) => {
-            try {
-                const formData = new FormData()
-                formData.append('avatar', file)
-
-                const resp = await resource({ route: `/api/v1/user/${id_user}/avatar`, tkn: csrftoken, method: 'PATCH', formData })
                 if (resp.status !== 204) {
                     const data = await resp.json()
-
-                    callback(data.error.message)
-                    return
+                    return callback(data.error)
                 }
                 callback()
             } catch (e) {
+                if (e instanceof AuthenticationRequired) logout()
                 callback(e)
             }
         },
+        updatePassword: async (oldPassword, newPassword, callback) => {
+            try {
+                const resp = await resource({ route: `/api/v1/auth/${userId}/password`, method: 'PATCH', tkn: token, body: { newPassword, oldPassword } })
+
+
+                if (resp.status !== 204) {
+                    const data = await resp.json()
+                    return callback(data.error)
+                }
+                callback()
+
+            } catch (e) {
+                if (e instanceof AuthenticationRequired) logout()
+                callback(e)
+            }
+        },
+
         restorePassword: async (callback, password, accesToken) => {
             try {
 
-                const resp = await resource({ route: `/api/v1/user/restore_pass`, body: { password }, tkn: accesToken })
+                const resp = await resource({ route: `/api/v1/auth/${accesToken}/restore/password`, body: { password } })
 
                 if (resp.status !== 204) {
                     const data = await resp.json()
@@ -168,10 +168,10 @@ export default function useUser(usenavigate) {
                 callback(e)
             }
         },
-        deleteRelation: async (callback, id_relation, request) => {
+        deleteRelation: async (callback, id, request) => {
             try {
                 const query = request ? `?type=request` : ''
-                const resp = await resource({ route: `/api/v1/user/${id_user}/relation/${id_relation}${query}`, tkn: csrftoken, method: 'DELETE' })
+                const resp = await resource({ route: `/api/v1/user/${userId}/relation/${id}${query}`, tkn: token, method: 'DELETE' })
 
                 if (resp.status !== 204) {
                     const data = await resp.json()
@@ -179,45 +179,49 @@ export default function useUser(usenavigate) {
                 }
                 callback()
             } catch (e) {
+                if (e instanceof AuthenticationRequired) logout()
                 callback(e)
             }
         },
 
         deleteAccount: async (callback) => {
             try {
-                const resp = await resource({ route: '/api/v1/user/deleteAccount', method: 'DELETE', tkn: csrftoken })
-                const data = await resp.json()
-                if (!resp.ok) {
+                const resp = await resource({ route: `/api/v1/user/${userId}`, method: 'DELETE', tkn: token })
 
+                if (resp.status !== 204) {
+                    const data = await resp.json()
                     return callback(data.error)
-                } callback()
-
+                }
+                callback()
+                logout()
             } catch (e) {
+                if (e instanceof AuthenticationRequired) logout()
                 callback(e)
-
             }
         }
-        , getFriends: async (callback, id_user) => {
+        , getFriends: async (callback, userId) => {
             try {
-                const resp = await resource({ route: `/api/v1/user/${id_user}/friends`, method: 'GET', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/user/${userId}/friends`, method: 'GET', tkn: token })
                 const data = await resp.json()
                 if (!resp.ok) {
                     return callback(data.error)
                 }
                 callback(undefined, data)
             } catch (e) {
+                if (e instanceof AuthenticationRequired) logout()
                 callback(e)
             }
         },
         getRequests: async (callback, id_user) => {
             try {
-                const resp = await resource({ route: `/api/v1/user/${id_user}/requests`, method: 'GET', tkn: csrftoken })
+                const resp = await resource({ route: `/api/v1/user/${id_user}/requests/received`, method: 'GET', tkn: token })
                 const data = await resp.json()
                 if (!resp.ok) {
                     return callback(data.error)
                 }
                 callback(undefined, data)
             } catch (e) {
+                if (e instanceof AuthenticationRequired) logout()
                 callback(e)
             }
         },
@@ -225,10 +229,10 @@ export default function useUser(usenavigate) {
         logout: async () => {
             try {
                 const resp = await resource({ route: `/api/v1/auth/logout`, method: 'DELETE' })
-                const data = await resp.json()
-                if (!resp.ok) {
-                    console.log(data);
-                    return
+
+                if (resp.status !== 204) {
+                    const data = await resp.json()
+                    alert(data.error)
                 }
             } catch (e) {
                 console.log(e);

@@ -5,7 +5,6 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { decryptDate } from "../../../helpers/encrypt";
 import usePost from "../../../hooks/usePost";
 import { UserContext } from "../../../context/userContext";
 import ReportModal from "./ReportModal";
@@ -14,7 +13,7 @@ import PostPreviewView from "../postpreview/PostPreviewView";
 export default function OptionsPostModal({ post }) {
   const { deletePost } = usePost();
   const { setInfo } = useContext(UserContext);
-  const { id_user } = decryptDate(useSelector((state) => state.user.userInfo));
+  const { id } = useSelector((state) => state.user.userInfo);
   const [optionsView, setOptionsView] = useState(false);
   const [reportModal, setReportModal] = useState(false);
   const [posteditview, setPosteditview] = useState(false);
@@ -67,17 +66,8 @@ export default function OptionsPostModal({ post }) {
                 Reportar
               </div>
 
-              {post.author._id === id_user || post.author === id_user ? (
+              {post.authorId === id ? (
                 <>
-                  {/*          <div
-                    className="item_option_post"
-                    onClick={() => {
-                      handlerArchivePost();
-                    }}
-                  >
-                    Archivar
-                  </div> */}
-
                   <div
                     className="item_option_post"
                     onClick={() => {

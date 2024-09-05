@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
 import "./commentbutton.css";
 import { useEffect, useState } from "react";
-import { GoComment } from "react-icons/go";
 import CommentsModal from "../commentsmodal/CommentsModal";
-// eslint-disable-next-line react/prop-types
+
 export default function CommentButton({
-  id_post,
+  postId,
   count_comments,
   comments_disabled,
 }) {
@@ -15,23 +14,8 @@ export default function CommentButton({
   useEffect(() => {});
 
   return (
-    <>
-      <GoComment
-        size={22}
-        className="cursor-pointer"
-        onClick={() => {
-          setCommentsModal(true);
-        }}
-      />
-      <span
-        className="counter cursor-pointer"
-        onClick={() => {
-          setCommentsModal(true);
-        }}
-      >
-        {countComments}
-      </span>
-
+    <div className="text-option">
+      opinar
       {commentsModal ? (
         <CommentsModal
           addCountComments={() => {
@@ -41,11 +25,11 @@ export default function CommentButton({
             setCommentsModal(false);
           }}
           comments_disabled={comments_disabled}
-          id_post={id_post}
+          postId={postId}
         />
       ) : (
         <></>
       )}
-    </>
+    </div>
   );
 }

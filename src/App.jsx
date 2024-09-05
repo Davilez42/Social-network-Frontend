@@ -1,22 +1,21 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Profile from "./pages/Profile";
 import { CookiesProvider } from "react-cookie";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import Profile from "./pages/Profile";
 import Register from "./components/auth/register/Register";
 import Login from "./components/auth/login/Login";
 import Forms from "./components/auth/Forms";
 import ConfirmVerifiedCode from "./components/auth/confirmverifiedcode/ConfirmVerifiedCode";
-import EditFormProfile from "./components/user/EditFormProfile/EditFormProfile";
+import EditFormProfile from "./components/user/editFormProfile/EditFormProfile";
 import ProtectedRoute from "./components/utils/ProtectedRoute";
 import RestorePassword from "./components/auth/restorePassword/RestorePassword";
 import CreateNewPasswordReset from "./components/auth/createNewPasswordReset/CreateNewPasswordReset";
-import Help from "./pages/Help";
 import Home from "./pages/Home";
 import FeedMain from "./components/feed/viewMain/FeedMain";
 import ViewProfile from "./components/user/ViewProfile/ViewProfile";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import ViewConfiguration from "./components/user/viewConfiguration/ViewConfiguration";
 import Index from "./pages/Index";
-import Center from "./components/help/Center";
+
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -44,7 +43,7 @@ const routes = createBrowserRouter([
             element: <RestorePassword />,
           },
           {
-            path: "/createNewPassword/:accesToken",
+            path: "/newpass/:accesToken",
             element: <CreateNewPasswordReset />,
           },
         ],
@@ -76,7 +75,7 @@ const routes = createBrowserRouter([
                 element: <ViewProfile />,
               },
               {
-                path: "view/:id_user_view",
+                path: "view/:userIdView",
                 element: <ViewProfile mode_foreign={true} />,
                 props: true,
               },
@@ -87,11 +86,6 @@ const routes = createBrowserRouter([
             ],
           },
         ],
-      },
-      {
-        path: "/help",
-        element: <Help />,
-        children: [{ path: "center", element: <Center /> }],
       },
     ],
   },

@@ -5,35 +5,31 @@ import { UserContext } from "../../../context/userContext";
 import useUser from "../../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
 import { PiArrowLeftBold } from "react-icons/pi";
-import { decryptDate } from "../../../helpers/encrypt";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserInfoLocal } from "../../../features/user/userSlice";
 
 export default function EditFormProfile() {
   const { username, bio, avatar, dateBorn, fullname, email, phoneNumber } =
-    decryptDate(useSelector((state) => state.user.userInfo));
-  const dispatch = useDispatch();
-  const [username_edit, setUsername_edit] = useState("");
-  const [user_bio_edit, setUser_bio_edit] = useState("");
-  const [url_avatar_edit, setUrl_avatar_edit] = useState("");
-  const [fullname_edit, setFullname_edit] = useState("");
-  const [date_born_edit, setDate_born_edit] = useState("");
-  const [phone_number_edit, setPhone_number_edit] = useState("");
-  const [email_edit, setEmail_edit] = useState("");
+    useSelector((state) => state.user.userInfo);
 
+  const dispatch = useDispatch();
   const { setInfo } = useContext(UserContext);
+  const [usernameEditView, setUsername_edit] = useState("");
+  const [bioEditView, setUser_bio_edit] = useState("");
+  const [avatarEditView, setUrl_avatar_edit] = useState("");
+  const [fullnameEditView, setFullname_edit] = useState("");
+  const [dateBornEditView, setDate_born_edit] = useState("");
+  const [phoneNumberEditView, setPhone_number_edit] = useState("");
+  const [emailEditView, setEmail_edit] = useState("");
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  const [stateUpdateInfo, setStateUpdateInfo] = useState("gray");
-  const [stateUpdatePassword, setStateUpdatePassword] = useState("gray");
-
   const [objectParams, setParams] = useState({});
-  const [avatar_, setAvatar] = useState({});
+
   const usenavigate = useNavigate();
 
-  const { updateUserInfo, updatePassword, updateAvatarUser } = useUser();
+  const { updateUserInfo, updatePassword } = useUser();
 
   const handlerSendData = () => {
     if (Object.keys(objectParams).length !== 0) {
@@ -41,8 +37,12 @@ export default function EditFormProfile() {
         if (err) {
           return setInfo([err.message]);
         }
-        setInfo(["Se actualizado tu informacion"]);
+        setInfo(["Tu perfil ha sido actualizado."]);
+        delete objectParams.avatarFile;
+        delete objectParams.avatar;
+        console.log(objectParams);
         dispatch(updateUserInfoLocal(objectParams));
+        setParams({});
       }, objectParams);
     }
   };
@@ -53,20 +53,7 @@ export default function EditFormProfile() {
         if (err) {
           return setInfo([err.message]);
         }
-        setInfo(["Tu contraseña ha sido actualizada"]);
-      });
-    }
-  };
-
-  const handlerUpdateAvatarUser = () => {
-    if (avatar_ instanceof File) {
-      updateAvatarUser(avatar_, (err) => {
-        if (err) {
-          return setInfo([err.message]);
-        }
-        avatar.url = url_avatar_edit;
-        dispatch(updateUserInfoLocal({ avatar }));
-        setInfo(["Avatar cambiado"]);
+        setInfo(["Tu contraseña ha sido actualizada."]);
       });
     }
   };
@@ -98,58 +85,65 @@ export default function EditFormProfile() {
             <p>Editar perfil</p>
           </div>
         </div>
-        <div className="container-avatar">
-          <div className="container-image">
-            <img
-              id="avatar_user"
-              className="img-avatar loading"
-              loading="lazy"
-              src={url_avatar_edit}
-              alt=""
-            />
-          </div>
-          <div className="container_inputs_file">
-            <label className="label_input_file" htmlFor="input_file">
-              Selecciona un foto
-            </label>
-            <input
-              id="input_file"
-              type="file"
-              className="input-field input-file"
-              onChange={(event) => {
-                const file = event.target.files[0];
-                const url = URL.createObjectURL(file);
-                document.getElementById("avatar_user").src =
-                  URL.createObjectURL(file);
-                setUrl_avatar_edit(url);
-
-                setAvatar(file);
-              }}
-            />
-            <p onClick={handlerUpdateAvatarUser} className=" button_send_file">
-              Cambiar imagen
-            </p>
-          </div>
-        </div>
 
         <div className="forms">
+          <div className="container-avatar">
+            <div className="container-image">
+              <img
+                id="avatar_user"
+                className="img-avatar loading"
+                loading="lazy"
+                src={avatarEditView}
+                alt=""
+              />
+            </div>
+            <div className="container_inputs_file">
+              <label className="button-edit-profile" htmlFor="input_file">
+                Subir
+              </label>
+              <div
+                onClick={() => {
+                  setParams({ avatar: "delete" });
+                  handlerSendData();
+                }}
+                className=" delete-avatar"
+              >
+                Eliminar
+              </div>
+              <input
+                id="input_file"
+                type="file"
+                className="input-field input-file"
+                onChange={(event) => {
+                  const file = event.target.files[0];
+                  const aux = objectParams;
+                  aux.avatarFile = file;
+                  setParams(aux);
+                  const url = URL.createObjectURL(file);
+                  document.getElementById("avatar_user").src =
+                    URL.createObjectURL(file);
+                  setUrl_avatar_edit(url);
+                }}
+              />
+            </div>
+          </div>
+
           <div className="container-bio">
             <div className="container-input-width-label">
               <label htmlFor="input_bio">Biografia</label>
               <textarea
                 id="input_bio"
-                value={user_bio_edit}
+                value={bioEditView}
                 className="input-field"
                 placeholder="biografia"
                 onChange={(event) => {
-                  setStateUpdateInfo("#4298f5");
                   setUser_bio_edit(event.target.value);
                   const aux = objectParams;
                   aux.bio = event.target.value;
                   setParams(aux);
                 }}
               >
-                {user_bio_edit}
+                {bioEditView}
               </textarea>
             </div>
           </div>
@@ -160,11 +154,10 @@ export default function EditFormProfile() {
               <input
                 id="input_names"
                 type="text"
-                value={fullname_edit}
+                value={fullnameEditView}
                 className="input-field"
                 placeholder="Nombre completo"
                 onChange={(event) => {
-                  setStateUpdateInfo("#4298f5");
                   setFullname_edit(event.target.value);
                   const aux = objectParams;
                   aux.fullname = event.target.value;
@@ -177,14 +170,13 @@ export default function EditFormProfile() {
               <input
                 id="input_phone_number"
                 type="text"
-                value={phone_number_edit}
+                value={phoneNumberEditView}
                 className="input-field"
                 placeholder="Telefono"
                 onChange={(event) => {
-                  setStateUpdateInfo("#4298f5");
                   setPhone_number_edit(event.target.value);
                   const aux = objectParams;
-                  aux.phone_number = event.target.value;
+                  aux.phoneNumber = event.target.value;
                   setParams(aux);
                 }}
               />
@@ -193,14 +185,13 @@ export default function EditFormProfile() {
               <label htmlFor="input-birthday"> Fecha nacimiento</label>
               <input
                 id="input-birthday"
-                value={date_born_edit}
+                value={dateBornEditView}
                 type="date"
                 className="input-field"
                 onChange={(event) => {
-                  setStateUpdateInfo("#4298f5");
                   setDate_born_edit(event.target.value);
                   const aux = objectParams;
-                  aux.date_born = event.target.value;
+                  aux.dateBorn = event.target.value;
                   setParams(aux);
                 }}
               />
@@ -212,10 +203,9 @@ export default function EditFormProfile() {
                 id="input_username"
                 type="nickname"
                 className="input-field"
-                value={username_edit}
+                value={usernameEditView}
                 placeholder="Username"
                 onChange={(event) => {
-                  setStateUpdateInfo("#4298f5");
                   setUsername_edit(event.target.value);
                   const aux = objectParams;
                   aux.username = event.target.value;
@@ -230,17 +220,13 @@ export default function EditFormProfile() {
                 type="email"
                 className="input-field"
                 disabled
-                value={email_edit}
+                value={emailEditView}
                 placeholder="Correo electrónico"
               />
             </div>
-            <button
-              className="button"
-              style={{ background: stateUpdateInfo }}
-              onClick={handlerSendData}
-            >
-              Guardar cambios
-            </button>
+            <div className="button-edit-profile" onClick={handlerSendData}>
+              Actualizar perfil
+            </div>
           </div>
 
           <div className="container-edit-password">
@@ -249,28 +235,27 @@ export default function EditFormProfile() {
             <input
               type="password"
               className="input-field"
+              onChange={(event) => {
+                setOldPassword(event.target.value);
+              }}
+              placeholder="Contraseña actual"
+            />
+            <input
+              type="password"
+              className="input-field"
               placeholder="Nueva contraseña"
               onChange={(event) => {
                 setNewPassword(event.target.value);
               }}
             />
-            <input
-              type="password"
-              className="input-field"
-              onChange={(event) => {
-                setStateUpdatePassword("#4298f5");
-                setOldPassword(event.target.value);
-              }}
-              placeholder="Contraseña actual"
-            />
-            <button
+
+            <div
               id="button_change_password"
-              style={{ background: stateUpdatePassword }}
-              className="button"
+              className="button-edit-profile"
               onClick={handlerSendChangedPassword}
             >
-              Actualizar
-            </button>
+              Cambiar contraseña
+            </div>
           </div>
         </div>
       </div>

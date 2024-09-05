@@ -6,36 +6,36 @@ import { UserContext } from "../../../context/userContext";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const RequestModal = ({ closeView, id_user }) => {
+const RequestModal = ({ closeView, userId }) => {
   const [requests, setRequests] = useState();
   const { setInfo } = useContext(UserContext);
-  const { sendRequestFriend, deleteRelation, getRequests } = useUser();
+  const { sendRequest, deleteRelation, getRequests } = useUser();
   const navigate = useNavigate();
 
-  const handlerAcceptRequest = (id_user) => {
-    sendRequestFriend((err) => {
+  const handlerAcceptRequest = (userId) => {
+    sendRequest((err) => {
       if (err) {
-        return setInfo([err]);
+        return setInfo([err.message]);
       }
-      setRequests(requests.filter((r) => r._id !== id_user));
-    }, id_user);
+      setRequests(requests.filter((r) => r.id !== userId));
+    }, userId);
   };
 
-  const handlerDeleteRequest = (id_request) => {
+  const handlerDeleteRequest = (requestId) => {
     deleteRelation(
       (err) => {
         if (err) {
-          return setInfo([err]);
+          return setInfo([err.message]);
         }
-        setRequests(requests.filter((r) => r._id !== id_request));
+        setRequests(requests.filter((r) => r.requestId !== requestId));
       },
-      id_request,
+      requestId,
       true
     );
   };
 
-  const actionSelectFriend = (id_user) => {
-    navigate(`/home/profile/view/${id_user}`);
+  const actionSelectFriend = (requestingUserId) => {
+    navigate(`/home/profile/view/${requestingUserId}`);
   };
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const RequestModal = ({ closeView, id_user }) => {
         return setInfo([err.message]);
       }
       setRequests(data.data.requests);
-    }, id_user);
+    }, userId);
   }, []);
 
   return (
@@ -67,29 +67,29 @@ const RequestModal = ({ closeView, id_user }) => {
                 if (requests.length === 0) {
                   return <p>No tienes solicitudes</p>;
                 }
-                return requests.map((request_user, index) => (
+                return requests.map((requestingUser, index) => (
                   <div className="card_request" key={index}>
                     <div
                       className="data-user-request"
                       onClick={() => {
-                        actionSelectFriend(request_user._id);
+                        actionSelectFriend(requestingUser.id);
                         closeView();
                       }}
                     >
                       <img
                         className="avatar"
-                        src={request_user.avatar.url}
+                        src={requestingUser.avatar}
                         alt=""
                       />
                       <span className="card_name_user">
-                        {request_user.username}
+                        {requestingUser.username}
                       </span>
                     </div>
 
                     <div className="container_button_option_request">
                       <div
                         onClick={() => {
-                          handlerAcceptRequest(request_user._id);
+                          handlerAcceptRequest(requestingUser.id);
                         }}
                         className="button_option_user button_option_request"
                       >
@@ -97,7 +97,7 @@ const RequestModal = ({ closeView, id_user }) => {
                       </div>
                       <div
                         onClick={() => {
-                          handlerDeleteRequest(request_user._id);
+                          handlerDeleteRequest(requestingUser.requestId);
                         }}
                         className="button_option_user button_option_request"
                       >

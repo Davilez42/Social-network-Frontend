@@ -2,59 +2,48 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../../context/userContext";
 import useUser from "../../../hooks/useUser";
-import { updatePreferences } from "../../../features/user/userSlice";
+import { updateUserInfoLocal } from "../../../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import {
   FaRegEyeSlash,
-  // FaRegBell,
   FaRegHandshake,
   FaToggleOff,
   FaToggleOn,
 } from "react-icons/fa";
 import "./viewconfiguration.css";
 import { setAuth } from "../../../features/auth/authSlice";
-import { decryptDate } from "../../../helpers/encrypt";
 
 export default function ViewConfiguration() {
-  const { user_preferences } = decryptDate(
-    useSelector((state) => state.user.userInfo)
+  const { profileView, receiveRequests } = useSelector(
+    (state) => state.user.userInfo
   );
-  console.log(user_preferences);
   const dispatch = useDispatch();
   const { setInfo } = useContext(UserContext);
 
-  const [profilePrivateConfig, setProfilePrivateConfig] = useState(
-    user_preferences.profileView
-  );
-  const [requestConfig, setRequestsConfig] = useState(
-    user_preferences.receive_requests
-  );
+  const [profilePrivateConfig, setProfilePrivateConfig] = useState(profileView);
+  const [requestConfig, setRequestsConfig] = useState(receiveRequests);
 
   const [box_confirm_delete_account, set_box_confirm_delete_account] =
     useState(false);
 
   const { updateUserInfo, deleteAccount } = useUser();
-  const navigate = useNavigate();
 
   const handlerSendConfig = (conf) => {
-    updateUserInfo(
-      (error) => {
-        if (error) {
-          return setInfo([error.message]);
-        }
-        console.log(conf);
-        dispatch(updatePreferences(conf));
-      },
-      conf,
-      "preferences"
-    );
+    updateUserInfo((error) => {
+      if (error) {
+        return setInfo([error.message]);
+      }
+      dispatch(updateUserInfoLocal(conf));
+    }, conf);
   };
 
   const handlerDeleteAccount = () => {
-    deleteAccount(setInfo, () => {
-      dispatch(setAuth({ session: false, csrftoken: " " }));
-      navigate("/login");
+    deleteAccount((err) => {
+      if (err) {
+        return setInfo([err.message]);
+      }
+      dispatch(setAuth({ session: false, token: null }));
     });
   };
   useEffect(() => {}, []);
@@ -82,20 +71,7 @@ export default function ViewConfiguration() {
               )}
             </span>
           </div>
-          {/* <div className="container_input_checkbox ">
-            <FaRegBell />
-            <label htmlFor="visibilite_profile " className="label_config_input">
-              Notificaciones
-            </label>
 
-            <span onClick={() => {}}>
-              {notificationsConfig ? (
-                <FaToggleOn size={32} className="input_toggle" />
-              ) : (
-                <FaToggleOff size={32} className="input_toggle" />
-              )}
-            </span>
-          </div> */}
           <div className="container_input_checkbox ">
             <FaRegHandshake />
             <label htmlFor="visibilite_profile" className="label_config_input">
@@ -104,7 +80,7 @@ export default function ViewConfiguration() {
 
             <span
               onClick={() => {
-                handlerSendConfig({ receive_requests: !requestConfig });
+                handlerSendConfig({ receiveRequests: !requestConfig });
                 setRequestsConfig(!requestConfig);
               }}
             >
@@ -127,19 +103,20 @@ export default function ViewConfiguration() {
             if (box_confirm_delete_account) {
               return (
                 <div className="container_filter">
-                  <div className="box_confirm_deleteaccount ">
+                  <div className="box_confirm_deleteaccount">
                     <div className="text_inf">
-                      Estas seguro que deseas eliminar tu cuenta ? tus datos
-                      personales y fotos seran eliminados en 30 dias, durante
-                      este tiempo tu cuenta permanecera desabilitdad. Si deseas
-                      volver a activar tu cuenta debes de volver a iniciar
-                      sesion.
+                      Proceso de Eliminación de Cuenta: Estás a punto de
+                      eliminar tu cuenta. En 30 días, tus datos personales y
+                      fotos serán eliminados. Tu cuenta estará desactivada
+                      durante este tiempo. Si cambias de opinión y quieres
+                      reactivarla, solo tendrás que iniciar sesión antes de que
+                      se complete la eliminación.
                     </div>
                     <div
-                      className="button button_confirm_dlt_acc"
+                      className="button_confirm_delete_account"
                       onClick={handlerDeleteAccount}
                     >
-                      continuar
+                      Eliminar
                     </div>
                   </div>
                 </div>

@@ -15,9 +15,10 @@ export default function CommentsPost({
   comments_disabled,
   onCreateComment,
 }) {
-  const { _id, username, avatar, verified } = decryptDate(
-    useSelector((state) => state.user.userInfo)
+  const { id, username, avatar, verified } = useSelector(
+    (state) => state.user.userInfo
   );
+
   const [comments, setComments] = useState();
   const { setInfo } = useContext(UserContext);
   const [text, setText] = useState("");
@@ -35,7 +36,7 @@ export default function CommentsPost({
             return setInfo([err.message]);
           }
           const comment_created = data.data;
-          comment_created.user = { avatar, _id, username, verified };
+          comment_created.user = { avatar, id, username, verified };
           setComments([comment_created, ...comments]);
         },
         id_post,

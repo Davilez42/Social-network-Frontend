@@ -9,14 +9,18 @@ function Login() {
   const [email, setEmail] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [message, setMessage] = useState("");
+  const [loader, setLoader] = useState(false);
+  const { userLogin, userLoginWithGoogle } = useUser();
   const usenavigate = useNavigate();
-  const { userLogin, userLoginWithGoogle } = useUser(usenavigate);
   const dispatch = useDispatch();
 
   const handlerLogin = () => {
     setMessage("");
+
     if (email.trim() !== "" && contrasena.trim() !== "") {
+      setLoader(true);
       userLogin(email, contrasena, (error, data) => {
+        setLoader(false);
         if (error) {
           if (error.code === 103) {
             return setMessage(`El usuario no existe`);
@@ -25,9 +29,14 @@ function Login() {
             return setMessage(`Contraseña incorrecta`);
           }
         }
-        if (data?.state === "PENDING_TO_VERIFIED") {
+        if (!data) {
+          return setMessage(
+            `Ups estamos teniendo problemas en estos momentos, 😕 Porfavor intenta en unos minutos`
+          );
+        }
+        if (data?.pendingToVerified) {
           return usenavigate(
-            `/confirmEmail/${data.data.id_user}/${
+            `/confirmEmail/${data.data.userId}/${
               data.data.fullname.split(" ")[0]
             }`
           );
@@ -36,11 +45,10 @@ function Login() {
         dispatch(
           setAuth({
             session: true,
-            csrftoken: data.data.csrftoken,
-            id_user: data.data.id_user,
+            token: data.data.token,
+            userId: data.data.userId,
           })
         );
-        window.localStorage.setItem("id_user", data.data.id_user);
         usenavigate(`/home/feed`);
       });
     }
@@ -70,17 +78,17 @@ function Login() {
   useEffect(() => {
     if (contrasena && email) {
       document.getElementById("button_login").style =
-        "background-color:#1399f3;";
+        "background-color:#d4d4d4;";
     } else {
       document.getElementById("button_login").style =
-        "background-color:#76c2f5;";
+        "background-color:##ededed;;";
     }
   });
 
   return (
     <>
       <div className="container-text">
-        <p className="title-form-type">Login</p>
+        <p className="title-form-type">Iniciar</p>
       </div>
 
       <input
@@ -127,9 +135,9 @@ function Login() {
         </NavLink>{" "}
       </div>
 
-      <button id="button_login" className="button" onClick={handlerLogin}>
-        Inicia sesion
-      </button>
+      <div id="button_login" className="button" onClick={handlerLogin}>
+        {loader ? <div className="loader-auth"></div> : "Iniciar sesion"}
+      </div>
 
       <div className="box-info">
         no tienes una cuenta ?{" "}

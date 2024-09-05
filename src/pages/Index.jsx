@@ -1,28 +1,25 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import "./index.css";
 import { useSelector } from "react-redux";
-import { decryptDate } from "../helpers/encrypt";
+import "./index.css";
 
 export default function Index() {
   const navigate = useNavigate();
   const location = useLocation();
-  //console.log(useSelector((state) => state.auth.userAuth));
-  const userAuth = useSelector((state) => state.auth.userAuth);
-  const { session } =
-    typeof userAuth === "string" ? decryptDate(userAuth) : userAuth;
+
+  const { session } = useSelector((state) => state.auth.userAuth);
+
+  const handlerRedirect = (path) => {
+    navigate(`${path}`);
+  };
 
   useEffect(() => {
-    const handler = (path) => {
-      navigate(`${path}`);
-    };
-    if (location.pathname === "/") {
-      if (session) {
-        handler("/home/feed");
-      } else {
-        handler("/login");
-      }
+    if (session) {
+      handlerRedirect("/home/feed");
+    } else if (location.pathname === "/") {
+      handlerRedirect("/login");
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import "./inputSearch.css";
@@ -13,7 +14,6 @@ export default function InputSearch({ actionClose, actionSearch }) {
           id="input_search"
           placeholder="Busca algo..."
           value={searchQuery}
-          d
           onChange={(e) => {
             setSearchQuery(e.target.value);
           }}

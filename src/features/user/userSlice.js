@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { encryptDate, decryptDate } from '../../helpers/encrypt'
+
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -7,24 +7,16 @@ export const userSlice = createSlice({
     },
     reducers: {
         setUser: (state, action) => {
-            state.userInfo = encryptDate(JSON.stringify({ ...action.payload }))
+            state.userInfo = action.payload
         },
         updateUserInfoLocal: (state, action) => {
-            const aux = decryptDate(state.userInfo)
+            const aux = state.userInfo
             for (let key in action.payload) {
                 aux[key] = action.payload[key]
             }
-            state.userInfo = encryptDate(JSON.stringify(aux))
+            state.userInfo = aux
         },
-        updatePreferences: (state, action) => {
-            const aux = decryptDate(state.userInfo)
-
-            for (let key in action.payload) {
-                aux.user_preferences[key] = action.payload[key]
-            }
-
-            state.userInfo = encryptDate(JSON.stringify(aux))
-        },
+        updatePreferences: (state, action) => { },
     }
 })
 

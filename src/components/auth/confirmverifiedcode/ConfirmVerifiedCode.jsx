@@ -15,6 +15,8 @@ export default function ConfirmVerifiedCode() {
   const [message, setMessage] = useState("");
   const usenavigate = useNavigate();
   const dispatch = useDispatch();
+  const validCharacters =
+    "abcdefghijklmnñopqrsuvtwxyzABCDEFGHIJKLUVMNÑOPQRSTWXYZ1234567890";
   const { confirmVerifyCode, sendEmail } = useUser(usenavigate);
 
   const clearInputs = () => {
@@ -25,8 +27,9 @@ export default function ConfirmVerifiedCode() {
   };
 
   const handlerConfirmCode = () => {
+    setMessage("");
     if ((code1 + code2 + code3 + code4).length !== 4) {
-      setMessage("Porfavor ingresa un codio correcto");
+      setMessage("Porfavor ingresa un codigo correcto");
       return;
     }
     confirmVerifyCode(
@@ -38,11 +41,11 @@ export default function ConfirmVerifiedCode() {
         dispatch(
           setAuth({
             session: true,
-            csrftoken: data.data.csrftoken,
-            id_user: data.data.id_user,
+            csrftoken: data.data.token,
+            id_user: data.data.userId,
           })
         );
-        window.localStorage.setItem("id_user", data.data.id_user);
+        window.localStorage.setItem("id_user", data.data.userId);
         usenavigate(`/home/feed`);
       },
       id_user,
@@ -52,6 +55,10 @@ export default function ConfirmVerifiedCode() {
 
   const handlerSendEmail = () => {
     setMessage("");
+    setCode1("");
+    setCode2("");
+    setCode3("");
+    setCode4("");
     sendEmail(
       (err) => {
         if (err) {
@@ -59,17 +66,17 @@ export default function ConfirmVerifiedCode() {
         }
       },
       id_user,
-      "verifyAccount"
+      "verification"
     );
   };
 
   useEffect(() => {
     if ((code1 + code2 + code3 + code4).length === 4) {
       document.getElementById("input_confirm_code").style =
-        "background-color:#1399f3;";
+        "background-color:#d4d4d4;";
     } else {
       document.getElementById("input_confirm_code").style =
-        "background-color:#76c2f5;";
+        "background-color:##ededed;";
     }
   });
 
@@ -87,9 +94,13 @@ export default function ConfirmVerifiedCode() {
           id="input_1"
           value={code1}
           className="input-field input_digit"
-          onChange={(event) => {
-            setCode1(event.target.value);
-            document.getElementById("input_2").focus();
+          onKeyDown={(e) => {
+            if (e.key === "Backspace") {
+              setCode1("");
+            } else if (validCharacters.includes(e.key)) {
+              setCode1(e.key);
+              document.getElementById("input_2").focus();
+            }
           }}
         />
         <input
@@ -97,9 +108,14 @@ export default function ConfirmVerifiedCode() {
           type="text"
           value={code2}
           className="input-field input_digit"
-          onChange={(event) => {
-            setCode2(event.target.value);
-            document.getElementById("input_3").focus();
+          onKeyDown={(e) => {
+            if (e.key === "Backspace") {
+              setCode2("");
+              document.getElementById("input_1").focus();
+            } else if (validCharacters.includes(e.key)) {
+              setCode2(e.key);
+              document.getElementById("input_3").focus();
+            }
           }}
         />
         <input
@@ -107,9 +123,14 @@ export default function ConfirmVerifiedCode() {
           id="input_3"
           value={code3}
           className="input-field input_digit"
-          onChange={(event) => {
-            setCode3(event.target.value);
-            document.getElementById("input_4").focus();
+          onKeyDown={(e) => {
+            if (e.key === "Backspace") {
+              setCode3("");
+              document.getElementById("input_2").focus();
+            } else if (validCharacters.includes(e.key)) {
+              setCode3(e.key);
+              document.getElementById("input_4").focus();
+            }
           }}
         />
         <input
@@ -117,8 +138,13 @@ export default function ConfirmVerifiedCode() {
           id="input_4"
           value={code4}
           className="input-field input_digit"
-          onChange={(event) => {
-            setCode4(event.target.value);
+          onKeyDown={(e) => {
+            if (e.key === "Backspace") {
+              setCode4("");
+              document.getElementById("input_3").focus();
+            } else if (validCharacters.includes(e.key)) {
+              setCode4(e.key);
+            }
           }}
         />
       </div>

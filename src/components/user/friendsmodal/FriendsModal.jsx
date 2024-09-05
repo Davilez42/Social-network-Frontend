@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import useUser from "../../../hooks/useUser";
-export default function FriendsModal({ id_user, closeView }) {
+export default function FriendsModal({ userId, closeView }) {
   const [friends, setFriends] = useState();
   const { getFriends } = useUser();
   useEffect(() => {
@@ -14,9 +14,14 @@ export default function FriendsModal({ id_user, closeView }) {
       if (err) {
         return alert("error al traer amigos");
       }
-      console.log(data);
-      setFriends(data.data.friends);
-    }, id_user);
+      setFriends([
+        ...data.data.friends,
+        ...data.data.friends,
+        ...data.data.friends,
+      ]);
+
+      // setFriends([...data.data.friends]);
+    }, userId);
   }, []);
   return (
     <div className="container_filter">

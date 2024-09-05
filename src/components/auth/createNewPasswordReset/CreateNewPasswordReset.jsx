@@ -16,9 +16,14 @@ function CreateNewPasswordReset() {
       confirmPassword === newPassword
     ) {
       restorePassword(
-        (error) => {
-          if (error) {
-            return setMessage([error.message]);
+        (err) => {
+          if (err) {
+            if (err.code === 602) {
+              return setMessage(
+                "El tiempo para cambiar la contraseña ha vencido. Por favor, vuelve a solicitar un nuevo enlace para poder continuar"
+              );
+            }
+            return setMessage(err.message);
           }
           navigate("/login");
         },

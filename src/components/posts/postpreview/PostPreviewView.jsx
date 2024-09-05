@@ -17,7 +17,7 @@ export default function PostPreviewView({
   const { setInfo } = useContext(UserContext);
   const [descriptionPost_edit, setDescriptionPost_edit] = useState("");
   const { modifyPost } = usePost();
-  console.log(post);
+
   useEffect(() => {
     setDescriptionPost_edit(post.text);
   }, []);
@@ -49,13 +49,13 @@ export default function PostPreviewView({
         <div className="container_media">
           <div className="media_preview">
             {post.media.map((media, ind) => {
-              if (!media) return <div key={post.id_post}></div>;
+              if (!media) return <div key={post.id}></div>;
               const format = media.url.split(".").pop().toLowerCase();
               if (format === "mp4") {
                 return (
                   <video
                     loading="lazy"
-                    key={ind + post._id}
+                    key={ind + post.id}
                     src={media.url}
                     controls
                     className="video_media media_post_preview"
@@ -65,7 +65,7 @@ export default function PostPreviewView({
               if (["jpeg", "jpg", "png"].includes(format)) {
                 return (
                   <img
-                    key={ind + post._id}
+                    key={ind + post.id}
                     loading="lazy"
                     src={media.url}
                     className="image_media media_post_preview"
@@ -73,7 +73,7 @@ export default function PostPreviewView({
                   />
                 );
               }
-              return <div key={post._id}></div>;
+              return <div key={post.id}></div>;
             })}
           </div>
         </div>
@@ -82,19 +82,19 @@ export default function PostPreviewView({
           <div className="info_owner info_post_preview">
             <img
               onClick={() => {
-                usenavigate(`/home/profile/view/${post.author.avatar.url}`);
+                usenavigate(`/home/profile/view/${post.authorId}`);
               }}
               loading="lazy"
               className="avatar avatar_post_owner"
-              src={post.author.avatar.url}
+              src={post.authorUrlAvatar}
               alt=""
             />
             <p
               onClick={() => {
-                usenavigate(`/home/profile/view/${post.author._id}`);
+                usenavigate(`/home/profile/view/${post.authorId}`);
               }}
             >
-              {post.author.username}
+              {post.authorUsername}
             </p>
           </div>
 
@@ -122,16 +122,16 @@ export default function PostPreviewView({
 
           <div className="options_post_preview">
             <ButtonLike
-              id_post={post._id}
+              id_post={post.id}
               countLikes={post.countLikes}
-              likedbyme={post.likedbyme}
+              likedbyme={post.liked}
             />
           </div>
 
           <div className="container_comments_post_preview">
             <CommentsPost
-              id_post={post._id}
-              deactivate_comments={post.config.deactivate_comments}
+              id_post={post.id}
+              deactivate_comments={post.comments}
               onCreateComment={() => {}}
             />
           </div>
