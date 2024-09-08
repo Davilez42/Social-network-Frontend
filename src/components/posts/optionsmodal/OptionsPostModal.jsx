@@ -11,20 +11,20 @@ import ReportModal from "./ReportModal";
 import PostPreviewView from "../postpreview/PostPreviewView";
 
 export default function OptionsPostModal({ post }) {
-  const { deletePost } = usePost();
-  const { setInfo } = useContext(UserContext);
   const { id } = useSelector((state) => state.user.userInfo);
+  const { setInfo } = useContext(UserContext);
   const [optionsView, setOptionsView] = useState(false);
   const [reportModal, setReportModal] = useState(false);
   const [posteditview, setPosteditview] = useState(false);
+  const { deletePost } = usePost();
 
   const handlerDeletePost = () => {
     deletePost((err) => {
       if (err) {
-        return setInfo(err.message);
+        return setInfo([err.message]);
       }
       setOptionsView(false);
-    }, post._id);
+    }, post.id);
   };
 
   return (

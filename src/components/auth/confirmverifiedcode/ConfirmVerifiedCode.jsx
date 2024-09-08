@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "../../../features/auth/authSlice";
 
 export default function ConfirmVerifiedCode() {
-  const { id_user, name } = useParams();
+  const { userId, name } = useParams();
   const [code1, setCode1] = useState("");
   const [code2, setCode2] = useState("");
   const [code3, setCode3] = useState("");
@@ -41,14 +41,13 @@ export default function ConfirmVerifiedCode() {
         dispatch(
           setAuth({
             session: true,
-            csrftoken: data.data.token,
-            id_user: data.data.userId,
+            token: data.data.token,
+            userId: data.data.userId,
           })
         );
-        window.localStorage.setItem("id_user", data.data.userId);
         usenavigate(`/home/feed`);
       },
-      id_user,
+      userId,
       code1 + code2 + code3 + code4
     );
   };
@@ -65,7 +64,7 @@ export default function ConfirmVerifiedCode() {
           return setMessage(err.message);
         }
       },
-      id_user,
+      userId,
       "verification"
     );
   };
@@ -84,8 +83,9 @@ export default function ConfirmVerifiedCode() {
     <>
       <div className="container-text">
         <p className="text-frase">
-          Hola! 🖐️ <b>{name}</b> Hemos enviado un codigo de verificacion a tu
-          correo, ingresa el codigo para poder <b>verificar tu cuenta</b>
+          ¡Hola, <b>{name}</b>! 📩 Un código de verificación ha sido enviado a
+          tu correo. Ingresa ese código para{" "}
+          <b>completar el proceso de verificación</b>.
         </p>
       </div>
       <div className="inputs_code">

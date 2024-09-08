@@ -71,9 +71,9 @@ export default function useUser() {
                 if (e instanceof AuthenticationRequired) logout()
                 callback(e)
             }
-        }, userLoginWithGoogle: async (callback, credentials,) => {
+        }, userLoginWithGoogle: async (callback, values,) => {
             try {
-                const resp = await resource({ route: `/api/v1/auth/google_platform`, body: { credentials } })
+                const resp = await resource({ route: `/api/v1/auth/google`, body: values })
                 const data = await resp.json()
                 if (!resp.ok) {
                     return callback(data.error)

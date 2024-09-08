@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AiFillCheckCircle } from "react-icons/ai";
 import "./userlist.css";
 import ButtonOptionRelation from "../buttonOptionRelation/ButtonOptionRelation";
+import { useEffect } from "react";
 
 export default function UserList({ users = [], closeView }) {
   const { id } = useSelector((state) => state.user.userInfo);
@@ -13,6 +14,8 @@ export default function UserList({ users = [], closeView }) {
     closeView();
     usenavigate(`/home/profile/view/${id}`);
   };
+
+  useEffect(() => {}, []);
 
   return (
     <div className="user-list">

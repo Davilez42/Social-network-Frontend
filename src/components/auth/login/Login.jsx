@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../../features/auth/authSlice";
 function Login() {
-  const [email, setEmail] = useState("");
-  const [contrasena, setContrasena] = useState("");
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loader, setLoader] = useState(false);
   const { userLogin, userLoginWithGoogle } = useUser();
@@ -17,9 +17,9 @@ function Login() {
   const handlerLogin = () => {
     setMessage("");
 
-    if (email.trim() !== "" && contrasena.trim() !== "") {
+    if (user.trim() !== "" && password.trim() !== "") {
       setLoader(true);
-      userLogin(email, contrasena, (error, data) => {
+      userLogin(user, password, (error, data) => {
         setLoader(false);
         if (error) {
           if (error.code === 103) {
@@ -34,10 +34,11 @@ function Login() {
             `Ups estamos teniendo problemas en estos momentos, 😕 Porfavor intenta en unos minutos`
           );
         }
-        if (data?.pendingToVerified) {
+
+        if (data.data.pendingToVerified) {
           return usenavigate(
             `/confirmEmail/${data.data.userId}/${
-              data.data.fullname.split(" ")[0]
+              data.data.username.split(" ")[0]
             }`
           );
         }
@@ -54,41 +55,44 @@ function Login() {
     }
   };
 
-  const handlerSignWithGoogleSuccess = (credentials) => {
-    userLoginWithGoogle((err, data) => {
-      if (err) {
-        return setMessage(err.message);
-      }
-      dispatch(
-        setAuth({
-          session: true,
-          csrftoken: data.data.csrftoken,
-          id_user: data.data.id_user,
-        })
-      );
-      window.localStorage.setItem("id_user", data.data.id_user);
-      usenavigate(`/home/feed`);
-    }, credentials);
+  const handlerSignWithGoogleSuccess = ({ credential, clientId }) => {
+    //console.log(credentials);
+    userLoginWithGoogle(
+      (err, data) => {
+        if (err) {
+          return setMessage(err.message);
+        }
+        dispatch(
+          setAuth({
+            session: true,
+            token: data.data.token,
+            userId: data.data.userId,
+          })
+        );
+        usenavigate(`/home/feed`);
+      },
+      { credential, clientId }
+    );
   };
-  const handlerSignWithGoogleError = (error) => {
-    console.error(error);
+
+  const handlerSignWithGoogleError = () => {
     setMessage("Error al iniciar con google");
   };
 
   useEffect(() => {
-    if (contrasena && email) {
+    if (password && user) {
       document.getElementById("button_login").style =
         "background-color:#d4d4d4;";
     } else {
       document.getElementById("button_login").style =
         "background-color:##ededed;;";
     }
-  });
+  }, [password]);
 
   return (
     <>
       <div className="container-text">
-        <p className="title-form-type">Iniciar</p>
+        <p className="title-form-type">Inicia sesion</p>
       </div>
 
       <input
@@ -96,9 +100,9 @@ function Login() {
         id="input_email"
         required
         className="input-field"
-        placeholder="Correo electrónico o usuario"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Usuario o correo electronico"
+        value={user}
+        onChange={(e) => setUser(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             handlerLogin();
@@ -112,8 +116,8 @@ function Login() {
         required
         className="input-field"
         placeholder="Contraseña"
-        value={contrasena}
-        onChange={(e) => setContrasena(e.target.value)}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             handlerLogin();
@@ -121,6 +125,12 @@ function Login() {
         }}
       />
       <div className="info-text">{message}</div>
+      <div className="box-info">
+        Olvidaste tu contraseña ?{" "}
+        <NavLink className="here" to="/passwordRestore">
+          recuperar
+        </NavLink>{" "}
+      </div>
       <GoogleLogin
         text="signin_with"
         width="250"
@@ -128,15 +138,9 @@ function Login() {
         onError={handlerSignWithGoogleError}
         useOneTap
       />
-      <div className="box-info">
-        Olvidaste tu contraseña ?{" "}
-        <NavLink className="here" to="/passwordRestore">
-          recuperar
-        </NavLink>{" "}
-      </div>
 
       <div id="button_login" className="button" onClick={handlerLogin}>
-        {loader ? <div className="loader-auth"></div> : "Iniciar sesion"}
+        {loader ? <div className="loader-auth"></div> : "Iniciar"}
       </div>
 
       <div className="box-info">

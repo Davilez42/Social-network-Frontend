@@ -1,21 +1,28 @@
 /* eslint-disable react/prop-types */
-import "./commentbutton.css";
 import { useEffect, useState } from "react";
 import CommentsModal from "../commentsmodal/CommentsModal";
+import { FaRegComment } from "react-icons/fa6";
 
 export default function CommentButton({
   postId,
-  count_comments,
-  comments_disabled,
+  countComments_,
+  disabledComments,
 }) {
-  const [countComments, setCountComments] = useState(count_comments);
+  const [countComments, setCountComments] = useState(countComments_);
   const [commentsModal, setCommentsModal] = useState(false);
 
   useEffect(() => {});
 
   return (
-    <div className="text-option">
-      opinar
+    <div className="container-button-option">
+      <FaRegComment
+        onClick={() => {
+          setCommentsModal(true);
+        }}
+        style={{ color: "gray" }}
+        size={22}
+      />
+      <span className="count">{countComments_}</span>
       {commentsModal ? (
         <CommentsModal
           addCountComments={() => {
@@ -24,7 +31,7 @@ export default function CommentButton({
           closeView={() => {
             setCommentsModal(false);
           }}
-          comments_disabled={comments_disabled}
+          disabledComments={disabledComments}
           postId={postId}
         />
       ) : (

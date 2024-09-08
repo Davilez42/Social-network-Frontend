@@ -71,11 +71,11 @@ export default function Register() {
   return (
     <>
       <div className="container-text">
-        <p className="text-frase">¡La diversión comienza aquí!</p>
+        <p className="title-form-type">Registro</p>
       </div>
 
       <div className="container-text">
-        <p className="title-form-type">Registro</p>
+        <p className="text-frase">¡La diversión comienza aquí!</p>
       </div>
 
       <input

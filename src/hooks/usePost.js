@@ -15,13 +15,15 @@ const usePost = () => {
                     }
                     query.push(`${key}=${optionsQuery[key]}`)
                 }
-                console.log(query);
+
                 const resp = await resource({
                     route: `/api/v1/post/${query.length >= 0 ? '?' + query.join('&') : ''}`,
                     method: 'GET',
                     tkn: token
                 })
+
                 const data = await resp.json()
+
                 if (!resp.ok) {
                     return callback(data.error)
                 }
@@ -38,7 +40,7 @@ const usePost = () => {
                 for (const file of files) {
                     formData.append('media', file)
                 }
-                const resp = await resource({ route: `/api/v1/post/${userId}`, method: 'PUT', formData, tkn: token })
+                const resp = await resource({ route: `/api/v1/post`, method: 'POST', formData, tkn: token })
                 if (!resp.ok) {
                     const data = await resp.json()
                     return callback(data.error)
@@ -65,9 +67,9 @@ const usePost = () => {
             }
 
         },
-        getLikesPost: async (callback, id_post) => {
+        getLikes: async (callback, from) => {
             try {
-                const resp = await resource({ route: `/api/v1/post/${id_post}/likes`, method: 'GET', tkn: token })
+                const resp = await resource({ route: `/api/v1/like/${from}`, method: 'GET', tkn: token })
                 const data = await resp.json()
                 if (!resp.ok) {
                     return callback(data.error)
@@ -90,10 +92,9 @@ const usePost = () => {
                 return callback(e)
             }
         },
-        sendLike: async (callback, id_post) => {
+        sendLike: async (callback, postId) => {
             try {
-
-                const resp = await resource({ route: `/api/v1/post/${id_post}/likeby/${userId}`, method: 'PUT', tkn: token })
+                const resp = await resource({ route: `/api/v1/like/${postId}/post`, method: 'POST', tkn: token })
                 const data = await resp.json()
                 if (!resp.ok) {
                     return callback(data.error)
@@ -129,9 +130,9 @@ const usePost = () => {
                 callback(e)
             }
         },
-        deletePost: async (callback, id_post) => {
+        deletePost: async (callback, postId) => {
             try {
-                const resp = await resource({ route: `/api/v1/post/${id_post}`, method: 'DELETE', tkn: token })
+                const resp = await resource({ route: `/api/v1/post/${postId}`, method: 'DELETE', tkn: token })
                 if (!resp.ok) {
                     const data = await resp.json()
                     return callback(data.error)

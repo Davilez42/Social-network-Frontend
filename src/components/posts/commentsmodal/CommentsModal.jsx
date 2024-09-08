@@ -3,10 +3,10 @@ import { PiArrowLeftBold } from "react-icons/pi";
 import CommentsPost from "../commentspost/CommentsPost";
 import "./commentsmodal.css";
 export default function CommentsModal({
-  id_post,
+  postId,
   addCountComments,
   closeView,
-  comments_disabled,
+  disabledComments,
 }) {
   return (
     <div className="container_filter">
@@ -22,9 +22,9 @@ export default function CommentsModal({
           </div>
         </div>
         <CommentsPost
-          id_post={id_post}
+          postId={postId}
           onCreateComment={() => addCountComments()}
-          comments_disabled={comments_disabled}
+          disabledComments={disabledComments}
         />
       </div>
     </div>

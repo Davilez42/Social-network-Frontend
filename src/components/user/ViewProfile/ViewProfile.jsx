@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import "./viewprofile.css";
 import { useEffect, useState } from "react";
@@ -12,9 +13,9 @@ import { useSelector } from "react-redux";
 import { UserContext } from "../../../context/userContext";
 import { useContext } from "react";
 import ButtonOptionRelation from "../buttonOptionRelation/ButtonOptionRelation";
-// import usePost from "../../../hooks/usePost";
+import usePost from "../../../hooks/usePost";
 
-export default function ViewProfile({ mode_foreign = false }) {
+export default function ViewProfile({ isSelfUser = false }) {
   const {
     id,
     fullname,
@@ -26,10 +27,9 @@ export default function ViewProfile({ mode_foreign = false }) {
     checkVerified,
   } = useSelector((state) => state.user.userInfo);
 
-  const navigate = useNavigate();
   const { setInfo } = useContext(UserContext);
-  const { getInfoUser } = useUser(navigate);
-  // const { getPosts } = usePost(navigate);
+  const { getInfoUser } = useUser();
+  const { getPosts } = usePost();
 
   const { userIdView } = useParams();
   const [usernameView, setUsernameView] = useState("");
@@ -81,9 +81,16 @@ export default function ViewProfile({ mode_foreign = false }) {
       setRequestSentIdView(null);
       setRequestReceivedIdView(null);
     }
-    setPostsView([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, mode_foreign, userIdView]);
+    getPosts(
+      (err, data) => {
+        if (err) {
+          return setInfo([err.message]);
+        }
+        setPostsView(data.data.posts);
+      },
+      { author: userIdView ?? id }
+    );
+  }, [id, isSelfUser, userIdView]);
 
   return (
     <>
@@ -141,7 +148,7 @@ export default function ViewProfile({ mode_foreign = false }) {
                 }}
               >
                 <p className="item">{countFriendsView}</p>
-                interesados
+                amigos
               </div>
             </div>
 
@@ -162,12 +169,12 @@ export default function ViewProfile({ mode_foreign = false }) {
             if (!postsView) {
               return <span className="loader"></span>;
             }
-            if (postsView.length !== 0) {
-              return <MainViewPost posts={postsView} avatar_author={false} />;
+            if (postsView.length > 0) {
+              return <MainViewPost posts={postsView} authorAvatar={true} />;
             }
             return (
               <div className="box_info_perfil_not_posts">
-                {mode_foreign
+                {isSelfUser
                   ? "Este usuario aun no tiene publicaciones"
                   : "Aun no tienes publicaciones"}
               </div>

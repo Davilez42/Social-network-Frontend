@@ -8,7 +8,11 @@ import formatDate from "../../../helpers/formatDate.js";
 import { AiFillCheckCircle } from "react-icons/ai";
 import "./mainviewposts.css";
 
-export default function MainViewPost({ posts, selfUser = true, activeReload }) {
+export default function MainViewPost({
+  posts,
+  authorAvatar = true,
+  activeReload,
+}) {
   const usenavigate = useNavigate();
 
   useEffect(() => {}, [posts]);
@@ -18,10 +22,10 @@ export default function MainViewPost({ posts, selfUser = true, activeReload }) {
       {(() => {
         if (!posts) return <></>;
         return posts.map((post, i) => (
-          <div key={i} id={post.id} className="card_post">
+          <div key={i} className="card_post">
             <div className="info_owner">
               <div className="block-user">
-                {selfUser ? (
+                {authorAvatar ? (
                   <img
                     onClick={() => {
                       usenavigate(`/home/profile/view/${post.authorId}`);
@@ -69,7 +73,7 @@ export default function MainViewPost({ posts, selfUser = true, activeReload }) {
                     return (
                       <video
                         loading="lazy"
-                        key={media.externalId}
+                        key={media.url}
                         src={media.url}
                         controls
                         autoFocus
@@ -80,7 +84,7 @@ export default function MainViewPost({ posts, selfUser = true, activeReload }) {
                   if (["jpeg", "jpg", "png"].includes(format)) {
                     return (
                       <img
-                        key={media.externalId}
+                        key={media.url}
                         loading="lazy"
                         src={media.url}
                         className="image_media"
@@ -96,15 +100,15 @@ export default function MainViewPost({ posts, selfUser = true, activeReload }) {
               <div className="option">
                 <LikeButton
                   countLikes={post.countLikes}
-                  likedbyme={post.likedbyme}
+                  likedbyme={post.liked}
                   postId={post.id}
                 />
               </div>
               <div className="option">
                 <CommentButton
                   postId={post.id}
-                  countComments={post.countComments}
-                  comments_disabled={post.comments}
+                  countComments_={post.countComments}
+                  disabledComments={post.comments}
                 />
               </div>
             </div>

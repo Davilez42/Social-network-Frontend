@@ -47,14 +47,15 @@ function RestorePassword() {
   return (
     <>
       <div className="container-text">
+        <p className="title-form-type">Recuperar</p>
+      </div>
+      <div className="container-text">
         <p className="text-frase">
           Ingresa tu correo electrónico para que te enviemos el enlace de
           recuperación. 🔒
         </p>
       </div>
-      <div className="container-text">
-        <p className="title-form-type">Recuperar</p>
-      </div>
+
       <input
         type="email"
         className="input-field"

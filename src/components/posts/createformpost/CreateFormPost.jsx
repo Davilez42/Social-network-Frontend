@@ -19,6 +19,7 @@ export default function CreateFormPosts({ actionClose }) {
   const { setInfo } = useContext(UserContext);
   const [mediaFiles, setMediaFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const handlerSendPost = () => {
     if (text.trim() !== "" || mediaFiles.length !== 0) {
       setLoading(true);

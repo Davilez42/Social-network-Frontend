@@ -8,14 +8,14 @@ import "./likesmodal.css";
 
 export default function LikesModal({ postId, closeView }) {
   const [users, setUsers] = useState();
-  const { getLikesPost } = usePost();
+  const { getLikes } = usePost();
 
   useEffect(() => {
-    getLikesPost((err, data) => {
+    getLikes((err, data) => {
       if (err) {
         return alert(err.message);
       }
-      setUsers(data.data.likes);
+      setUsers(data.data.likes.map((l) => l.user));
     }, postId);
   }, []);
 

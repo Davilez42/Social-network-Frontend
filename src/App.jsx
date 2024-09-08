@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import Profile from "./pages/Profile";
 import Register from "./components/auth/register/Register";
 import Login from "./components/auth/login/Login";
@@ -34,7 +33,7 @@ const routes = createBrowserRouter([
             element: <Register />,
           },
           {
-            path: "/confirmEmail/:id_user/:name",
+            path: "/confirmEmail/:userId/:name",
             props: true,
             element: <ConfirmVerifiedCode />,
           },
@@ -93,9 +92,7 @@ const routes = createBrowserRouter([
 function App() {
   return (
     <CookiesProvider defaultSetOptions={{ path: "/" }}>
-      <GoogleOAuthProvider clientId="82745131280-ob282ooidap231baesdi58e01nib93q3.apps.googleusercontent.com">
-        <RouterProvider router={routes} />
-      </GoogleOAuthProvider>
+      <RouterProvider router={routes} />
     </CookiesProvider>
   );
 }

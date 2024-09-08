@@ -5,14 +5,13 @@ import { NavLink } from "react-router-dom";
 import usePost from "../../../hooks/usePost.js";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { decryptDate } from "../../../helpers/encrypt.js";
 import { UserContext } from "../../../context/userContext.jsx";
 import { useContext } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import "./commentpost.css";
 export default function CommentsPost({
-  id_post,
-  comments_disabled,
+  postId,
+  disabledComments,
   onCreateComment,
 }) {
   const { id, username, avatar, verified } = useSelector(
@@ -39,23 +38,22 @@ export default function CommentsPost({
           comment_created.user = { avatar, id, username, verified };
           setComments([comment_created, ...comments]);
         },
-        id_post,
+        postId,
         text
       );
-
       setText("");
     }
   };
 
   useEffect(() => {
-    if (!id_post) return;
-    if (!comments && !comments_disabled) {
+    if (!postId) return;
+    if (!comments && !disabledComments) {
       getCommentsPost((err, data) => {
         if (err) {
           return setInfo([err]);
         }
         setComments(data.data.comments.reverse());
-      }, id_post);
+      }, postId);
     } else {
       setComments([]);
     }
@@ -65,7 +63,7 @@ export default function CommentsPost({
       <div className="container_comments">
         {(() => {
           if (comments) {
-            if (comments_disabled) {
+            if (disabledComments) {
               return <p className="text-has-not">Comentarios desactivados</p>;
             }
             if (comments.length === 0) {
@@ -107,7 +105,7 @@ export default function CommentsPost({
           return <span className="loader"></span>;
         })()}
       </div>
-      {!comments_disabled ? (
+      {!disabledComments ? (
         <div className="cotainer_input_comment">
           <input
             type="text"
