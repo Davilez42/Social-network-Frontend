@@ -1,0 +1,78 @@
+.container-report-modal {
+    height: 550px;
+    border-radius: 15px;
+    background-color: #ffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 30%;
+    overflow-y: hidden;
+}
+
+.block-report-types {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 330px;
+    overflow-y: scroll;
+    align-items: center;
+}
+
+.block-report-types__item {
+    width: 100%;
+    min-height: 45px;
+    border-bottom: 1px solid rgb(235, 235, 235);
+    display: flex;
+    cursor: pointer;
+    text-align: center;
+    font-size: 13px;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-report-modal hr {
+    margin: 0;
+    height: 0.5px;
+    border: none;
+    background-color: rgb(235, 235, 235);
+    width: 100%;
+}
+
+.container-other-reason {
+    width: 90%;
+    height: min-content;
+}
+
+.label-other-reason {
+    font-size: 12px;
+}
+
+#input_reason {
+    width: 100%;
+    border: none;
+    border: 1px solid rgb(236, 236, 236);
+    border-radius: 2px;
+    height: 100px;
+    resize: none;
+
+}
+
+#input_reason:focus {
+    border: 1px solid rgb(204, 204, 204);
+    outline: none;
+}
+
+#input_reason::placeholder {
+    text-align: start;
+}
+
+.block-report-types__item:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+.button-send-report {
+    width: 100%;
+    font-size: 13px;
+    border-radius: 0;
+}

@@ -1,0 +1,109 @@
+.block-comments {
+    width: 100%;
+    display: flex;
+    min-height: 300px;
+    max-height: max-content;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+
+
+
+.info_message {
+    color: rgb(122, 122, 122);
+}
+
+
+.container_comments {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    gap: 8px;
+    height: 460px;
+    min-height: 100px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-top: 10px;
+    border-bottom: 1px solid rgb(223, 223, 223);
+}
+
+
+.card_comment {
+    display: flex;
+    width: 100%;
+    height: min-content;
+    text-align: left;
+}
+
+.container_avatar_owner {
+    width: 20%;
+    display: flex;
+    height: min-content;
+
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.metadata {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    height: min-content;
+    max-height: 160px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.box_username {
+    color: rgb(17, 17, 17);
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+}
+
+.comment {
+    display: flex;
+    overflow-wrap: break-word;
+    color: rgb(0, 0, 0);
+    flex-direction: column;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+
+
+.input_comment {
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 100px;
+    width: 400px;
+}
+
+
+.cotainer_input_comment {
+
+    width: 90%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    align-items: center;
+}
+
+
+@media (max-width: 600px) {
+    .container_comments {
+        margin-top: 0;
+        min-height: 490px;
+    }
+
+
+}

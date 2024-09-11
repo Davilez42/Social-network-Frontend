@@ -1,0 +1,57 @@
+.container-feed-main {
+    width: 80%;
+    display: flex;
+    height: 100vh;
+}
+
+.container-feed-posts {
+    width: 70%;
+    display: flex;
+    padding-top: 20px;
+    gap: 20px;
+    justify-content: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-color: rgba(165, 165, 165, 0.5) rgba(241, 241, 241, 0);
+    scrollbar-width: none;
+    outline: 1px solid rgb(231, 231, 231);
+}
+
+.container-feed-friends {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 30%;
+    margin-left: 20px
+}
+
+.search-icon-feed-main {
+    padding: 20px;
+    position: absolute;
+    cursor: pointer;
+}
+
+
+
+@media (max-width: 600px) {
+
+    .container-feed-main {
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+
+    .container-feed-friends {
+        margin-left: 0px;
+        width: 95%;
+    }
+
+    .container-feed-posts {
+        padding-top: 5px;
+        padding-left: 9px;
+        padding-right: 9px;
+        width: 95%;
+        height: 100vh;
+    }
+
+
+}

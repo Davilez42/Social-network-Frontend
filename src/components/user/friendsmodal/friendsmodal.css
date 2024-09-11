@@ -1,0 +1,72 @@
+.container_modal_user_list {
+  background-color: #ffffff;
+  border-radius: 15px;
+  width: 24%;
+  animation: open_container_friendlist;
+  animation-delay: 0;
+  animation-duration: .1s;
+  height: 300px;
+  overflow-y: hidden;
+}
+
+
+
+@keyframes open_container_friendlist {
+  0% {
+    filter: brightness(10%);
+    overflow: hidden;
+  }
+
+  50% {
+    filter: brightness(30%);
+
+    overflow: hidden;
+  }
+
+  70% {
+    filter: brightness(70%);
+
+    overflow: hidden;
+  }
+
+  100% {
+    filter: brightness(100%);
+  }
+}
+
+
+
+.friend-list {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 310px;
+  background-color: #ffffff;
+}
+
+
+
+
+.card_name_user {
+  cursor: pointer;
+}
+
+.container_modal_user_list .loader {
+  margin-top: 60px;
+}
+
+@media (max-width: 600px) {
+  .container_modal_user_list {
+    width: 100%;
+    height: 70vh;
+  }
+
+  .button_option_friend {
+    width: 10%;
+  }
+
+  .friend-list {
+    height: max-content;
+  }
+
+}

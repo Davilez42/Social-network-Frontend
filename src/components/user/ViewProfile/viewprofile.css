@@ -1,0 +1,246 @@
+.container_view_profile {
+    width: 100%;
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column;
+    gap: 25px;
+    overflow-y: scroll;
+    height: 100vh;
+}
+
+.info_perfil {
+    display: flex;
+    justify-content: center;
+    color: rgb(182, 182, 182);
+    text-align: center;
+}
+
+.container_avatar {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    height: 200px;
+}
+
+.view_perfil {
+    margin-top: 5px;
+    justify-content: flex-start;
+    gap: 40px;
+}
+
+.box_user_bio {
+    font-size: 13px;
+}
+
+
+
+.button_edit_profile,
+.button_option_user {
+    color: rgb(46, 46, 46);
+
+    font-weight: 400;
+    font-size: 14px;
+    border-radius: 5px;
+    text-decoration: none;
+    min-width: min-content;
+    text-wrap: wrap;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #efefef;
+    transition: all .2s;
+    cursor: pointer;
+}
+
+.button_option_user {
+    float: right;
+}
+
+.button_edit_profile:hover {
+    background-color: rgb(216, 216, 216);
+}
+
+.container_data_user {
+    background-color: rgb(255, 255, 255);
+    width: 70%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: center;
+    gap: 20px;
+    border-bottom: 1px solid rgb(236, 236, 236);
+}
+
+.container_info {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    padding-top: 20px;
+    gap: 10px;
+
+}
+
+.avatar_profile {
+    width: 120px;
+    height: 120px;
+}
+
+.title_fullname {
+    font-size: 15px;
+    max-width: 250px;
+    overflow-x: hidden;
+    text-wrap: nowrap;
+    float: left;
+}
+
+.box_fullname {
+    width: 90%;
+}
+
+.block-buttons-acp-rec {
+    display: flex;
+    gap: 10px;
+    width: 100px;
+    padding-left: 20px;
+}
+
+.icon-check {
+    float: left;
+    padding-left: 15px;
+    height: 100%;
+}
+
+.btn-option-user-profile {
+    float: right
+}
+
+.container_self_posts {
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    background-color: rgb(255, 255, 255);
+}
+
+.box_info_perfil_private {
+    background-color: rgb(255, 255, 255);
+    width: 67%;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    border: 1px solid rgb(235, 235, 235);
+    height: 80px;
+
+    border-radius: 5px;
+    padding-left: 20px;
+}
+
+.box_info_perfil_not_posts {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    color: rgb(141, 141, 141);
+    width: 70%;
+    font-size: 14px;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+@media (max-width: 950px) {
+    .container_view_profile {
+        width: 70%;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+    .container_view_profile {
+        width: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .view_perfil {
+        margin-top: 10px;
+        flex-wrap: wrap;
+        justify-content: none;
+        gap: 30px;
+    }
+
+    .container_avatar {
+        width: 40%;
+
+    }
+
+    .avatar_profile {
+        width: 90px;
+        height: 90px;
+    }
+
+    .container_data_user {
+        width: 100%;
+    }
+
+
+}
+
+@media (max-width: 450px) {
+
+    .container_view_profile {
+        margin-top: 0;
+        width: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .view_perfil {
+        margin-top: 0;
+        flex-wrap: wrap;
+        font-size: 10px;
+        justify-content: none;
+        gap: 30px;
+    }
+
+    .button_edit_profile {
+        width: 60px;
+    }
+
+    .title_fullname {
+        font-size: 15px;
+        font-weight: 900;
+    }
+
+    .container_self_posts {
+
+        width: 100%;
+    }
+
+    .avatar_profile {
+        width: 60px;
+        height: 60px;
+    }
+
+    .button_edit_profile {
+        width: 70px;
+        height: 30px;
+    }
+
+    .container_avatar {
+        width: 27%;
+        display: flex;
+        justify-content: center;
+        height: 200px;
+    }
+
+    .box_info_perfil_not_posts,
+    .box_info_perfil_private {
+        width: 100%;
+    }
+
+}

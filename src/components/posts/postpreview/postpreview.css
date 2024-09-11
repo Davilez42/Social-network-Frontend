@@ -1,0 +1,96 @@
+.container_preview_post {
+    background-color: rgb(255, 255, 255);
+    width: 60%;
+    height: 88vh;
+    justify-content: center;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+.options_post_preview {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.container_media {
+    min-width: 0;
+    min-height: 400px;
+    max-height: 550px;
+    display: flex;
+    flex-direction: column;
+}
+
+.media_post_preview {
+    object-fit: cover;
+}
+
+
+.container_data_post {
+    width: 93%;
+    display: flex;
+    height: 730px;
+    justify-content: center;
+    gap: 4%;
+}
+
+.container_info_post {
+    width: 45%;
+    display: flex;
+    height: 730px;
+    flex-direction: column;
+}
+
+
+
+.info_post_preview {
+    padding: 0;
+}
+
+.media_preview {
+    display: flex;
+    height: 720px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.description_post_preview {
+    min-height: 60px;
+    overflow-y: auto;
+    max-height: 600px;
+    overflow-x: hidden;
+    margin: 10px 0;
+}
+
+.container_comments_post_preview {
+    display: flex;
+    padding-top: 10px;
+    flex-direction: column;
+    height: 370px;
+    align-items: center;
+}
+
+.input_text_edit_post {
+    border-radius: 5px;
+    width: 400px;
+    resize: vertical;
+    max-height: 300px;
+    border: 1px solid rgb(221, 221, 221);
+}
+
+.container_inputs_edit {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: end;
+}
+
+.button_saved_text_post {
+    width: 70px;
+    margin: 0;
+    padding: 5px 0;
+    height: 20px;
+    transition: 0s;
+}

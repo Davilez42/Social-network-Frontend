@@ -1,0 +1,24 @@
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    padding: 0;
+    margin: 0;
+    overflow-y: hidden;
+}
+
+
+.block-index {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    gap: 50px;
+}
+
+#info-footer {
+    width: 50%;
+    margin: 0 auto;
+    font-size: 13px;
+    text-align: center;
+    color: rgb(173, 173, 173);
+}

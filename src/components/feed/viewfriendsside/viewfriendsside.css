@@ -1,0 +1,80 @@
+.container-view-friends {
+    display: flex;
+    width: 90%;
+    flex-wrap: wrap;
+    max-height: min-content;
+}
+
+
+
+.avatar_friend {
+    width: 55px;
+    height: 55px;
+    border: none;
+}
+
+.title_navbar_side {
+    color: rgb(122, 122, 122);
+    width: 100%;
+    margin: 0;
+    font-size: 13px;
+    text-align: center;
+}
+
+.container_friends {
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    overflow-x: auto;
+    /*Estilos estándar experimentales (Principalmente Firefox)*/
+    scrollbar-color: rgba(226, 226, 226, 0.5) rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
+    margin-left: 5%;
+    max-height: 120px;
+}
+
+
+.card_friend {
+    display: flex;
+    width: 65px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+
+.name_friend {
+    font-size: 13px;
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .container-view-friends {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        height: min-content;
+        height: 140px;
+    }
+
+    .container_friends {
+        width: 95%;
+
+        flex-wrap: nowrap;
+        justify-content: start;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        gap: 20px;
+    }
+
+    .title_navbar_side {
+        color: rgb(122, 122, 122);
+        width: 100%;
+        margin: 0;
+        height: 30px;
+    }
+
+
+}

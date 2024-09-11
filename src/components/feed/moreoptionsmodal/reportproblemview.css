@@ -1,0 +1,39 @@
+.container_form_report_problem {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto auto;
+    width: 400px;
+    height: 430px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+}
+
+.form_report_problem {
+    max-width: 400px;
+}
+
+.form_report_problem label,
+.form_report_problem textarea {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form_report_problem textarea {
+    width: 100%;
+    resize: none;
+    height: 150px;
+}
+
+.form_report_problem button {
+    padding: 10px;
+    background-color: rgb(212, 212, 212);
+    color: rgb(7, 7, 7);
+    border: none;
+    cursor: pointer;
+}

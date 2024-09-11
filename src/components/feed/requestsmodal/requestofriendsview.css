@@ -1,0 +1,98 @@
+.requests-modal {
+    border-color: #e4e4e4;
+    background-color: rgb(255, 255, 255);
+    height: 354px;
+    width: 370px;
+    cursor: default;
+    border-radius: 15px;
+    animation: open_container_requests;
+    animation-delay: 0;
+    animation-duration: .04s;
+}
+
+.block-requests {
+    display: flex;
+    align-items: center;
+    height: 310px;
+    justify-content: center;
+}
+
+.container-requests {
+    display: flex;
+    justify-content: center;
+    height: 310px;
+    width: 100%;
+}
+
+.card_request {
+    width: 95%;
+    display: flex;
+    height: 60px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.data-user-request {
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+    align-items: center;
+}
+
+.container_button_option_request {
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+}
+
+.button_option_request {
+    width: 30%;
+}
+
+.container-requests p {
+    color: #8a8a8a;
+}
+
+@keyframes open_container_requests {
+    0% {
+
+        filter: brightness(10%);
+        overflow: hidden;
+        width: 700px;
+        height: 700px;
+    }
+
+    50% {
+        filter: brightness(30%);
+
+        overflow: hidden;
+    }
+
+    70% {
+        filter: brightness(70%);
+
+        overflow: hidden;
+    }
+
+    100% {
+        filter: brightness(100%);
+        overflow: none;
+        width: 530px;
+        height: 500px;
+    }
+}
+
+.button_option_request:hover {
+    background-color: rgb(223, 223, 223);
+}
+
+@media (max-width: 600px) {
+    .requests-modal {
+        height: 70vh;
+    }
+
+    .container_button_option_request {
+        flex-wrap: wrap;
+    }
+}

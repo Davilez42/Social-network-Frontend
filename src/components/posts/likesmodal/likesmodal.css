@@ -1,0 +1,19 @@
+.friend-list-container {
+    height: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@media (width<600px) {
+    #container-info-likes {
+        width: 100%;
+        margin: 0;
+    }
+
+    .user-list {
+        height: max-content;
+        overflow-y: scroll;
+    }
+}

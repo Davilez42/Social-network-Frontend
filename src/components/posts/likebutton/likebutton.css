@@ -1,0 +1,16 @@
+.container-button-option {
+    width: 42px;
+    height: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.count {
+    margin: 0;
+    font-size: 14px;
+    color: rgb(95, 95, 95);
+    width: min-content;
+    text-align: center;
+}
